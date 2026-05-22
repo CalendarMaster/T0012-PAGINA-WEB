@@ -2,15 +2,18 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { FALLBACK_PROJECTS } from '../lib/fallbackProjects'
-import { getProjectCategoryLabel, PROJECT_FILTERS } from '../lib/projectCategories'
+import { getProjectCategoryLabel, getProjectFilters } from '../lib/projectCategories'
 import LoadingLoop from './LoadingLoop'
+import { useLanguage } from '../lib/i18n.jsx'
 
 const FALLBACK_IMAGE = 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_1.png'
 
 export default function Portfolio({ minimal = false }) {
+  const { lang, t } = useLanguage()
   const [active, setActive] = useState('all')
   const [projects, setProjects] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const filters = getProjectFilters(lang)
 
   useEffect(() => {
     let isMounted = true
@@ -66,21 +69,18 @@ export default function Portfolio({ minimal = false }) {
     >
       {!minimal ? (
         <div className="portafolio_header">
-          <p className="eyebrow">Portafolio destacado</p>
+          <p className="eyebrow">{t('portfolio.eyebrow')}</p>
           <h2 className="portafolio_title" id="projects-title">
-            Proyectos coordinados con precisión técnica
+            {t('portfolio.title')}
           </h2>
-          <p>
-            El catálogo mantiene la lógica visual del sitio original: mosaico de modelos, colores por
-            categoría y tarjetas con reverso informativo.
-          </p>
+          <p>{t('portfolio.copy')}</p>
         </div>
       ) : (
-        <h2 className="sr-only" id="projects-title">Catalogo de proyectos</h2>
+        <h2 className="sr-only" id="projects-title">{t('portfolio.catalogTitle')}</h2>
       )}
 
       <div className="portafolio_filtros" aria-label="Filtros de proyectos">
-        {PROJECT_FILTERS.map((f) => (
+        {filters.map((f) => (
           <button
             key={f.value}
             className={`portafolio_filtro${active === f.value ? ' is_active' : ''}`}
@@ -96,11 +96,11 @@ export default function Portfolio({ minimal = false }) {
       <div className="portafolio_grid">
         {isLoading ? (
           <div className="portafolio_notice portafolio_notice-loader">
-            <LoadingLoop compact label="Cargando proyectos" />
+            <LoadingLoop compact label={t('portfolio.loading')} />
           </div>
         ) : null}
         {!isLoading && filteredProjects.length === 0 ? (
-          <p className="portafolio_notice">Todavia no hay proyectos publicados en esta categoria.</p>
+          <p className="portafolio_notice">{t('portfolio.empty')}</p>
         ) : null}
 
         {!isLoading && filteredProjects.map((p) => (
@@ -120,10 +120,10 @@ export default function Portfolio({ minimal = false }) {
               </div>
               <div className="portafolio_card_back">
                 <h3 className="portafolio_card_title">{p.title}</h3>
-                <p className="portafolio_card_cat">{getProjectCategoryLabel(p.category)}</p>
-                <p className="portafolio_card_summary">{p.summary || 'Proyecto gestionado por MI-STUDIO.'}</p>
+                <p className="portafolio_card_cat">{getProjectCategoryLabel(p.category, lang)}</p>
+                <p className="portafolio_card_summary">{p.summary || t('portfolio.fallbackSummary')}</p>
                 <Link className="portafolio_card_btn" to={`/proyectos/${p.slug}`}>
-                  Ver mas
+                  {t('portfolio.seeMore')}
                 </Link>
               </div>
             </div>

@@ -1,24 +1,22 @@
+import { useLanguage } from '../lib/i18n.jsx'
+
 export default function FAQ() {
+  const { t } = useLanguage()
+
   return (
     <section className="faq-section" aria-labelledby="faq-title">
       <div className="section-head">
-        <p className="eyebrow">Preguntas frecuentes</p>
-        <h2 id="faq-title">Dudas habituales antes de iniciar coordinación BIM</h2>
+        <p className="eyebrow">{t('faq.eyebrow')}</p>
+        <h2 id="faq-title">{t('faq.title')}</h2>
       </div>
       <div className="faq-grid">
         <article>
-          <h3>¿Qué es la coordinación BIM?</h3>
-          <p>
-            Es el proceso de integrar modelos de distintas especialidades para detectar interferencias,
-            resolver conflictos y mejorar la información antes de construir.
-          </p>
+          <h3>{t('faq.q1')}</h3>
+          <p>{t('faq.a1')}</p>
         </article>
         <article>
-          <h3>¿Cuándo conviene contratar BIM?</h3>
-          <p>
-            Mientras antes se incorpore, mayor impacto tiene en costos, plazos y calidad de
-            documentación. También puede ordenar proyectos ya avanzados.
-          </p>
+          <h3>{t('faq.q2')}</h3>
+          <p>{t('faq.a2')}</p>
         </article>
       </div>
     </section>

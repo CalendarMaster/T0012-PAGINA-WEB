@@ -1,10 +1,12 @@
 import { useEffect, useRef } from 'react'
+import { useLanguage } from '../lib/i18n.jsx'
 
 const HERO_START_AT = 10
 const HERO_CUT_BEFORE_END = 6
 
 export default function Hero() {
   const videoRef = useRef(null)
+  const { t } = useLanguage()
 
   useEffect(() => {
     const video = videoRef.current
@@ -56,16 +58,13 @@ export default function Hero() {
       <div className="hero-overlay" />
       <div className="hero-inner">
         <div className="hero-offer">
-          <p className="eyebrow">ARQUITECTURA · GESTIÓN DE INFORMACIÓN · METODOLOGÍA BIM</p>
+          <p className="eyebrow">{t('hero.eyebrow')}</p>
           <h1 id="hero-title">
-            Los datos son el entregable,
+            {t('hero.titleLine1')}
             <br />
-            <span>no sólo el modelo.</span>
+            <span>{t('hero.titleLine2')}</span>
           </h1>
-          <p className="hero-copy">
-            Tratamos cada proyecto como una base de datos: diseñamos, coordinamos, gestionamos y
-            extraemos información de forma adaptable, precisa y accionable — antes, durante y después de la obra.
-          </p>
+          <p className="hero-copy">{t('hero.copy')}</p>
           <div className="hero-actions" aria-label="Canales de contacto">
             <a
               className="button primary"
@@ -73,25 +72,25 @@ export default function Hero() {
               target="_blank"
               rel="noreferrer"
             >
-              Agenda una reunión
+              {t('hero.ctaMeeting')}
             </a>
-            <a className="button secondary" href="https://wa.me/56977666150">Habla por WhatsApp</a>
+            <a className="button secondary" href="https://wa.me/56977666150">{t('hero.ctaWhatsapp')}</a>
           </div>
         </div>
         <div className="hero-distinctive" aria-label="Qué distingue la gestión integral de MI Studio">
-          <p className="distinctive-label">Data management aplicado al ciclo completo del proyecto</p>
+          <p className="distinctive-label">{t('hero.distinctiveLabel')}</p>
           <div className="distinctive-grid">
             <article>
               <span>01</span>
-              <p>Modelos federados e integrados, con metodología BIM como soporte operativo para diseñar, coordinar y decidir con trazabilidad real.</p>
+              <p>{t('hero.points.0')}</p>
             </article>
             <article>
               <span>02</span>
-              <p>Seguimiento de obra como objeto responsivo: contrastamos diseño y ejecución para ajustar decisiones con evidencia en terreno.</p>
+              <p>{t('hero.points.1')}</p>
             </article>
             <article>
               <span>03</span>
-              <p>Continuidad post-obra: estructuramos información para operación, uso del edificio y mejora continua en el tiempo.</p>
+              <p>{t('hero.points.2')}</p>
             </article>
           </div>
         </div>

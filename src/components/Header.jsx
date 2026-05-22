@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { useLanguage } from '../lib/i18n.jsx'
 
 export default function Header() {
   const [logoAnimKey, setLogoAnimKey] = useState(0)
   const { pathname } = useLocation()
+  const { lang, setLang, t } = useLanguage()
 
   const sectionHref = (id) => (pathname === '/' ? `#${id}` : `/#${id}`)
 
@@ -47,21 +49,42 @@ export default function Header() {
         </span>
       </Link>
       <nav className="main-nav" aria-label="Navegación principal">
-        <Link to="/proyectos">Proyectos</Link>
-        <Link to="/servicios">Servicios BIM</Link>
+        <Link to="/">{t('header.nav.home')}</Link>
+        <Link to="/proyectos">{t('header.nav.projects')}</Link>
+        <Link to="/servicios">{t('header.nav.services')}</Link>
         <details>
-          <summary>Nosotros</summary>
+          <summary>{t('header.nav.about')}</summary>
           <div className="nav-dropdown">
-            <Link to="/nosotros#mision">Mision</Link>
-            <Link to="/nosotros#vision">Vision</Link>
-            <Link to="/nosotros#valores">Valores</Link>
-            <Link to="/nosotros#equipo">Equipo colaborativo</Link>
+            <Link to="/nosotros#mision">{t('header.aboutMenu.mission')}</Link>
+            <Link to="/nosotros#vision">{t('header.aboutMenu.vision')}</Link>
+            <Link to="/nosotros#valores">{t('header.aboutMenu.values')}</Link>
+            <Link to="/nosotros#equipo">{t('header.aboutMenu.team')}</Link>
           </div>
         </details>
-        <a href={sectionHref('proceso')}>Proceso</a>
-        <a href={sectionHref('contacto')}>Contacto</a>
+        <a href={sectionHref('proceso')}>{t('header.nav.process')}</a>
+        <a href={sectionHref('contacto')}>{t('header.nav.contact')}</a>
       </nav>
-      <a className="header-cta" href="https://wa.me/56977666150">Contactanos</a>
+
+      <div className="header-tools" aria-label="Selector de idioma y contacto">
+        <div className="lang-switch" role="group" aria-label="Selector de idioma">
+          <button
+            type="button"
+            className={`lang-switch-btn${lang === 'es' ? ' is-active' : ''}`}
+            onClick={() => setLang('es')}
+          >
+            ESP
+          </button>
+          <span className="lang-switch-separator">|</span>
+          <button
+            type="button"
+            className={`lang-switch-btn${lang === 'en' ? ' is-active' : ''}`}
+            onClick={() => setLang('en')}
+          >
+            EN
+          </button>
+        </div>
+        <a className="header-cta" href="https://wa.me/56977666150">{t('header.cta')}</a>
+      </div>
     </header>
   )
 }

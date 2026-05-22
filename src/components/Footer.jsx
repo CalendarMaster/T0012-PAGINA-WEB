@@ -1,8 +1,10 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useLanguage } from '../lib/i18n.jsx'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
   const { pathname } = useLocation()
+  const { t } = useLanguage()
 
   const sectionHref = (id) => (pathname === '/' ? `#${id}` : `/#${id}`)
 
@@ -11,43 +13,43 @@ export default function Footer() {
       <div className="footer-shell">
         <section className="footer-topline" aria-label="Presentación institucional">
           <p className="footer-kicker">MI STUDIO · MODELO INTEGRADO</p>
-          <a className="footer-cta" href="https://wa.me/56977666150">Iniciar proyecto</a>
+          <a className="footer-cta" href="https://wa.me/56977666150">{t('footer.cta')}</a>
         </section>
 
         <div className="footer-columns" aria-label="Navegación secundaria">
           <nav className="footer-column" aria-label="Información corporativa">
-            <h3>Empresa</h3>
-            <Link to="/proyectos">Proyectos</Link>
-            <a href={sectionHref('proceso')}>Proceso</a>
-            <Link to="/nosotros">Nosotros</Link>
-            <a href={sectionHref('contacto')}>Contacto</a>
+            <h3>{t('footer.columns.company')}</h3>
+            <Link to="/proyectos">{t('header.nav.projects')}</Link>
+            <a href={sectionHref('proceso')}>{t('footer.links.process')}</a>
+            <Link to="/nosotros">{t('footer.links.about')}</Link>
+            <a href={sectionHref('contacto')}>{t('footer.links.contact')}</a>
           </nav>
 
           <nav className="footer-column" aria-label="Líneas de servicio">
-            <h3>Capacidades</h3>
-            <Link to="/servicios#coordinacion">Coordinación BIM</Link>
-            <Link to="/servicios#modelado">Modelamiento BIM</Link>
-            <Link to="/servicios#diseno">Arquitectura</Link>
-            <Link to="/servicios#documentacion">Documentación + 4D/5D</Link>
+            <h3>{t('footer.columns.capabilities')}</h3>
+            <Link to="/servicios#coordinacion">{t('footer.links.bimCoordination')}</Link>
+            <Link to="/servicios#modelado">{t('footer.links.bimModeling')}</Link>
+            <Link to="/servicios#diseno">{t('footer.links.architecture')}</Link>
+            <Link to="/servicios#documentacion">{t('footer.links.docs45')}</Link>
           </nav>
 
           <div className="footer-column" aria-label="Canales de contacto">
-            <h3>Contacto</h3>
+            <h3>{t('footer.columns.contact')}</h3>
             <a href="mailto:contacto@mistudio.cl">contacto@mistudio.cl</a>
             <a href="tel:+56977666150">+56 9 7766 6150</a>
             <div className="footer-address" aria-label="Dirección corporativa">
-              <span className="footer-address-label">Dirección corporativa</span>
+              <span className="footer-address-label">{t('footer.address.label')}</span>
               <strong>Suecia 172</strong>
-              <span>Providencia, Santiago, Chile</span>
+              <span>{t('footer.address.city')}</span>
               <a
                 href="https://maps.google.com/?q=Suecia+172+Providencia+Santiago+Chile"
                 target="_blank"
                 rel="noreferrer"
               >
-                Ver ubicación
+                {t('footer.address.map')}
               </a>
             </div>
-            <Link to="/auth">Acceso equipo</Link>
+            <Link to="/auth">{t('footer.teamAccess')}</Link>
           </div>
         </div>
 
@@ -57,8 +59,8 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <span>© {currentYear} MI Studio. Todos los derechos reservados.</span>
-        <span>Política de calidad y gestión documental</span>
+        <span>© {currentYear} MI Studio. {t('footer.rights')}</span>
+        <span>{t('footer.policy')}</span>
       </div>
     </footer>
   )

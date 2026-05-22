@@ -1,7 +1,11 @@
 import { useEffect } from 'react'
-import { SERVICES_BIM_DETAILS } from '../lib/siteContent'
+import { getServicesBimDetails } from '../lib/siteContent'
+import { useLanguage } from '../lib/i18n.jsx'
 
 export default function ServicesPage() {
+  const { lang, t } = useLanguage()
+  const services = getServicesBimDetails(lang)
+
   useEffect(() => {
     const cards = document.querySelectorAll('.services-feature')
     if (!cards.length) return () => {}
@@ -36,9 +40,9 @@ export default function ServicesPage() {
 
   return (
     <main className="content-page services-page" aria-labelledby="services-page-title">
-      <nav className="services-jump" aria-label="Acceso directo a servicios">
+      <nav className="services-jump" aria-label={t('pages.services.jumpLabel')}>
         <ol>
-          {SERVICES_BIM_DETAILS.map((service, index) => (
+          {services.map((service, index) => (
             <li key={service.id}>
               <a
                 href={`#${service.id}`}
@@ -54,12 +58,12 @@ export default function ServicesPage() {
       </nav>
 
       <section className="content-page-head services-page-head">
-        <p className="eyebrow">Servicios BIM</p>
-        <h1 id="services-page-title">Nuestros servicios</h1>
+        <p className="eyebrow">{t('pages.services.eyebrow')}</p>
+        <h1 id="services-page-title">{t('pages.services.title')}</h1>
       </section>
 
-      <section className="services-stream" aria-label="Detalle de servicios BIM">
-        {SERVICES_BIM_DETAILS.map((service, index) => (
+      <section className="services-stream" aria-label={t('pages.services.jumpLabel')}>
+        {services.map((service, index) => (
           <article key={service.id} id={service.id} className="services-feature">
             <header className="services-feature-head">
               <span className="services-feature-index">{String(index + 1).padStart(2, '0')}</span>
@@ -69,7 +73,7 @@ export default function ServicesPage() {
             <div className="services-feature-body">
               <p className="services-feature-preview">{getServicePreview(service.description)}</p>
               <details className="services-feature-more">
-                <summary>Ver detalle</summary>
+                <summary>{t('pages.services.details')}</summary>
                 <p>{service.description}</p>
               </details>
             </div>

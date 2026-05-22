@@ -3,8 +3,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { userHasDashboardAccess } from '../lib/accessControl'
 import LoadingLoop from '../components/LoadingLoop'
+import { useLanguage } from '../lib/i18n.jsx'
 
 export default function AuthPage() {
+  const { t } = useLanguage()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -59,12 +61,12 @@ export default function AuthPage() {
 
     const cleanEmail = email.trim().toLowerCase()
     if (!cleanEmail) {
-      setStatus({ type: 'error', message: 'Ingresa un correo valido.' })
+      setStatus({ type: 'error', message: t('pages.auth.errors.validEmail') })
       return
     }
 
     if (!password) {
-      setStatus({ type: 'error', message: 'Ingresa tu contraseña.' })
+      setStatus({ type: 'error', message: t('pages.auth.errors.passwordRequired') })
       return
     }
 
@@ -74,7 +76,7 @@ export default function AuthPage() {
     })
 
     if (error) {
-      setStatus({ type: 'error', message: 'Correo o contraseña incorrectos.' })
+      setStatus({ type: 'error', message: t('pages.auth.errors.invalidCredentials') })
       return
     }
 
@@ -85,10 +87,10 @@ export default function AuthPage() {
     return (
       <main className="auth-page" aria-labelledby="auth-title">
         <section className="auth-card">
-          <p className="eyebrow">Acceso interno</p>
-          <h1 id="auth-title">Verificando sesion</h1>
+          <p className="eyebrow">{t('pages.auth.eyebrow')}</p>
+          <h1 id="auth-title">{t('pages.auth.checkingTitle')}</h1>
           <div className="section-loader-wrap">
-            <LoadingLoop compact label="Validando acceso" />
+            <LoadingLoop compact label={t('pages.auth.checkingLabel')} />
           </div>
         </section>
       </main>
@@ -98,34 +100,32 @@ export default function AuthPage() {
   return (
     <main className="auth-page" aria-labelledby="auth-title">
       <section className="auth-card">
-        <p className="eyebrow">Acceso interno</p>
-        <h1 id="auth-title">Dashboard de proyectos</h1>
-        <p className="auth-copy">
-          Las cuentas y contraseñas se administran desde Supabase Auth. Este acceso usa solo correo y contraseña.
-        </p>
+        <p className="eyebrow">{t('pages.auth.eyebrow')}</p>
+        <h1 id="auth-title">{t('pages.auth.title')}</h1>
+        <p className="auth-copy">{t('pages.auth.copy')}</p>
 
         <form className="auth-form" onSubmit={handleSubmit}>
-          <label htmlFor="email">Correo</label>
+          <label htmlFor="email">{t('pages.auth.email')}</label>
           <input
             id="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="nombre@mi-studio.cl"
+            placeholder={t('pages.auth.emailPlaceholder')}
             required
           />
 
-          <label htmlFor="password">Contraseña</label>
+          <label htmlFor="password">{t('pages.auth.password')}</label>
           <input
             id="password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Tu contraseña"
+            placeholder={t('pages.auth.passwordPlaceholder')}
             required
           />
 
-          <button className="button primary" type="submit">Entrar</button>
+          <button className="button primary" type="submit">{t('pages.auth.submit')}</button>
         </form>
 
         {status.message ? (
@@ -134,7 +134,7 @@ export default function AuthPage() {
           </p>
         ) : null}
 
-        <Link to="/" className="auth-back">Volver al sitio</Link>
+        <Link to="/" className="auth-back">{t('pages.auth.back')}</Link>
       </section>
     </main>
   )

@@ -1,4 +1,4 @@
-export const SERVICES_BIM_DETAILS = [
+const SERVICES_BIM_DETAILS_ES = [
   {
     id: 'gerenciamiento-proyecto',
     title: 'Gerenciamiento de Proyecto',
@@ -79,7 +79,88 @@ export const SERVICES_BIM_DETAILS = [
   },
 ]
 
-export const ABOUT_CONTENT = {
+const SERVICES_BIM_DETAILS_EN = [
+  {
+    id: 'gerenciamiento-proyecto',
+    title: 'Project Management',
+    description:
+      'We lead projects from a strategic and integral perspective, coordinating teams, timelines, costs, and goals through collaborative BIM methodology. Our management is data-driven, allowing us to anticipate deviations, maximize efficiency, and minimize risk.',
+  },
+  {
+    id: 'diseno',
+    title: 'Design',
+    description:
+      'We integrate architectural and MEP design with digital precision, ensuring consistency between project intent and execution. Decisions are made based on data and information, applying spatial, constructability, and future operations optimization criteria.',
+  },
+  {
+    id: 'modelado',
+    title: 'Modeling',
+    description:
+      'We build intelligent multidimensional models that centralize project information, facilitate interdisciplinary coordination, reduce rework, and enable informed decisions from early stages.',
+  },
+  {
+    id: 'coordinacion',
+    title: 'Coordination',
+    description:
+      'We structure collaboration across disciplines through common data environments (CDE) and BIM workflows. We detect clashes early and propose solutions, ensuring technical consistency and constructability.',
+  },
+  {
+    id: 'simulacion',
+    title: 'Simulation',
+    description:
+      'We apply predictive simulations to evaluate energy performance, operational flows, schedules, and construction sequences. This validates scenarios and optimizes decisions with real impact on cost, time, and sustainability.',
+  },
+  {
+    id: 'evaluacion',
+    title: 'Evaluation',
+    description:
+      'We develop analyses considering technical, economic, and regulatory factors. Our evaluation supports strategic decision-making through objective comparisons and a global project view for financial, construction, and schedule decisions.',
+  },
+  {
+    id: 'documentacion',
+    title: 'Documentation',
+    description:
+      'We produce technical documentation directly from BIM models as a single source of truth, ensuring precision, traceability, and constant updates. This reduces errors and accelerates review and approval workflows.',
+  },
+  {
+    id: 'programacion',
+    title: 'Planning',
+    description:
+      'We integrate schedule (4D) and cost (5D) planning with the digital model to visualize construction sequence, anticipate conflicts, and adjust logistics based on real scenarios.',
+  },
+  {
+    id: 'visualizacion',
+    title: 'Visualization',
+    description:
+      'We produce images, videos, and virtual walkthroughs that communicate the project effectively to technical and non-technical audiences. This strengthens understanding, decision-making, validation, and project sales.',
+  },
+  {
+    id: 'seguimiento-obra',
+    title: 'Construction Follow-up',
+    description:
+      'We manage and update BIM and CDE models on site for accurate interpretation of what was designed. We monitor physical progress and comparisons through BIM tools and data extraction, aligning execution with design intent.',
+  },
+  {
+    id: 'facility-management',
+    title: 'Facility Management',
+    description:
+      'We structure and prepare models and systems that enable efficient operation and maintenance of built assets. We turn BIM into a post-delivery management platform, extending value over time.',
+  },
+  {
+    id: 'implementacion',
+    title: 'Implementation',
+    description:
+      'We support companies and teams in their BIM transition, focusing on outcomes, efficiency, and autonomy. We design processes, standards, and structures adapted to each client context and objectives.',
+  },
+  {
+    id: 'administracion-cde',
+    title: 'CDE Management (Common Data Environment)',
+    description:
+      'We structure, configure, and manage centralized digital environments for secure, collaborative, and fluid project information flow. This ensures traceability, document control, and transparency.',
+  },
+]
+
+const ABOUT_CONTENT_ES = {
   mission:
     'Optimizar los procesos y mejorar la toma de decisiones, entregando soluciones integrales y personalizadas maximizando el valor para nuestros clientes.',
   vision:
@@ -113,4 +194,51 @@ export const ABOUT_CONTENT = {
   ],
   team:
     'Equipo colaborativo multidisciplinario enfocado en arquitectura, ingenieria, coordinacion BIM y gestion de informacion para proyectos de alta exigencia tecnica.',
+}
+
+const ABOUT_CONTENT_EN = {
+  mission:
+    'Optimize processes and improve decision-making by delivering integrated and tailored solutions that maximize value for our clients.',
+  vision:
+    'To be recognized as leaders in the construction industry, transforming how projects are developed through advanced technologies and information models that enable efficient and collaborative management.',
+  values: [
+    {
+      title: 'Excellence',
+      description:
+        'We seek excellence at every project stage, from design to execution, ensuring quality and client satisfaction.',
+    },
+    {
+      title: 'Innovation',
+      description:
+        'We are committed to adopting new technologies and methodologies that continuously improve our services.',
+    },
+    {
+      title: 'Collaboration',
+      description:
+        'We promote teamwork and open communication among all project stakeholders.',
+    },
+    {
+      title: 'Transparency',
+      description:
+        'We ensure clarity and accessibility of information, enabling better decisions and project management.',
+    },
+    {
+      title: 'Adaptability',
+      description:
+        'We are flexible and adapt to changing client needs and the specific challenges of each project and context.',
+    },
+  ],
+  team:
+    'A multidisciplinary collaborative team focused on architecture, engineering, BIM coordination, and information management for high-demand technical projects.',
+}
+
+export const SERVICES_BIM_DETAILS = SERVICES_BIM_DETAILS_ES
+export const ABOUT_CONTENT = ABOUT_CONTENT_ES
+
+export function getServicesBimDetails(lang = 'es') {
+  return lang === 'en' ? SERVICES_BIM_DETAILS_EN : SERVICES_BIM_DETAILS_ES
+}
+
+export function getAboutContent(lang = 'es') {
+  return lang === 'en' ? ABOUT_CONTENT_EN : ABOUT_CONTENT_ES
 }

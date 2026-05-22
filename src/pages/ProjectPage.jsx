@@ -3,8 +3,10 @@ import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { getProjectCategoryLabel } from '../lib/projectCategories'
 import LoadingLoop from '../components/LoadingLoop'
+import { useLanguage } from '../lib/i18n.jsx'
 
 export default function ProjectPage() {
+  const { lang, t } = useLanguage()
   const { slug } = useParams()
   const [project, setProject] = useState(null)
   const [galleryImages, setGalleryImages] = useState([])
@@ -26,7 +28,7 @@ export default function ProjectPage() {
       if (!isMounted) return
 
       if (error || !data) {
-        setErrorMessage('No encontramos este proyecto o aun no esta publicado.')
+        setErrorMessage(t('pages.projectDetail.notFound'))
         setProject(null)
         setIsLoading(false)
         return
@@ -50,16 +52,16 @@ export default function ProjectPage() {
     return () => {
       isMounted = false
     }
-  }, [slug])
+  }, [slug, t])
 
   if (isLoading) {
     return (
       <main className="project-page">
         <section className="project-shell">
-          <p className="eyebrow">Proyecto</p>
-          <h1>Cargando proyecto</h1>
+          <p className="eyebrow">{t('pages.projectDetail.eyebrow')}</p>
+          <h1>{t('pages.projectDetail.loadingTitle')}</h1>
           <div className="section-loader-wrap">
-            <LoadingLoop label="Cargando proyecto" />
+            <LoadingLoop label={t('pages.projectDetail.loadingLabel')} />
           </div>
         </section>
       </main>
@@ -70,11 +72,11 @@ export default function ProjectPage() {
     return (
       <main className="project-page">
         <section className="project-shell">
-          <p className="eyebrow">Proyecto</p>
-          <h1>No disponible</h1>
+          <p className="eyebrow">{t('pages.projectDetail.eyebrow')}</p>
+          <h1>{t('pages.projectDetail.unavailable')}</h1>
           <p className="project-copy">{errorMessage}</p>
           <Link className="button secondary" to="/#proyectos">
-            Volver al portafolio
+            {t('pages.projectDetail.backToPortfolio')}
           </Link>
         </section>
       </main>
@@ -100,56 +102,56 @@ export default function ProjectPage() {
         <div className="project-hero">
           {project.cover_url ? <img src={project.cover_url} alt={project.title} /> : null}
           <div className="project-hero-overlay">
-            <p className="eyebrow">{getProjectCategoryLabel(project.category)}</p>
+            <p className="eyebrow">{getProjectCategoryLabel(project.category, lang)}</p>
             <h1 id="project-title">{project.title}</h1>
           </div>
         </div>
 
         <div className="project-body">
           <article>
-            <h2>Descripcion</h2>
-            <p className="project-copy">{project.description || project.summary || 'Sin descripcion cargada.'}</p>
+            <h2>{t('pages.projectDetail.description')}</h2>
+            <p className="project-copy">{project.description || project.summary || t('pages.projectDetail.emptyDescription')}</p>
           </article>
 
-          <aside className="project-meta" aria-label="Datos del proyecto">
+          <aside className="project-meta" aria-label={t('pages.projectDetail.dataLabel')}>
             <div>
-              <span>Arquitecto</span>
-              <strong>{project.architect || 'Por definir'}</strong>
+              <span>{t('pages.projectDetail.architect')}</span>
+              <strong>{project.architect || t('pages.projectDetail.undefined')}</strong>
             </div>
             <div>
-              <span>Ingeniero calculista</span>
-              <strong>{project.structural_engineer || 'Por definir'}</strong>
+              <span>{t('pages.projectDetail.structuralEngineer')}</span>
+              <strong>{project.structural_engineer || t('pages.projectDetail.undefined')}</strong>
             </div>
             <div>
-              <span>Especialistas</span>
+              <span>{t('pages.projectDetail.specialists')}</span>
               <strong>
                 {Array.isArray(project.specialists) && project.specialists.length > 0
                   ? project.specialists.join(', ')
-                  : 'Por definir'}
+                  : t('pages.projectDetail.undefined')}
               </strong>
             </div>
             <div>
-              <span>M2</span>
-              <strong>{project.area_m2 || 'Por definir'}</strong>
+              <span>{t('pages.projectDetail.m2')}</span>
+              <strong>{project.area_m2 || t('pages.projectDetail.undefined')}</strong>
             </div>
             <div>
-              <span>Ano</span>
-              <strong>{project.year || 'Por definir'}</strong>
+              <span>{t('pages.projectDetail.year')}</span>
+              <strong>{project.year || t('pages.projectDetail.undefined')}</strong>
             </div>
           </aside>
         </div>
 
         {hasGallery ? (
-          <section className="project-slider" aria-label="Galeria del proyecto">
+          <section className="project-slider" aria-label={t('pages.projectDetail.galleryLabel')}>
             <div className="project-slider-stage">
-              <img src={galleryImages[activeSlide].image_url} alt={`Imagen ${activeSlide + 1} del proyecto ${project.title}`} />
+              <img src={galleryImages[activeSlide].image_url} alt={t('pages.projectDetail.imageAlt').replace('{index}', activeSlide + 1).replace('{title}', project.title)} />
               {galleryImages.length > 1 ? (
                 <>
                   <button type="button" className="project-slider-arrow is-prev" onClick={goToPreviousSlide}>
-                    Anterior
+                    {t('pages.projectDetail.prev')}
                   </button>
                   <button type="button" className="project-slider-arrow is-next" onClick={goToNextSlide}>
-                    Siguiente
+                    {t('pages.projectDetail.next')}
                   </button>
                 </>
               ) : null}
@@ -164,7 +166,7 @@ export default function ProjectPage() {
                     className={`project-thumb${index === activeSlide ? ' is-active' : ''}`}
                     onClick={() => setActiveSlide(index)}
                   >
-                    <img src={image.image_url} alt={`Miniatura ${index + 1}`} />
+                    <img src={image.image_url} alt={t('pages.projectDetail.thumbAlt').replace('{index}', index + 1)} />
                   </button>
                 ))}
               </div>
@@ -174,7 +176,7 @@ export default function ProjectPage() {
 
         <div className="project-actions">
           <Link className="button secondary" to="/#proyectos">
-            Volver al portafolio
+            {t('pages.projectDetail.backToPortfolio')}
           </Link>
         </div>
       </section>

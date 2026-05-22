@@ -1,26 +1,30 @@
+import { useLanguage } from '../lib/i18n.jsx'
+
 export default function Process() {
+  const { t } = useLanguage()
+
   return (
     <section className="process-section" id="proceso" aria-labelledby="process-title">
       <div className="section-head">
-        <p className="eyebrow">Proceso</p>
-        <h2 id="process-title">Una ruta de trabajo clara desde el diagnóstico hasta la obra</h2>
+        <p className="eyebrow">{t('process.eyebrow')}</p>
+        <h2 id="process-title">{t('process.title')}</h2>
       </div>
       <ol className="process-list">
         <li>
-          <strong>Diagnóstico</strong>
-          <p>Revisamos etapa, objetivos, especialidades, formatos y entregables necesarios.</p>
+          <strong>{t('process.items.0.title')}</strong>
+          <p>{t('process.items.0.copy')}</p>
         </li>
         <li>
-          <strong>Modelado y federación</strong>
-          <p>Construimos o integramos modelos para coordinar información crítica del proyecto.</p>
+          <strong>{t('process.items.1.title')}</strong>
+          <p>{t('process.items.1.copy')}</p>
         </li>
         <li>
-          <strong>Coordinación</strong>
-          <p>Detectamos interferencias, priorizamos conflictos y generamos reportes accionables.</p>
+          <strong>{t('process.items.2.title')}</strong>
+          <p>{t('process.items.2.copy')}</p>
         </li>
         <li>
-          <strong>Entrega y acompañamiento</strong>
-          <p>Documentamos decisiones y apoyamos la transición hacia licitación, obra o post-entrega.</p>
+          <strong>{t('process.items.3.title')}</strong>
+          <p>{t('process.items.3.copy')}</p>
         </li>
       </ol>
     </section>
