@@ -1,36 +1,62 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
+import { supabase } from '../lib/supabaseClient'
+import { FALLBACK_PROJECTS } from '../lib/fallbackProjects'
+import { getProjectCategoryLabel, PROJECT_FILTERS } from '../lib/projectCategories'
+import LoadingLoop from './LoadingLoop'
 
-const PROJECTS = [
-  { id: 1, category: 'bim_ejecutado',      title: 'Edificio Altavista',     catLabel: 'BIM - Ejecutado',        img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_1.png' },
-  { id: 2, category: 'gestion_proyecto',   title: 'Centro Comercial Sur',   catLabel: 'Gestión - En Proyecto',  img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_2.png' },
-  { id: 3, category: 'bim_proyecto',       title: 'Residencial Los Alpes',  catLabel: 'BIM - En Proyecto',      img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_3.png' },
-  { id: 4, category: 'bim_ejecutado',      title: 'Hospital Regional',      catLabel: 'BIM - Ejecutado',        img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_4.png' },
-  { id: 5, category: 'gestion_ejecutado',  title: 'Clínica Dentalica',      catLabel: 'Gestión - Ejecutado',    img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_5.png' },
-  { id: 6, category: 'bim_ejecutado',      title: 'Hotel Marriot',          catLabel: 'BIM - Ejecutado',        img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_6.png' },
-  { id: 7, category: 'bim_proyecto',       title: 'Casa Stachetti',         catLabel: 'BIM - En Proyecto',      img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_7.png' },
-  { id: 8, category: 'gestion_proyecto',   title: 'Torre Financiera',       catLabel: 'Gestión - En Proyecto',  img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_8.png' },
-  { id: 9, category: 'gestion_ejecutado',  title: 'Pabellón Deportivo',     catLabel: 'Gestión - Ejecutado',    img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_9.png' },
-  { id: 10, category: 'bim_proyecto',      title: 'Terminal de Buses',      catLabel: 'BIM - En Proyecto',      img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_10.png' },
-  { id: 11, category: 'gestion_proyecto',  title: 'Plaza Bicentenario',     catLabel: 'Gestión - En Proyecto',  img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_11.png' },
-  { id: 12, category: 'bim_ejecutado',     title: 'Campus Universitario',   catLabel: 'BIM - Ejecutado',        img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_12.png' },
-  { id: 13, category: 'gestion_ejecutado', title: 'Teatro de las Artes',    catLabel: 'Gestión - Ejecutado',    img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_13.png' },
-  { id: 14, category: 'bim_proyecto',      title: 'Museo Contemporáneo',    catLabel: 'BIM - En Proyecto',      img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_14.png' },
-  { id: 15, category: 'bim_ejecutado',     title: 'Estadio Nacional',       catLabel: 'BIM - Ejecutado',        img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_15.png' },
-  { id: 16, category: 'gestion_proyecto',  title: 'Edificio Gubernamental', catLabel: 'Gestión - En Proyecto',  img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_16.png' },
-  { id: 17, category: 'gestion_ejecutado', title: 'Aeropuerto del Sur',     catLabel: 'Gestión - Ejecutado',    img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_17.png' },
-  { id: 18, category: 'bim_proyecto',      title: 'Línea de Metro',         catLabel: 'BIM - En Proyecto',      img: 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_18.png' },
-]
-
-const FILTERS = [
-  { value: 'all',               label: 'Todos' },
-  { value: 'bim_proyecto',      label: 'BIM - En Proyecto' },
-  { value: 'bim_ejecutado',     label: 'BIM - Ejecutado' },
-  { value: 'gestion_proyecto',  label: 'Gestión - En Proyecto' },
-  { value: 'gestion_ejecutado', label: 'Gestión - Ejecutado' },
-]
+const FALLBACK_IMAGE = 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_1.png'
 
 export default function Portfolio() {
   const [active, setActive] = useState('all')
+  const [projects, setProjects] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    let isMounted = true
+
+    const loadProjects = async () => {
+      const { data, error } = await supabase
+        .from('projects')
+        .select('id, slug, title, category, cover_url, summary')
+        .eq('is_published', true)
+        .order('sort_order', { ascending: true })
+        .order('created_at', { ascending: false })
+
+      if (!isMounted) return
+
+      if (error) {
+        setProjects([])
+        setIsLoading(false)
+        return
+      }
+
+      setProjects(data || [])
+      setIsLoading(false)
+    }
+
+    loadProjects()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
+
+  const mergedProjects = [...FALLBACK_PROJECTS]
+  for (const dbProject of projects) {
+    const existingIndex = mergedProjects.findIndex((fallbackProject) => fallbackProject.slug === dbProject.slug)
+    if (existingIndex >= 0) {
+      mergedProjects[existingIndex] = { ...mergedProjects[existingIndex], ...dbProject }
+      continue
+    }
+    mergedProjects.push(dbProject)
+  }
+
+  const filteredProjects = mergedProjects.filter((project) => {
+    if (!project.is_published) return false
+    if (active === 'all') return true
+    return project.category === active
+  })
 
   return (
     <section
@@ -50,12 +76,13 @@ export default function Portfolio() {
       </div>
 
       <div className="portafolio_filtros" aria-label="Filtros de proyectos">
-        {FILTERS.map((f) => (
+        {PROJECT_FILTERS.map((f) => (
           <button
             key={f.value}
             className={`portafolio_filtro${active === f.value ? ' is_active' : ''}`}
             data-filter={f.value}
             onClick={() => setActive(f.value)}
+            type="button"
           >
             {f.label}
           </button>
@@ -63,25 +90,37 @@ export default function Portfolio() {
       </div>
 
       <div className="portafolio_grid">
-        {PROJECTS.map((p) => (
+        {isLoading ? (
+          <div className="portafolio_notice portafolio_notice-loader">
+            <LoadingLoop compact label="Cargando proyectos" />
+          </div>
+        ) : null}
+        {!isLoading && filteredProjects.length === 0 ? (
+          <p className="portafolio_notice">Todavia no hay proyectos publicados en esta categoria.</p>
+        ) : null}
+
+        {!isLoading && filteredProjects.map((p) => (
           <article
-            key={p.id}
-            className={`portafolio_card js_portafolio_card cat_${p.category}${active !== 'all' && active !== p.category ? ' is_hidden' : ''}`}
+            key={p.id || p.slug}
+            className={`portafolio_card js_portafolio_card cat_${p.category}`}
             data-category={p.category}
           >
             <div className="portafolio_card_inner">
               <div className="portafolio_card_front">
                 <img
                   className="portafolio_img"
-                  src={p.img}
+                  src={p.cover_url || FALLBACK_IMAGE}
                   alt={`Modelo BIM ${p.title}`}
                 />
                 <h3 className="portafolio_card_front_title">{p.title}</h3>
               </div>
               <div className="portafolio_card_back">
                 <h3 className="portafolio_card_title">{p.title}</h3>
-                <p className="portafolio_card_cat">{p.catLabel}</p>
-                <a className="portafolio_card_btn" href="#">Ver más</a>
+                <p className="portafolio_card_cat">{getProjectCategoryLabel(p.category)}</p>
+                <p className="portafolio_card_summary">{p.summary || 'Proyecto gestionado por MI-STUDIO.'}</p>
+                <Link className="portafolio_card_btn" to={`/proyectos/${p.slug}`}>
+                  Ver mas
+                </Link>
               </div>
             </div>
           </article>
