@@ -7,7 +7,7 @@ import LoadingLoop from './LoadingLoop'
 
 const FALLBACK_IMAGE = 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_1.png'
 
-export default function Portfolio() {
+export default function Portfolio({ minimal = false }) {
   const [active, setActive] = useState('all')
   const [projects, setProjects] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -60,20 +60,24 @@ export default function Portfolio() {
 
   return (
     <section
-      className="portfolio-section portafolio_mosaico"
+      className={`portfolio-section portafolio_mosaico${minimal ? ' is-minimal' : ''}`}
       id="proyectos"
       aria-labelledby="projects-title"
     >
-      <div className="portafolio_header">
-        <p className="eyebrow">Portafolio destacado</p>
-        <h2 className="portafolio_title" id="projects-title">
-          Proyectos coordinados con precisión técnica
-        </h2>
-        <p>
-          El catálogo mantiene la lógica visual del sitio original: mosaico de modelos, colores por
-          categoría y tarjetas con reverso informativo.
-        </p>
-      </div>
+      {!minimal ? (
+        <div className="portafolio_header">
+          <p className="eyebrow">Portafolio destacado</p>
+          <h2 className="portafolio_title" id="projects-title">
+            Proyectos coordinados con precisión técnica
+          </h2>
+          <p>
+            El catálogo mantiene la lógica visual del sitio original: mosaico de modelos, colores por
+            categoría y tarjetas con reverso informativo.
+          </p>
+        </div>
+      ) : (
+        <h2 className="sr-only" id="projects-title">Catalogo de proyectos</h2>
+      )}
 
       <div className="portafolio_filtros" aria-label="Filtros de proyectos">
         {PROJECT_FILTERS.map((f) => (

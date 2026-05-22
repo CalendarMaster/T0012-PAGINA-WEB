@@ -56,15 +56,15 @@ export default function Hero() {
       <div className="hero-overlay" />
       <div className="hero-inner">
         <div className="hero-offer">
-          <p className="eyebrow">ARQUITECTURA · BIM · GESTIÓN DE INFORMACIÓN</p>
+          <p className="eyebrow">ARQUITECTURA · GESTIÓN DE INFORMACIÓN · METODOLOGÍA BIM</p>
           <h1 id="hero-title">
-            El modelo no es el entregable.
+            Los datos son el entregable,
             <br />
-            <span>Los datos son el entregable.</span>
+            <span>no sólo el modelo.</span>
           </h1>
           <p className="hero-copy">
-            Tratamos cada proyecto como una base de datos: coordinamos, gestionamos y extraemos
-            información BIM de forma adaptable, precisa y accionable — antes de llegar a obra.
+            Tratamos cada proyecto como una base de datos: diseñamos, coordinamos, gestionamos y
+            extraemos información de forma adaptable, precisa y accionable — antes, durante y después de la obra.
           </p>
           <div className="hero-actions" aria-label="Canales de contacto">
             <a
@@ -78,20 +78,20 @@ export default function Hero() {
             <a className="button secondary" href="https://wa.me/56977666150">Habla por WhatsApp</a>
           </div>
         </div>
-        <div className="hero-distinctive" aria-label="Qué distingue el BIM de MI Studio">
-          <p className="distinctive-label">BIM real, no sólo modelos 3D</p>
+        <div className="hero-distinctive" aria-label="Qué distingue la gestión integral de MI Studio">
+          <p className="distinctive-label">Data management aplicado al ciclo completo del proyecto</p>
           <div className="distinctive-grid">
             <article>
               <span>01</span>
-              <p>Modelos federados por especialidad, preparados para coordinar y documentar.</p>
+              <p>Modelos federados e integrados, con metodología BIM como soporte operativo para diseñar, coordinar y decidir con trazabilidad real.</p>
             </article>
             <article>
               <span>02</span>
-              <p>Detección de interferencias con criterios técnicos, prioridades y reportes accionables.</p>
+              <p>Seguimiento de obra como objeto responsivo: contrastamos diseño y ejecución para ajustar decisiones con evidencia en terreno.</p>
             </article>
             <article>
               <span>03</span>
-              <p>Información trazable para diseño, licitación, construcción y toma de decisiones.</p>
+              <p>Continuidad post-obra: estructuramos información para operación, uso del edificio y mejora continua en el tiempo.</p>
             </article>
           </div>
         </div>

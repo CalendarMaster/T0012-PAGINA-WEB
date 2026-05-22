@@ -1,7 +1,11 @@
 import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
 export default function Header() {
   const [logoAnimKey, setLogoAnimKey] = useState(0)
+  const { pathname } = useLocation()
+
+  const sectionHref = (id) => (pathname === '/' ? `#${id}` : `/#${id}`)
 
   const replayLogoAnimation = () => {
     setLogoAnimKey((previous) => previous + 1)
@@ -9,9 +13,9 @@ export default function Header() {
 
   return (
     <header className="site-header">
-      <a
+      <Link
         className="brand"
-        href="#inicio"
+        to="/"
         aria-label="MI Studio inicio"
         onMouseEnter={replayLogoAnimation}
         onFocus={replayLogoAnimation}
@@ -41,22 +45,21 @@ export default function Header() {
           <span className="brand-modelo">modelo integrado</span>
           <strong className="brand-studio">STUDIO</strong>
         </span>
-      </a>
+      </Link>
       <nav className="main-nav" aria-label="Navegación principal">
-        <a href="#proyectos">Proyectos</a>
+        <Link to="/proyectos">Proyectos</Link>
+        <Link to="/servicios">Servicios BIM</Link>
         <details>
-          <summary>Servicios</summary>
+          <summary>Nosotros</summary>
           <div className="nav-dropdown">
-            <a href="#servicios">Coordinación BIM</a>
-            <a href="#servicios">Modelamiento BIM</a>
-            <a href="#servicios">Arquitectura</a>
-            <a href="#servicios">Documentación</a>
-            <a href="#servicios">4D / 5D</a>
+            <Link to="/nosotros#mision">Mision</Link>
+            <Link to="/nosotros#vision">Vision</Link>
+            <Link to="/nosotros#valores">Valores</Link>
+            <Link to="/nosotros#equipo">Equipo colaborativo</Link>
           </div>
         </details>
-        <a href="#proceso">Proceso</a>
-        <a href="#nosotros">Nosotros</a>
-        <a href="#contacto">Contacto</a>
+        <a href={sectionHref('proceso')}>Proceso</a>
+        <a href={sectionHref('contacto')}>Contacto</a>
       </nav>
       <a className="header-cta" href="https://wa.me/56977666150">Contactanos</a>
     </header>
