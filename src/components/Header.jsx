@@ -8,6 +8,7 @@ export default function Header() {
   const { lang, setLang, t } = useLanguage()
 
   const sectionHref = (id) => (pathname === '/' ? `#${id}` : `/#${id}`)
+  const footerHref = pathname === '/' ? '#contacto-footer' : '/#contacto-footer'
 
   const replayLogoAnimation = () => {
     setLogoAnimKey((previous) => previous + 1)
@@ -48,6 +49,7 @@ export default function Header() {
           <strong className="brand-studio">STUDIO</strong>
         </span>
       </Link>
+
       <nav className="main-nav" aria-label="Navegación principal">
         <Link to="/">{t('header.nav.home')}</Link>
         <Link to="/proyectos">{t('header.nav.projects')}</Link>
@@ -62,7 +64,7 @@ export default function Header() {
           </div>
         </details>
         <a href={sectionHref('proceso')}>{t('header.nav.process')}</a>
-        <a href={sectionHref('contacto')}>{t('header.nav.contact')}</a>
+        <a href={footerHref}>{t('header.nav.contact')}</a>
       </nav>
 
       <div className="header-tools" aria-label="Selector de idioma y contacto">
