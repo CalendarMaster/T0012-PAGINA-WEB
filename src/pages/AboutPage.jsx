@@ -1,47 +1,40 @@
 import { getAboutContent } from '../lib/siteContent'
-import { useLanguage } from '../lib/i18n.jsx'
 
 export default function AboutPage() {
-  const { lang, t } = useLanguage()
-  const aboutContent = getAboutContent(lang)
+  const aboutContent = getAboutContent('es')
 
   return (
-    <main className="content-page" aria-labelledby="about-page-title">
-      <section className="content-page-head">
-        <p className="eyebrow">{t('pages.about.eyebrow')}</p>
-        <h1 id="about-page-title">{t('pages.about.title')}</h1>
-        <p>{t('pages.about.intro')}</p>
+    <main className="content-page about-page about-page-stack" aria-label="Misión, visión y valores">
+      <section id="mision" className="about-stack-section about-stack-section-mission" aria-labelledby="about-mision-title">
+        <div className="about-stack-inner">
+          <p className="eyebrow">Misión</p>
+          <h1 id="about-mision-title">Misión</h1>
+          <blockquote>{aboutContent.mission}</blockquote>
+        </div>
       </section>
 
-      <div className="content-shell">
-        <section className="content-main content-main-about" aria-label="Contenido institucional">
-          <article id="mision" className="about-block">
-            <h2>{t('pages.about.mission')}</h2>
-            <blockquote>{aboutContent.mission}</blockquote>
-          </article>
+      <section id="vision" className="about-stack-section about-stack-section-vision" aria-labelledby="about-vision-title">
+        <div className="about-stack-inner">
+          <p className="eyebrow">Visión</p>
+          <h2 id="about-vision-title">Visión</h2>
+          <blockquote>{aboutContent.vision}</blockquote>
+        </div>
+      </section>
 
-          <article id="vision" className="about-block">
-            <h2>{t('pages.about.vision')}</h2>
-            <blockquote>{aboutContent.vision}</blockquote>
-          </article>
-
-          <article id="valores" className="about-block">
-            <h2>{t('pages.about.values')}</h2>
-            <ul className="about-values">
-              {aboutContent.values.map((value) => (
-                <li key={value.title}>
-                  <strong>{value.title}:</strong> {value.description}
-                </li>
-              ))}
-            </ul>
-          </article>
-
-          <article id="equipo" className="about-block">
-            <h2>{t('pages.about.team')}</h2>
-            <p>{aboutContent.team}</p>
-          </article>
-        </section>
-      </div>
+      <section id="valores" className="about-stack-section about-stack-section-values" aria-labelledby="about-valores-title">
+        <div className="about-stack-inner">
+          <p className="eyebrow">Valores</p>
+          <h2 id="about-valores-title">Valores</h2>
+          <ul className="about-values-stack">
+            {aboutContent.values.map((value) => (
+              <li key={value.title}>
+                <h3>{value.title}</h3>
+                <p>{value.description}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
     </main>
   )
 }

@@ -11,13 +11,21 @@ create table if not exists public.projects (
   summary text,
   description text,
   cover_url text,
+  leader_image_url text,
   sort_order integer not null default 0,
   is_published boolean not null default true,
   created_by uuid references auth.users(id),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   constraint projects_category_check check (
-    category in ('bim_proyecto', 'bim_ejecutado', 'gestion_proyecto', 'gestion_ejecutado')
+    category in (
+      'arquitectura_proyecto',
+      'arquitectura_ejecutado',
+      'bim_proyecto',
+      'bim_ejecutado',
+      'gestion_proyecto',
+      'gestion_ejecutado'
+    )
   )
 );
 

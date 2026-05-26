@@ -5,11 +5,26 @@ import { userHasDashboardAccess } from '../lib/accessControl'
 import LoadingLoop from '../components/LoadingLoop'
 import { useLanguage } from '../lib/i18n.jsx'
 
+const ACCESS_TIMEOUT_MS = 12000
+
+function withTimeout(promise, ms = ACCESS_TIMEOUT_MS) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      const timeoutId = setTimeout(() => {
+        clearTimeout(timeoutId)
+        reject(new Error('timeout'))
+      }, ms)
+    }),
+  ])
+}
+
 export default function AuthPage() {
   const { t } = useLanguage()
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [isCheckingSession, setIsCheckingSession] = useState(true)
   const [status, setStatus] = useState({ type: 'idle', message: '' })
 
@@ -17,15 +32,24 @@ export default function AuthPage() {
     let isMounted = true
 
     const checkExistingSession = async () => {
-      const { data, error } = await supabase.auth.getSession()
-      const activeEmail = data?.session?.user?.email
+      try {
+        const { data, error } = await withTimeout(supabase.auth.getSession())
+        const activeEmail = data?.session?.user?.email
 
-      if (!error && activeEmail) {
-        const allowed = await userHasDashboardAccess(activeEmail)
-        if (allowed) {
-          navigate('/dashboard', { replace: true })
-          return
+        if (!error && activeEmail) {
+          const allowed = await withTimeout(userHasDashboardAccess(activeEmail))
+          if (allowed) {
+            navigate('/dashboard', { replace: true })
+            return
+          }
+
+          await supabase.auth.signOut()
+          if (isMounted) {
+            setStatus({ type: 'error', message: 'Esta cuenta no tiene acceso al dashboard.' })
+          }
         }
+      } catch (sessionError) {
+        // Si hay timeout o error de red, dejamos visible el formulario para reintentar.
       }
 
       if (isMounted) {
@@ -43,9 +67,15 @@ export default function AuthPage() {
       const activeEmail = session?.user?.email
       if (!activeEmail) return
 
-      const allowed = await userHasDashboardAccess(activeEmail)
+      const allowed = await withTimeout(userHasDashboardAccess(activeEmail))
       if (allowed) {
         navigate('/dashboard', { replace: true })
+        return
+      }
+
+      await supabase.auth.signOut()
+      if (isMounted) {
+        setStatus({ type: 'error', message: 'Esta cuenta no tiene acceso al dashboard.' })
       }
     })
 
@@ -70,17 +100,37 @@ export default function AuthPage() {
       return
     }
 
-    const { error } = await supabase.auth.signInWithPassword({
+    setIsSubmitting(true)
+
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: cleanEmail,
       password,
     })
 
     if (error) {
       setStatus({ type: 'error', message: t('pages.auth.errors.invalidCredentials') })
+      setIsSubmitting(false)
       return
     }
 
-    // onAuthStateChange se encargará de redirigir al dashboard.
+    try {
+      const activeEmail = data?.user?.email || cleanEmail
+      const allowed = await withTimeout(userHasDashboardAccess(activeEmail))
+
+      if (!allowed) {
+        await supabase.auth.signOut()
+        setStatus({ type: 'error', message: 'Esta cuenta no tiene acceso al dashboard.' })
+        setIsSubmitting(false)
+        return
+      }
+
+      setIsSubmitting(false)
+      navigate('/dashboard', { replace: true })
+    } catch (submitError) {
+      await supabase.auth.signOut()
+      setStatus({ type: 'error', message: 'No pudimos validar tu acceso. Intenta nuevamente.' })
+      setIsSubmitting(false)
+    }
   }
 
   if (isCheckingSession) {
@@ -125,7 +175,9 @@ export default function AuthPage() {
             required
           />
 
-          <button className="button primary" type="submit">{t('pages.auth.submit')}</button>
+          <button className="button primary" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Validando...' : t('pages.auth.submit')}
+          </button>
         </form>
 
         {status.message ? (

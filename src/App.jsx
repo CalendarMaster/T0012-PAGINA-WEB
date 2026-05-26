@@ -5,7 +5,7 @@ import Hero from './components/Hero'
 import Portfolio from './components/Portfolio'
 import Services from './components/Services'
 import Process from './components/Process'
-import Trust from './components/Trust'
+import Members from './components/Members'
 import FAQ from './components/FAQ'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
@@ -68,8 +68,8 @@ function HomePage() {
         <Portfolio />
         <Services />
         <Process />
-        <Trust />
         <FAQ />
+        <Members />
         <Contact />
       </main>
     </PublicLayout>

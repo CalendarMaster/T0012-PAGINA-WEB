@@ -6,11 +6,18 @@ create table if not exists public.project_images (
   id uuid primary key default gen_random_uuid(),
   project_id uuid not null references public.projects(id) on delete cascade,
   image_url text not null,
+  is_leader boolean not null default false,
   sort_order integer not null default 0,
   created_at timestamptz not null default now()
 );
 
+alter table public.project_images
+  add column if not exists is_leader boolean not null default false;
+
 create index if not exists project_images_project_id_idx on public.project_images(project_id);
+create unique index if not exists project_images_one_leader_per_project_idx
+  on public.project_images(project_id)
+  where is_leader = true;
 
 alter table public.project_images enable row level security;
 

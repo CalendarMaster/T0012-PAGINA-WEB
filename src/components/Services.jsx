@@ -9,6 +9,7 @@ export default function Services() {
         <p className="eyebrow">{t('servicesHome.eyebrow')}</p>
         <h2 id="services-title">{t('servicesHome.title')}</h2>
       </div>
+
       <div className="service-grid">
         <article>
           <span>01</span>

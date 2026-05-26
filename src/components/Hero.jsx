@@ -68,9 +68,7 @@ export default function Hero() {
           <div className="hero-actions" aria-label="Canales de contacto">
             <a
               className="button primary"
-              href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Reunion%20MI%20Studio&details=Hola%2C%20me%20gustaria%20agendar%20una%20reunion%20para%20revisar%20mi%20proyecto.&add=jsimpson%40mi-studio.cl"
-              target="_blank"
-              rel="noreferrer"
+              href="mailto:contacto@mistudio.cl?subject=Solicitud%20de%20reuni%C3%B3n%20-%20MI%20Studio&body=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20reuni%C3%B3n%20para%20revisar%20mi%20proyecto."
             >
               {t('hero.ctaMeeting')}
             </a>

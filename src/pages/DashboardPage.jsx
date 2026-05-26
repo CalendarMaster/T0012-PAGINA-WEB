@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { userHasDashboardAccess } from '../lib/accessControl'
-import { getProjectCategoryLabel, PROJECT_CATEGORY_OPTIONS } from '../lib/projectCategories'
+import { getProjectCategoryLabel, normalizeProjectCategory, PROJECT_CATEGORY_OPTIONS } from '../lib/projectCategories'
 import LoadingLoop from '../components/LoadingLoop'
 
 const EMPTY_FORM = {
@@ -18,9 +18,12 @@ const EMPTY_FORM = {
   summary: '',
   description: '',
   cover_url: '',
+  leader_image_url: '',
   sort_order: 0,
   is_published: true,
 }
+
+const ACCESS_TIMEOUT_MS = 12000
 
 function slugify(value) {
   return value
@@ -30,6 +33,18 @@ function slugify(value) {
     .replace(/[\u0300-\u036f]/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/(^-|-$)+/g, '')
+}
+
+function withTimeout(promise, ms = ACCESS_TIMEOUT_MS) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      const timeoutId = setTimeout(() => {
+        clearTimeout(timeoutId)
+        reject(new Error('timeout'))
+      }, ms)
+    }),
+  ])
 }
 
 export default function DashboardPage() {
@@ -42,6 +57,8 @@ export default function DashboardPage() {
   const [form, setForm] = useState(EMPTY_FORM)
   const [coverFile, setCoverFile] = useState(null)
   const [coverPreviewUrl, setCoverPreviewUrl] = useState('')
+  const [leaderFile, setLeaderFile] = useState(null)
+  const [leaderPreviewUrl, setLeaderPreviewUrl] = useState('')
   const [galleryFiles, setGalleryFiles] = useState([])
   const [galleryImages, setGalleryImages] = useState([])
   const [status, setStatus] = useState({ type: 'idle', message: '' })
@@ -49,7 +66,7 @@ export default function DashboardPage() {
   const loadProjects = async () => {
     const { data, error } = await supabase
       .from('projects')
-      .select('id, title, slug, category, year, is_published, sort_order, updated_at, architect, structural_engineer, specialists, area_m2, summary, description, cover_url')
+      .select('*')
       .order('sort_order', { ascending: true })
       .order('created_at', { ascending: false })
 
@@ -77,32 +94,55 @@ export default function DashboardPage() {
   }, [coverFile])
 
   useEffect(() => {
+    if (!leaderFile) {
+      setLeaderPreviewUrl('')
+      return
+    }
+
+    const previewUrl = URL.createObjectURL(leaderFile)
+    setLeaderPreviewUrl(previewUrl)
+
+    return () => {
+      URL.revokeObjectURL(previewUrl)
+    }
+  }, [leaderFile])
+
+  useEffect(() => {
     let isMounted = true
 
     const checkAccess = async () => {
-      const { data, error } = await supabase.auth.getUser()
-      const user = data?.user
+      try {
+        const { data, error } = await withTimeout(supabase.auth.getUser())
+        const user = data?.user
 
-      if (error || !user?.email) {
-        navigate('/auth', { replace: true })
-        return
-      }
+        if (error || !user?.email) {
+          if (isMounted) {
+            setState({ loading: false, allowed: false, email: '', userId: null })
+          }
+          navigate('/auth', { replace: true })
+          return
+        }
 
-      const allowed = await userHasDashboardAccess(user.email)
+        const allowed = await withTimeout(userHasDashboardAccess(user.email))
 
-      if (!allowed) {
-        await supabase.auth.signOut()
-      }
+        if (!allowed) {
+          await supabase.auth.signOut()
+          if (isMounted) {
+            setState({ loading: false, allowed: false, email: user.email, userId: user.id })
+          }
+          navigate('/auth', { replace: true })
+          return
+        }
 
-      if (allowed) {
-        await loadProjects()
-      }
+        await withTimeout(loadProjects())
 
-      if (isMounted) {
-        setState({ loading: false, allowed, email: user.email, userId: user.id })
-      }
-
-      if (!allowed) {
+        if (isMounted) {
+          setState({ loading: false, allowed: true, email: user.email, userId: user.id })
+        }
+      } catch (accessError) {
+        if (isMounted) {
+          setState({ loading: false, allowed: false, email: '', userId: null })
+        }
         navigate('/auth', { replace: true })
       }
     }
@@ -193,6 +233,94 @@ export default function DashboardPage() {
     setIsLoadingGallery(false)
   }
 
+  const removeGalleryImage = async (imageId) => {
+    if (!form.id || !imageId) return
+
+    const { error } = await supabase
+      .from('project_images')
+      .delete()
+      .eq('id', imageId)
+      .eq('project_id', form.id)
+
+    if (error) {
+      setStatus({ type: 'error', message: 'No se pudo eliminar la imagen de la galeria.' })
+      return
+    }
+
+    await loadProjectGallery(form.id)
+    setStatus({ type: 'success', message: 'Imagen eliminada correctamente.' })
+  }
+
+  const moveGalleryImage = async (imageId, direction) => {
+    if (!form.id || !imageId) return
+
+    const currentIndex = galleryImages.findIndex((image) => image.id === imageId)
+    if (currentIndex < 0) return
+
+    const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1
+    if (targetIndex < 0 || targetIndex >= galleryImages.length) return
+
+    const reordered = [...galleryImages]
+    const [movedImage] = reordered.splice(currentIndex, 1)
+    reordered.splice(targetIndex, 0, movedImage)
+
+    const updates = reordered.map((image, index) =>
+      supabase
+        .from('project_images')
+        .update({ sort_order: index + 1 })
+        .eq('id', image.id)
+        .eq('project_id', form.id),
+    )
+
+    const results = await Promise.all(updates)
+    const failedUpdate = results.find((result) => result.error)
+
+    if (failedUpdate?.error) {
+      setStatus({ type: 'error', message: 'No se pudo actualizar el orden de la galeria.' })
+      await loadProjectGallery(form.id)
+      return
+    }
+
+    setGalleryImages(
+      reordered.map((image, index) => ({
+        ...image,
+        sort_order: index + 1,
+      })),
+    )
+    setStatus({ type: 'success', message: 'Orden de galeria actualizado.' })
+  }
+
+  const uploadSingleImageFile = async (file, slug, folderPrefix) => {
+    if (!file) return null
+
+    const extensionFromName = file.name.includes('.')
+      ? file.name.split('.').pop().toLowerCase()
+      : 'jpg'
+    const safeFileSlug = slugify(file.name.replace(/\.[^/.]+$/, '')) || folderPrefix
+    const storagePath = `${state.userId}/${slug}/${folderPrefix}-${Date.now()}-${safeFileSlug}.${extensionFromName}`
+
+    const { error: uploadError } = await supabase
+      .storage
+      .from('project-covers')
+      .upload(storagePath, file, { upsert: true })
+
+    if (uploadError) {
+        throw new Error(`No se pudo subir la imagen ${file.name} al bucket project-covers: ${uploadError.message}`)
+    }
+
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from('project-covers').getPublicUrl(storagePath)
+
+    return publicUrl || null
+  }
+
+  const uploadCoverFile = async (slug) => {
+    if (!coverFile) return form.cover_url || null
+
+    return uploadSingleImageFile(coverFile, slug, 'portada')
+  }
+
   const uploadGalleryFiles = async (projectId, slug) => {
     if (!projectId || galleryFiles.length === 0) return
 
@@ -212,7 +340,7 @@ export default function DashboardPage() {
         .upload(storagePath, file, { upsert: true })
 
       if (uploadError) {
-        throw new Error('No se pudo subir una imagen al bucket project-gallery.')
+        throw new Error(`No se pudo subir la imagen ${file.name} al bucket project-gallery: ${uploadError.message}`)
       }
 
       const {
@@ -228,45 +356,9 @@ export default function DashboardPage() {
         })
 
       if (insertError) {
-        throw new Error('No se pudo registrar una imagen de la galeria en la base de datos.')
+        throw new Error(`No se pudo registrar la imagen ${file.name} en la galeria: ${insertError.message}`)
       }
     }
-  }
-
-  const removeGalleryImage = async (imageId) => {
-    const { error } = await supabase.from('project_images').delete().eq('id', imageId)
-    if (error) {
-      setStatus({ type: 'error', message: 'No se pudo eliminar la imagen de la galeria.' })
-      return
-    }
-
-    setGalleryImages((previous) => previous.filter((image) => image.id !== imageId))
-    setStatus({ type: 'success', message: 'Imagen eliminada de la galeria.' })
-  }
-
-  const uploadCoverFile = async (slug) => {
-    if (!coverFile) return form.cover_url || null
-
-    const extensionFromName = coverFile.name.includes('.')
-      ? coverFile.name.split('.').pop().toLowerCase()
-      : 'jpg'
-    const safeFileSlug = slugify(coverFile.name.replace(/\.[^/.]+$/, '')) || 'portada'
-    const storagePath = `${state.userId}/${slug}/${Date.now()}-${safeFileSlug}.${extensionFromName}`
-
-    const { error: uploadError } = await supabase
-      .storage
-      .from('project-covers')
-      .upload(storagePath, coverFile, { upsert: true })
-
-    if (uploadError) {
-      throw new Error('No se pudo subir la portada al bucket project-covers.')
-    }
-
-    const {
-      data: { publicUrl },
-    } = supabase.storage.from('project-covers').getPublicUrl(storagePath)
-
-    return publicUrl || null
   }
 
   const handleSave = async (event) => {
@@ -291,6 +383,7 @@ export default function DashboardPage() {
 
     try {
       const coverUrl = await uploadCoverFile(normalizedSlug)
+      const leaderImageUrl = await uploadSingleImageFile(leaderFile, normalizedSlug, 'lider')
       const sanitizedSpecialists = form.specialists
         .map((item) => item.trim())
         .filter(Boolean)
@@ -298,7 +391,7 @@ export default function DashboardPage() {
       const payload = {
         title: form.title.trim(),
         slug: normalizedSlug,
-        category: form.category,
+        category: normalizeProjectCategory(form.category),
         architect: form.architect.trim() || null,
         structural_engineer: form.structural_engineer.trim() || null,
         specialists: sanitizedSpecialists,
@@ -307,6 +400,7 @@ export default function DashboardPage() {
         summary: form.summary.trim() || null,
         description: form.description.trim() || null,
         cover_url: coverUrl,
+        leader_image_url: leaderImageUrl || form.leader_image_url || null,
         sort_order: Number.parseInt(form.sort_order, 10) || 0,
         is_published: form.is_published,
       }
@@ -333,10 +427,10 @@ export default function DashboardPage() {
       if (!error) {
         await uploadGalleryFiles(savedProjectId, normalizedSlug)
       }
-    } catch {
+    } catch (uploadError) {
       setStatus({
         type: 'error',
-        message: 'Fallo la subida de imagen. Revisa los buckets project-covers y project-gallery.',
+        message: uploadError?.message || 'Fallo la subida de imagen. Revisa los buckets project-covers y project-gallery.',
       })
       setIsSaving(false)
       return
@@ -344,11 +438,12 @@ export default function DashboardPage() {
 
     if (error) {
       const duplicateSlug = error.message?.toLowerCase().includes('slug')
+      const detailedMessage = [error.message, error.details, error.hint].filter(Boolean).join(' | ')
       setStatus({
         type: 'error',
         message: duplicateSlug
           ? 'Ese slug ya existe. Ajusta el titulo o el slug manual.'
-          : 'No se pudo guardar el proyecto.',
+          : detailedMessage || 'No se pudo guardar el proyecto.',
       })
       setIsSaving(false)
       return
@@ -357,6 +452,7 @@ export default function DashboardPage() {
     await loadProjects()
     setForm(EMPTY_FORM)
     setCoverFile(null)
+    setLeaderFile(null)
     setGalleryFiles([])
     setGalleryImages([])
     setView('home')
@@ -369,7 +465,7 @@ export default function DashboardPage() {
       id: project.id,
       title: project.title || '',
       slug: project.slug || '',
-      category: project.category || 'bim_proyecto',
+      category: normalizeProjectCategory(project.category) || 'bim_proyecto',
       architect: project.architect || '',
       structural_engineer: project.structural_engineer || '',
       specialists: Array.isArray(project.specialists) && project.specialists.length > 0 ? project.specialists : [''],
@@ -378,10 +474,12 @@ export default function DashboardPage() {
       summary: project.summary || '',
       description: project.description || '',
       cover_url: project.cover_url || '',
+      leader_image_url: project.leader_image_url || '',
       sort_order: project.sort_order || 0,
       is_published: Boolean(project.is_published),
     })
     setCoverFile(null)
+    setLeaderFile(null)
     setGalleryFiles([])
     setView('form')
     await loadProjectGallery(project.id)
@@ -390,6 +488,7 @@ export default function DashboardPage() {
   const handleReset = () => {
     setForm(EMPTY_FORM)
     setCoverFile(null)
+    setLeaderFile(null)
     setGalleryFiles([])
     setGalleryImages([])
     setStatus({ type: 'idle', message: '' })
@@ -500,7 +599,7 @@ export default function DashboardPage() {
             ) : (
               <div className="portafolio_grid dashboard-portafolio-grid">
                 {publishedProjects.map((project) => (
-                  <article key={project.id} className={`portafolio_card dashboard-portafolio-card cat_${project.category}`}>
+                  <article key={project.id} className={`portafolio_card dashboard-portafolio-card cat_${normalizeProjectCategory(project.category)}`}>
                     <div className="portafolio_card_inner">
                       <div className="portafolio_card_front">
                         <img
@@ -614,6 +713,24 @@ export default function DashboardPage() {
                 )}
 
                 {coverFile ? <p className="dashboard-file-note">Archivo seleccionado: {coverFile.name}</p> : null}
+
+                <label htmlFor="leader_file">Imagen lider</label>
+                <input
+                  id="leader_file"
+                  type="file"
+                  accept="image/*"
+                  onChange={(event) => setLeaderFile(event.target.files?.[0] || null)}
+                />
+
+                {leaderPreviewUrl ? (
+                  <img className="dashboard-cover-preview" src={leaderPreviewUrl} alt="Imagen lider seleccionada" />
+                ) : form.leader_image_url ? (
+                  <img className="dashboard-cover-preview" src={form.leader_image_url} alt="Imagen lider actual" />
+                ) : (
+                  <div className="dashboard-cover-placeholder">Sin imagen lider cargada</div>
+                )}
+
+                {leaderFile ? <p className="dashboard-file-note">Archivo seleccionado: {leaderFile.name}</p> : null}
               </aside>
             </div>
 
@@ -695,12 +812,31 @@ export default function DashboardPage() {
 
               {!isLoadingGallery && galleryImages.length > 0 ? (
                 <div className="dashboard-gallery-grid">
-                  {galleryImages.map((image) => (
+                  {galleryImages.map((image, index) => (
                     <article key={image.id} className="dashboard-gallery-card">
                       <img src={image.image_url} alt="Imagen de galeria" />
-                      <button type="button" className="button secondary" onClick={() => removeGalleryImage(image.id)}>
-                        Eliminar
-                      </button>
+                      <p className="dashboard-gallery-order">Orden: {index + 1}</p>
+                      <div className="dashboard-gallery-actions">
+                        <button
+                          type="button"
+                          className="button secondary"
+                          onClick={() => moveGalleryImage(image.id, 'up')}
+                          disabled={index === 0}
+                        >
+                          Subir
+                        </button>
+                        <button
+                          type="button"
+                          className="button secondary"
+                          onClick={() => moveGalleryImage(image.id, 'down')}
+                          disabled={index === galleryImages.length - 1}
+                        >
+                          Bajar
+                        </button>
+                        <button type="button" className="button secondary" onClick={() => removeGalleryImage(image.id)}>
+                          Eliminar
+                        </button>
+                      </div>
                     </article>
                   ))}
                 </div>

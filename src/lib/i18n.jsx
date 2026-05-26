@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+﻿import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 
 const LANGUAGE_STORAGE_KEY = 'mi-site-lang'
 
@@ -14,12 +14,12 @@ const TRANSLATIONS = {
         contact: 'Contacto',
       },
       aboutMenu: {
-        mission: 'Mision',
-        vision: 'Vision',
+        mission: 'Misión',
+        vision: 'Visión',
         values: 'Valores',
         team: 'Equipo colaborativo',
       },
-      cta: 'Contactanos',
+      cta: 'Contáctanos',
     },
     footer: {
       cta: 'Iniciar proyecto',
@@ -32,96 +32,96 @@ const TRANSLATIONS = {
         process: 'Proceso',
         about: 'Nosotros',
         contact: 'Contacto',
-        bimCoordination: 'Coordinacion BIM',
+        bimCoordination: 'Coordinación BIM',
         bimModeling: 'Modelamiento BIM',
         architecture: 'Arquitectura',
-        docs45: 'Documentacion + 4D/5D',
+        docs45: 'Documentación + 4D/5D',
       },
       address: {
-        label: 'Direccion corporativa',
+        label: 'Dirección corporativa',
         city: 'Providencia, Santiago, Chile',
-        map: 'Ver ubicacion',
+        map: 'Ver ubicación',
       },
       teamAccess: 'Acceso equipo',
       rights: 'Todos los derechos reservados.',
-      policy: 'Politica de calidad y gestion documental',
+      policy: 'Política de calidad y gestión documental',
     },
     hero: {
-      eyebrow: 'ARQUITECTURA · GESTION DE INFORMACION · METODOLOGIA BIM',
+      eyebrow: 'ARQUITECTURA · GESTIÓN DE INFORMACIÓN · METODOLOGÍA BIM',
       titleLine1: 'Los datos son el entregable,',
       titleLine2: 'no solo el modelo.',
       copy:
-        'Tratamos cada proyecto como una base de datos: diseniamos, coordinamos, gestionamos y extraemos informacion de forma adaptable, precisa y accionable — antes, durante y despues de la obra.',
-      ctaMeeting: 'Agenda una reunion',
+        'Tratamos cada proyecto como una base de datos: diseñamos, coordinamos, gestionamos y extraemos información de forma adaptable, precisa y accionable — antes, durante y después de la obra.',
+      ctaMeeting: 'Agenda una reunión',
       ctaWhatsapp: 'Habla por WhatsApp',
       distinctiveLabel: 'Data management aplicado al ciclo completo del proyecto',
       points: [
-        'Modelos federados e integrados, con metodologia BIM como soporte operativo para diseñar, coordinar y decidir con trazabilidad real.',
-        'Seguimiento de obra como objeto responsivo: contrastamos diseño y ejecucion para ajustar decisiones con evidencia en terreno.',
-        'Continuidad post-obra: estructuramos informacion para operacion, uso del edificio y mejora continua en el tiempo.',
+        'Modelos federados e integrados, con metodología BIM como soporte operativo para diseñar, coordinar y decidir con trazabilidad real.',
+        'Seguimiento de obra como objeto responsivo: contrastamos diseño y ejecución para ajustar decisiones con evidencia en terreno.',
+        'Continuidad post-obra: estructuramos información para operación, uso del edificio y mejora continua en el tiempo.',
       ],
     },
     portfolio: {
-      eyebrow: 'Portafolio destacado',
-      title: 'Proyectos coordinados con precision tecnica',
-      copy:
-        'El catalogo mantiene la logica visual del sitio original: mosaico de modelos, colores por categoria y tarjetas con reverso informativo.',
+      eyebrow: 'Proyectos',
+      title: 'Portafolio de nuestra visión',
+      copy: '',
       loading: 'Cargando proyectos',
-      empty: 'Todavia no hay proyectos publicados en esta categoria.',
+      empty: 'Todavía no hay proyectos publicados en esta categoría.',
       fallbackSummary: 'Proyecto gestionado por MI-STUDIO.',
-      seeMore: 'Ver mas',
-      catalogTitle: 'Catalogo de proyectos',
+      seeMore: 'Ver más',
+      catalogTitle: 'Catálogo de proyectos',
     },
     servicesHome: {
       eyebrow: 'Servicios BIM integrales',
-      title: 'Menos interferencias, mas control y mejor informacion de obra',
+      title: 'Menos interferencias, más control y mejor información de obra',
+      membersLabel: 'Somos miembros de',
       items: [
         {
-          title: 'Coordinacion BIM',
+          title: 'Coordinación BIM',
           copy: 'Integramos arquitectura, estructura e instalaciones para detectar interferencias antes de obra y reducir retrabajos.',
         },
         {
           title: 'Modelamiento BIM',
-          copy: 'Desarrollamos modelos por especialidad con informacion util para diseno, coordinacion, cubicaciones y documentacion.',
+          copy: 'Desarrollamos modelos por especialidad con información útil para diseño, coordinación, cubicaciones y documentación.',
         },
         {
           title: 'Arquitectura',
-          copy: 'Diseniamos proyectos funcionales y construibles, alineados con terreno, presupuesto, normativa y metodologia BIM.',
+          copy: 'Diseñamos proyectos funcionales y construibles, alineados con terreno, presupuesto, normativa y metodología BIM.',
         },
         {
-          title: 'Documentacion tecnica',
-          copy: 'Generamos planos, entregables y reportes consistentes para aprobacion, licitacion, construccion y seguimiento.',
+          title: 'Documentación técnica',
+          copy: 'Generamos planos, entregables y reportes consistentes para aprobación, licitación, construcción y seguimiento.',
         },
       ],
     },
     process: {
       eyebrow: 'Proceso',
-      title: 'Una ruta de trabajo clara desde el diagnostico hasta la obra',
+      title: 'Una ruta de trabajo clara desde el diagnóstico hasta la obra',
       items: [
-        { title: 'Diagnostico', copy: 'Revisamos etapa, objetivos, especialidades, formatos y entregables necesarios.' },
-        { title: 'Modelado y federacion', copy: 'Construimos o integramos modelos para coordinar informacion critica del proyecto.' },
-        { title: 'Coordinacion', copy: 'Detectamos interferencias, priorizamos conflictos y generamos reportes accionables.' },
-        { title: 'Entrega y acompanamiento', copy: 'Documentamos decisiones y apoyamos la transicion hacia licitacion, obra o post-entrega.' },
+        { title: 'Diagnóstico', copy: 'Revisamos etapa, objetivos, especialidades, formatos y entregables necesarios.' },
+        { title: 'Modelado y federación', copy: 'Construimos o integramos modelos para coordinar información crítica del proyecto.' },
+        { title: 'Coordinación', copy: 'Detectamos interferencias, priorizamos conflictos y generamos reportes accionables.' },
+        { title: 'Entrega y acompañamiento', copy: 'Documentamos decisiones y apoyamos la transición hacia licitación, obra o post-entrega.' },
       ],
     },
     trust: {
       eyebrow: 'Confianza',
-      title: 'Un equipo tecnico para proyectos de arquitectura, construccion e infraestructura',
+      title: 'Un equipo técnico para proyectos de arquitectura, construcción e infraestructura',
       copy:
-        'Trabajamos con constructoras, inmobiliarias, oficinas de arquitectura, ingenieria y mandantes que necesitan modelos confiables, coordinacion temprana y documentacion precisa.',
+        'Trabajamos con constructoras, inmobiliarias, oficinas de arquitectura, ingeniería y mandantes que necesitan modelos confiables, coordinación temprana y documentación precisa.',
     },
     faq: {
       eyebrow: 'Preguntas frecuentes',
-      title: 'Dudas habituales antes de iniciar coordinacion BIM',
-      q1: '¿Que es la coordinacion BIM?',
-      a1: 'Es el proceso de integrar modelos de distintas especialidades para detectar interferencias, resolver conflictos y mejorar la informacion antes de construir.',
-      q2: '¿Cuando conviene contratar BIM?',
-      a2: 'Mientras antes se incorpore, mayor impacto tiene en costos, plazos y calidad de documentacion. Tambien puede ordenar proyectos ya avanzados.',
+      title: 'Dudas habituales antes de iniciar coordinación BIM',
+      q1: '¿Qué es la coordinación BIM?',
+      a1: 'Es el proceso de integrar modelos de distintas especialidades para detectar interferencias, resolver conflictos y mejorar la información antes de construir.',
+      q2: '¿Cuándo conviene contratar BIM?',
+      a2: 'Mientras antes se incorpore, mayor impacto tiene en costos, plazos y calidad de documentación. También puede ordenar proyectos ya avanzados.',
     },
     contact: {
       eyebrow: 'Contacto',
-      title: 'Cuentanos en que etapa esta tu proyecto',
-      copy: 'Te responderemos con una ruta de trabajo para levantar requerimientos, revisar el modelo o iniciar coordinacion BIM.',
+      title: 'Cuéntanos en qué etapa está tu proyecto',
+      copy: 'Te responderemos con una ruta de trabajo para levantar requerimientos, revisar el modelo o iniciar coordinación BIM.',
       name: 'Nombre',
       email: 'Email',
       message: 'Mensaje',
@@ -130,21 +130,34 @@ const TRANSLATIONS = {
     pages: {
       projects: {
         eyebrow: 'Proyectos',
-        title: 'Catalogo de proyectos',
+        title: 'Catálogo de proyectos',
       },
       services: {
         eyebrow: 'Servicios BIM',
         title: 'Nuestros servicios',
         jumpLabel: 'Acceso directo a servicios',
         details: 'Ver detalle',
+        loadingLabel: 'Cargando servicios BIM',
       },
       about: {
         eyebrow: 'Nosotros',
-        title: 'Vision estrategica y cultura de trabajo colaborativo',
+        title: 'Visión estratégica y cultura de trabajo colaborativo',
         intro:
-          'Consolidamos nuestro proposito institucional para dar claridad sobre como trabajamos, que valores guian la toma de decisiones y como construimos valor para cada cliente.',
-        mission: 'Mision',
-        vision: 'Vision',
+          'Consolidamos nuestro propósito institucional para dar claridad sobre cómo trabajamos, qué valores guían la toma de decisiones y cómo construimos valor para cada cliente.',
+        manifestoEyebrow: 'Cómo pensamos',
+        whyTitle: 'Por qué existimos',
+        whyCopy:
+          'La industria pierde tiempo y recursos cuando la información llega tarde o fragmentada. Nuestra práctica nace para convertir datos técnicos en decisiones claras desde etapas tempranas.',
+        buildTitle: 'Qué estamos construyendo',
+        buildCopy:
+          'Desarrollamos una metodología BIM aplicada a todo el ciclo del proyecto: diseño, coordinación, obra y operación, con continuidad y trazabilidad real.',
+        commitTitle: 'A qué nos comprometemos',
+        commitCopy:
+          'Priorizamos claridad, colaboración y resultados verificables. Menos incertidumbre para el equipo, más control para el cliente.',
+        story: 'Nuestra historia',
+        storyLead: 'Construimos una práctica BIM centrada en decisiones claras, datos confiables y continuidad operativa.',
+        mission: 'Misión',
+        vision: 'Visión',
         values: 'Valores',
         team: 'Equipo colaborativo',
       },
@@ -153,18 +166,18 @@ const TRANSLATIONS = {
         loadingTitle: 'Cargando proyecto',
         loadingLabel: 'Cargando proyecto',
         unavailable: 'No disponible',
-        notFound: 'No encontramos este proyecto o aun no esta publicado.',
+        notFound: 'No encontramos este proyecto o aún no está publicado.',
         backToPortfolio: 'Volver al portafolio',
-        description: 'Descripcion',
-        emptyDescription: 'Sin descripcion cargada.',
+        description: 'Descripción',
+        emptyDescription: 'Sin descripción cargada.',
         dataLabel: 'Datos del proyecto',
         architect: 'Arquitecto',
         structuralEngineer: 'Ingeniero calculista',
         specialists: 'Especialistas',
         m2: 'M2',
-        year: 'Ano',
+        year: 'Año',
         undefined: 'Por definir',
-        galleryLabel: 'Galeria del proyecto',
+        galleryLabel: 'Galería del proyecto',
         prev: 'Anterior',
         next: 'Siguiente',
         imageAlt: 'Imagen {index} del proyecto {title}',
@@ -172,20 +185,20 @@ const TRANSLATIONS = {
       },
       auth: {
         eyebrow: 'Acceso interno',
-        checkingTitle: 'Verificando sesion',
+        checkingTitle: 'Verificando sesión',
         checkingLabel: 'Validando acceso',
         title: 'Dashboard de proyectos',
-        copy: 'Las cuentas y contrasenias se administran desde Supabase Auth. Este acceso usa solo correo y contrasenia.',
+        copy: 'Las cuentas y contraseñas se administran desde Supabase Auth. Este acceso usa solo correo y contraseña.',
         email: 'Correo',
         emailPlaceholder: 'nombre@mi-studio.cl',
-        password: 'Contrasenia',
-        passwordPlaceholder: 'Tu contrasenia',
+        password: 'Contraseña',
+        passwordPlaceholder: 'Tu contraseña',
         submit: 'Entrar',
         back: 'Volver al sitio',
         errors: {
-          validEmail: 'Ingresa un correo valido.',
-          passwordRequired: 'Ingresa tu contrasenia.',
-          invalidCredentials: 'Correo o contrasenia incorrectos.',
+          validEmail: 'Ingresa un correo válido.',
+          passwordRequired: 'Ingresa tu contraseña.',
+          invalidCredentials: 'Correo o contraseña incorrectos.',
         },
       },
     },
@@ -262,6 +275,7 @@ const TRANSLATIONS = {
     servicesHome: {
       eyebrow: 'Integrated BIM services',
       title: 'Fewer clashes, more control, and better construction information',
+      membersLabel: 'We are members of',
       items: [
         {
           title: 'BIM Coordination',
@@ -324,12 +338,25 @@ const TRANSLATIONS = {
         title: 'Our services',
         jumpLabel: 'Direct access to services',
         details: 'View details',
+        loadingLabel: 'Loading BIM services',
       },
       about: {
         eyebrow: 'About us',
         title: 'Strategic vision and collaborative work culture',
         intro:
           'We consolidate our institutional purpose to clarify how we work, which values guide decisions, and how we create value for each client.',
+        manifestoEyebrow: 'How we think',
+        whyTitle: 'Why we exist',
+        whyCopy:
+          'The industry loses time and resources when information arrives late or fragmented. Our practice exists to turn technical data into clear decisions from early stages.',
+        buildTitle: 'What we are building',
+        buildCopy:
+          'We develop a BIM methodology applied to the full project lifecycle: design, coordination, construction, and operations, with real continuity and traceability.',
+        commitTitle: 'What we are committed to',
+        commitCopy:
+          'We prioritize clarity, collaboration, and verifiable outcomes. Less uncertainty for teams, more control for clients.',
+        story: 'Our story',
+        storyLead: 'We build a BIM practice focused on clear decisions, reliable data, and operational continuity.',
         mission: 'Mission',
         vision: 'Vision',
         values: 'Values',
@@ -418,3 +445,5 @@ export function useLanguage() {
 
   return context
 }
+
+

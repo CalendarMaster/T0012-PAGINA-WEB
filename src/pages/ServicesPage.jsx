@@ -1,6 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getServicesBimDetails } from '../lib/siteContent'
 import { useLanguage } from '../lib/i18n.jsx'
+import LoadingLoop from '../components/LoadingLoop'
 
 const SERVICE_IMAGE_BY_ID = {
   'gerenciamiento-proyecto': 'gerenciamiento de proyecto.jpg',
@@ -41,6 +42,7 @@ function getServiceNarrative(description = '') {
 export default function ServicesPage() {
   const { lang, t } = useLanguage()
   const services = getServicesBimDetails(lang)
+  const [isLoadingServices, setIsLoadingServices] = useState(true)
 
   useEffect(() => {
     const cards = Array.from(document.querySelectorAll('.services-feature'))
@@ -119,6 +121,27 @@ export default function ServicesPage() {
     return encodeURI(`/assets/imagenes servicios/${imageName}`)
   }
 
+  useEffect(() => {
+    let isCancelled = false
+    setIsLoadingServices(true)
+
+    const preloadImage = (src) => new Promise((resolve) => {
+      const img = new Image()
+      img.onload = () => resolve()
+      img.onerror = () => resolve()
+      img.src = src
+    })
+
+    Promise.all(services.map((service) => preloadImage(getServiceImagePath(service.id)))).then(() => {
+      if (isCancelled) return
+      setIsLoadingServices(false)
+    })
+
+    return () => {
+      isCancelled = true
+    }
+  }, [services])
+
   return (
     <main className="content-page services-page" aria-labelledby="services-page-title">
       <nav className="services-jump" aria-label={t('pages.services.jumpLabel')}>
@@ -143,7 +166,13 @@ export default function ServicesPage() {
         <h1 id="services-page-title">{t('pages.services.title')}</h1>
       </section>
 
-      <section className="services-stream" aria-label={t('pages.services.jumpLabel')}>
+      {isLoadingServices ? (
+        <div className="section-loader-wrap" role="status" aria-live="polite">
+          <LoadingLoop compact label={t('pages.services.loadingLabel', 'Cargando servicios BIM')} />
+        </div>
+      ) : null}
+
+      <section className="services-stream" aria-label={t('pages.services.jumpLabel')} hidden={isLoadingServices}>
         {services.map((service, index) => {
           const narrative = getServiceNarrative(service.description)
 

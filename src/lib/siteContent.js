@@ -161,35 +161,37 @@ const SERVICES_BIM_DETAILS_EN = [
 ]
 
 const ABOUT_CONTENT_ES = {
+  history:
+    'Nacimos desde la practica de arquitectura, ingenieria y construccion para resolver una brecha concreta: proyectos con gran esfuerzo tecnico, pero con informacion fragmentada para decidir. Evolucionamos hacia un enfoque de data management BIM donde cada etapa deja trazabilidad, continuidad y valor operativo para el cliente.',
   mission:
-    'Optimizar los procesos y mejorar la toma de decisiones, entregando soluciones integrales y personalizadas maximizando el valor para nuestros clientes.',
+    '"Optimizar los procesos y mejorar la toma de decisiones, entregando soluciones integrales y personalizadas maximizando el valor para nuestros clientes."',
   vision:
-    'Ser reconocidos como lideres en la industria de la construccion, transformando la forma en que se desarrollan los proyectos a traves de tecnologias de vanguardia y modelos de informacion para una gestion eficiente y colaborativa.',
+    '"Ser reconocidos como líderes en la industria de la construcción, transformando la forma en que se desarrollan los proyectos a través de la implementación de tecnologías de vanguardia y la generación de modelos de información que permitan una gestión eficiente y colaborativa. Conectamos los mundos de la arquitectura, la ingeniería y la construcción (AEC) con la tecnología."',
   values: [
     {
       title: 'Excelencia',
       description:
-        'Buscamos la perfeccion en cada etapa del proyecto, desde el diseno hasta la ejecucion, asegurando calidad y satisfaccion del cliente.',
+        'Buscamos la perfección en cada etapa del proyecto, desde el diseño hasta la ejecución, asegurando la calidad y la satisfacción del cliente.',
     },
     {
-      title: 'Innovacion',
+      title: 'Innovación',
       description:
-        'Estamos comprometidos con la adopcion de nuevas tecnologias y metodologias que permitan mejorar continuamente nuestros servicios.',
+        'Estamos comprometidos con la adopción de nuevas tecnologías y metodologías que permitan mejorar continuamente nuestros servicios.',
     },
     {
-      title: 'Colaboracion',
+      title: 'Colaboración',
       description:
-        'Fomentamos el trabajo en equipo y la comunicacion abierta con todos los actores involucrados en el proyecto.',
+        'Fomentamos el trabajo en equipo y la comunicación abierta con todos los actores involucrados en el proyecto.',
     },
     {
       title: 'Transparencia',
       description:
-        'Garantizamos claridad y accesibilidad de la informacion, facilitando la toma de decisiones y la gestion del proyecto.',
+        'Garantizamos la claridad y la accesibilidad de la información, facilitando la toma de decisiones y la gestión del proyecto.',
     },
     {
       title: 'Adaptabilidad',
       description:
-        'Somos flexibles y nos adaptamos a las necesidades cambiantes de nuestros clientes y a los desafios propios de cada proyecto y entorno.',
+        'Somos flexibles y nos adaptamos a las necesidades cambiantes de nuestros clientes y a los desafíos propios de cada proyecto y entorno.',
     },
   ],
   team:
@@ -197,6 +199,8 @@ const ABOUT_CONTENT_ES = {
 }
 
 const ABOUT_CONTENT_EN = {
+  history:
+    'We were born from architecture, engineering, and construction practice to solve a concrete gap: technically demanding projects with fragmented information for decision-making. We evolved toward a BIM data management approach where every stage creates traceability, continuity, and long-term operational value for the client.',
   mission:
     'Optimize processes and improve decision-making by delivering integrated and tailored solutions that maximize value for our clients.',
   vision:

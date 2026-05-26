@@ -54,15 +54,7 @@ export default function Header() {
         <Link to="/">{t('header.nav.home')}</Link>
         <Link to="/proyectos">{t('header.nav.projects')}</Link>
         <Link to="/servicios">{t('header.nav.services')}</Link>
-        <details>
-          <summary>{t('header.nav.about')}</summary>
-          <div className="nav-dropdown">
-            <Link to="/nosotros#mision">{t('header.aboutMenu.mission')}</Link>
-            <Link to="/nosotros#vision">{t('header.aboutMenu.vision')}</Link>
-            <Link to="/nosotros#valores">{t('header.aboutMenu.values')}</Link>
-            <Link to="/nosotros#equipo">{t('header.aboutMenu.team')}</Link>
-          </div>
-        </details>
+        <Link to="/nosotros">{t('header.nav.about')}</Link>
         <a href={sectionHref('proceso')}>{t('header.nav.process')}</a>
         <a href={footerHref}>{t('header.nav.contact')}</a>
       </nav>

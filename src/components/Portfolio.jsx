@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { FALLBACK_PROJECTS } from '../lib/fallbackProjects'
-import { getProjectCategoryLabel, getProjectFilters } from '../lib/projectCategories'
+import { getProjectCategoryLabel, getProjectFilters, normalizeProjectCategory } from '../lib/projectCategories'
 import LoadingLoop from './LoadingLoop'
 import { useLanguage } from '../lib/i18n.jsx'
 
@@ -21,7 +21,7 @@ export default function Portfolio({ minimal = false }) {
     const loadProjects = async () => {
       const { data, error } = await supabase
         .from('projects')
-        .select('id, slug, title, category, cover_url, summary')
+        .select('id, slug, title, category, cover_url, summary, is_published')
         .eq('is_published', true)
         .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false })
@@ -56,9 +56,10 @@ export default function Portfolio({ minimal = false }) {
   }
 
   const filteredProjects = mergedProjects.filter((project) => {
-    if (!project.is_published) return false
+    const normalizedCategory = normalizeProjectCategory(project.category)
+    if (project.is_published === false) return false
     if (active === 'all') return true
-    return project.category === active
+    return normalizedCategory === active
   })
 
   return (
@@ -106,8 +107,8 @@ export default function Portfolio({ minimal = false }) {
         {!isLoading && filteredProjects.map((p) => (
           <article
             key={p.id || p.slug}
-            className={`portafolio_card js_portafolio_card cat_${p.category}`}
-            data-category={p.category}
+            className={`portafolio_card js_portafolio_card cat_${normalizeProjectCategory(p.category)}`}
+            data-category={normalizeProjectCategory(p.category)}
           >
             <div className="portafolio_card_inner">
               <div className="portafolio_card_front">
