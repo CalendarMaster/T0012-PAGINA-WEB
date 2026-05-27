@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../lib/i18n.jsx'
+import { CONTACT_EMAIL, handleContactEmailClick } from '../lib/contactEmail'
 
 export default function Header() {
   const [logoAnimKey, setLogoAnimKey] = useState(0)
@@ -77,7 +78,7 @@ export default function Header() {
             EN
           </button>
         </div>
-        <a className="header-cta" href="https://wa.me/56977666150">{t('header.cta')}</a>
+        <a className="header-cta" href={`mailto:${CONTACT_EMAIL}`} onClick={handleContactEmailClick}>{t('header.cta')}</a>
       </div>
     </header>
   )

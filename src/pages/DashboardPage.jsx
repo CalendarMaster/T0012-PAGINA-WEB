@@ -394,12 +394,38 @@ export default function DashboardPage() {
     const fallbackPayload = { ...payload }
     let shouldRetry = false
 
-    if (errorText.includes('destination')) {
+    const isMissingColumnError = (columnName) => {
+      const missingColumnPatterns = [
+        `could not find the '${columnName}' column`,
+        `column \"${columnName}\" does not exist`,
+        `column ${columnName} does not exist`,
+      ]
+
+      return missingColumnPatterns.some((pattern) => errorText.includes(pattern))
+    }
+
+    if (isMissingColumnError('destination')) {
+      if (payload.destination) {
+        return {
+          data: null,
+          error: {
+            message: 'La columna "destination" no existe en Supabase. Ejecuta supabase/09_project_destination.sql y vuelve a intentar.',
+          },
+        }
+      }
       delete fallbackPayload.destination
       shouldRetry = true
     }
 
-    if (errorText.includes('mandante')) {
+    if (isMissingColumnError('mandante')) {
+      if (payload.mandante) {
+        return {
+          data: null,
+          error: {
+            message: 'La columna "mandante" no existe en Supabase. Ejecuta supabase/10_project_mandante.sql y vuelve a intentar.',
+          },
+        }
+      }
       delete fallbackPayload.mandante
       shouldRetry = true
     }

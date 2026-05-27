@@ -63,8 +63,8 @@ const TRANSLATIONS = {
       ],
     },
     portfolio: {
-      eyebrow: 'Proyectos',
-      title: 'Nuestros proyectos',
+      eyebrow: 'Portafolio',
+      title: 'Proyectos',
       copy: '',
       loading: 'Cargando proyectos',
       empty: 'Todavía no hay proyectos publicados en esta categoría.',
@@ -267,8 +267,8 @@ const TRANSLATIONS = {
       ],
     },
     portfolio: {
-      eyebrow: 'Featured portfolio',
-      title: 'Projects coordinated with technical precision',
+      eyebrow: 'Portfolio',
+      title: 'Projects',
       copy:
         'The catalog keeps the original visual language: model mosaic, category color logic, and informative card backs.',
       loading: 'Loading projects',

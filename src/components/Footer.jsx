@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../lib/i18n.jsx'
+import { CONTACT_EMAIL, handleContactEmailClick } from '../lib/contactEmail'
 
 function SocialIcon({ kind }) {
   const commonProps = {
@@ -37,6 +38,16 @@ function SocialIcon({ kind }) {
     )
   }
 
+  if (kind === 'instagram') {
+    return (
+      <svg {...commonProps}>
+        <rect x="4" y="4" width="16" height="16" rx="4.5" stroke="currentColor" strokeWidth="1.8" />
+        <circle cx="12" cy="12" r="3.7" stroke="currentColor" strokeWidth="1.8" />
+        <circle cx="17.1" cy="6.9" r="1.1" fill="currentColor" />
+      </svg>
+    )
+  }
+
   return (
     <svg {...commonProps}>
       <rect x="3.5" y="5.5" width="17" height="13" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
@@ -57,7 +68,7 @@ export default function Footer() {
       <div className="footer-shell">
         <section className="footer-topline" aria-label="Presentación institucional">
           <p className="footer-kicker">MI STUDIO · MODELO INTEGRADO</p>
-          <a className="footer-cta" href="https://wa.me/56977666150">{t('footer.cta')}</a>
+          <a className="footer-cta" href={`mailto:${CONTACT_EMAIL}`} onClick={handleContactEmailClick}>{t('footer.cta')}</a>
         </section>
 
         <div className="footer-columns" aria-label="Navegación secundaria">
@@ -79,7 +90,7 @@ export default function Footer() {
 
           <div className="footer-column" aria-label="Canales de contacto">
             <h3>{t('footer.columns.contact')}</h3>
-            <a href="mailto:contacto@mistudio.cl">contacto@mi-studio.cl</a>
+            <a href={`mailto:${CONTACT_EMAIL}`} onClick={handleContactEmailClick}>contacto@mi-studio.cl</a>
             <a href="tel:+56977666150">+56 9 7766 6150</a>
             <div className="footer-socials" aria-label={t('footer.socialLabel')}>
               <span className="footer-socials-title">{t('footer.socialLabel')}</span>
@@ -111,7 +122,16 @@ export default function Footer() {
                   <SocialIcon kind="linkedin" />
                   LinkedIn
                 </a>
-                <a className="footer-social-link" href="mailto:contacto@mi-studio.cl">
+                <a
+                  className="footer-social-link"
+                  href="https://www.instagram.com/modelointegradostudio/"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <SocialIcon kind="instagram" />
+                  Instagram
+                </a>
+                <a className="footer-social-link" href={`mailto:${CONTACT_EMAIL}`} onClick={handleContactEmailClick}>
                   <SocialIcon kind="gmail" />
                   Gmail
                 </a>

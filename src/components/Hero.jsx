@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useLanguage } from '../lib/i18n.jsx'
+import { CONTACT_EMAIL, handleContactEmailClick } from '../lib/contactEmail'
 
 const HERO_START_AT = 0
 const HERO_CUT_BEFORE_END = 6
@@ -68,7 +69,8 @@ export default function Hero() {
           <div className="hero-actions" aria-label="Canales de contacto">
             <a
               className="button primary"
-              href="mailto:contacto@mistudio.cl?subject=Solicitud%20de%20reuni%C3%B3n%20-%20MI%20Studio&body=Hola%2C%20me%20gustar%C3%ADa%20agendar%20una%20reuni%C3%B3n%20para%20revisar%20mi%20proyecto."
+              href={`mailto:${CONTACT_EMAIL}`}
+              onClick={handleContactEmailClick}
             >
               {t('hero.ctaMeeting')}
             </a>
