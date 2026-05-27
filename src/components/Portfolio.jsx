@@ -1,19 +1,58 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { gsap } from 'gsap'
+import { Flip } from 'gsap/Flip'
 import { supabase } from '../lib/supabaseClient'
 import { FALLBACK_PROJECTS } from '../lib/fallbackProjects'
-import { getProjectCategoryLabel, getProjectFilters, normalizeProjectCategory } from '../lib/projectCategories'
+import {
+  getProjectCategoryLabel,
+  getProjectDestinationFilters,
+  getProjectFilters,
+  normalizeProjectCategory,
+  normalizeProjectDestination,
+} from '../lib/projectCategories'
 import LoadingLoop from './LoadingLoop'
 import { useLanguage } from '../lib/i18n.jsx'
 
 const FALLBACK_IMAGE = 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_1.png'
 
-export default function Portfolio({ minimal = false }) {
+gsap.registerPlugin(Flip)
+
+export default function Portfolio({ minimal = false, maxItems }) {
   const { lang, t } = useLanguage()
-  const [active, setActive] = useState('all')
+  const [activeCategory, setActiveCategory] = useState('all')
+  const [activeDestination, setActiveDestination] = useState('all')
+  const [hasInteractedWithFilters, setHasInteractedWithFilters] = useState(false)
   const [projects, setProjects] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const filters = getProjectFilters(lang)
+  const gridRef = useRef(null)
+  const flipStateRef = useRef(null)
+  const categoryFilters = getProjectFilters(lang)
+  const destinationFilters = getProjectDestinationFilters(lang)
+
+  const captureFlipState = () => {
+    if (!gridRef.current) return
+    const currentItems = gridRef.current.querySelectorAll('.portafolio_card')
+    if (currentItems.length === 0) return
+    flipStateRef.current = Flip.getState(currentItems)
+  }
+
+  const triggerFilterAnimation = () => {
+    captureFlipState()
+    if (!hasInteractedWithFilters) setHasInteractedWithFilters(true)
+  }
+
+  const handleCategoryFilterChange = (value) => {
+    if (value === activeCategory) return
+    setActiveCategory(value)
+    triggerFilterAnimation()
+  }
+
+  const handleDestinationFilterChange = (value) => {
+    if (value === activeDestination) return
+    setActiveDestination(value)
+    triggerFilterAnimation()
+  }
 
   useEffect(() => {
     let isMounted = true
@@ -21,9 +60,8 @@ export default function Portfolio({ minimal = false }) {
     const loadProjects = async () => {
       const { data, error } = await supabase
         .from('projects')
-        .select('id, slug, title, category, cover_url, summary, is_published')
+        .select('*')
         .eq('is_published', true)
-        .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false })
 
       if (!isMounted) return
@@ -34,7 +72,30 @@ export default function Portfolio({ minimal = false }) {
         return
       }
 
-      setProjects(data || [])
+      const normalizedProjects = (data || [])
+        .map((item) => ({
+          id: item.id,
+          slug: item.slug,
+          title: item.title,
+          category: item.category,
+          destination: item.destination || '',
+          cover_url: item.cover_url,
+          summary: item.summary,
+          is_published: item.is_published,
+          sort_order: Number.isFinite(item.sort_order) ? item.sort_order : null,
+          created_at: item.created_at || null,
+        }))
+        .sort((a, b) => {
+          const aOrder = a.sort_order ?? Number.POSITIVE_INFINITY
+          const bOrder = b.sort_order ?? Number.POSITIVE_INFINITY
+          if (aOrder !== bOrder) return aOrder - bOrder
+
+          const aDate = a.created_at ? Date.parse(a.created_at) : 0
+          const bDate = b.created_at ? Date.parse(b.created_at) : 0
+          return bDate - aDate
+        })
+
+      setProjects(normalizedProjects)
       setIsLoading(false)
     }
 
@@ -57,10 +118,42 @@ export default function Portfolio({ minimal = false }) {
 
   const filteredProjects = mergedProjects.filter((project) => {
     const normalizedCategory = normalizeProjectCategory(project.category)
+    const normalizedDestination = normalizeProjectDestination(project.destination)
+
     if (project.is_published === false) return false
-    if (active === 'all') return true
-    return normalizedCategory === active
+    if (activeCategory !== 'all' && normalizedCategory !== activeCategory) return false
+    if (activeDestination !== 'all' && normalizedDestination !== activeDestination) return false
+
+    return true
   })
+
+  const displayedProjects = Number.isFinite(maxItems)
+    ? filteredProjects.slice(0, Math.max(0, maxItems))
+    : filteredProjects
+
+  useLayoutEffect(() => {
+    if (!hasInteractedWithFilters || isLoading || !gridRef.current) return
+
+    const capturedState = flipStateRef.current
+    const currentItems = gridRef.current.querySelectorAll('.portafolio_card')
+    if (!capturedState || currentItems.length === 0) return
+
+    const animation = Flip.from(capturedState, {
+      duration: 0.7,
+      scale: true,
+      ease: 'power1.inOut',
+      stagger: 0.08,
+      absolute: true,
+      onEnter: (elements) => gsap.fromTo(elements, { opacity: 0, scale: 0.9 }, { opacity: 1, scale: 1, duration: 0.7 }),
+      onLeave: (elements) => gsap.to(elements, { opacity: 0, scale: 0.9, duration: 0.45 }),
+    })
+
+    flipStateRef.current = null
+
+    return () => {
+      animation?.kill?.()
+    }
+  }, [activeCategory, activeDestination, hasInteractedWithFilters, isLoading])
 
   return (
     <section
@@ -81,34 +174,55 @@ export default function Portfolio({ minimal = false }) {
       )}
 
       <div className="portafolio_filtros" aria-label="Filtros de proyectos">
-        {filters.map((f) => (
-          <button
-            key={f.value}
-            className={`portafolio_filtro${active === f.value ? ' is_active' : ''}`}
-            data-filter={f.value}
-            onClick={() => setActive(f.value)}
-            type="button"
-          >
-            {f.label}
-          </button>
-        ))}
+        <div className="portafolio_filter_group">
+          <p className="portafolio_filter_title">Filtro por servicio</p>
+          <div className="portafolio_filter_buttons" aria-label="Filtrar por servicio">
+            {categoryFilters.map((f) => (
+              <button
+                key={f.value}
+                className={`portafolio_filtro${activeCategory === f.value ? ' is_active' : ''}`}
+                data-filter={f.value}
+                onClick={() => handleCategoryFilterChange(f.value)}
+                type="button"
+              >
+                {f.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="portafolio_filter_group">
+          <p className="portafolio_filter_title">Filtro por destino de recinto</p>
+          <div className="portafolio_filter_select_wrap" aria-label="Filtrar por destino de recinto">
+            <select
+              className="portafolio_filter_select"
+              value={activeDestination}
+              onChange={(event) => handleDestinationFilterChange(event.target.value)}
+            >
+              {destinationFilters.map((f) => (
+                <option key={f.value} value={f.value}>{f.label}</option>
+              ))}
+            </select>
+          </div>
+        </div>
       </div>
 
-      <div className="portafolio_grid">
+      <div className="portafolio_grid" ref={gridRef}>
         {isLoading ? (
           <div className="portafolio_notice portafolio_notice-loader">
             <LoadingLoop compact label={t('portfolio.loading')} />
           </div>
         ) : null}
-        {!isLoading && filteredProjects.length === 0 ? (
+        {!isLoading && displayedProjects.length === 0 ? (
           <p className="portafolio_notice">{t('portfolio.empty')}</p>
         ) : null}
 
-        {!isLoading && filteredProjects.map((p) => (
+        {!isLoading && displayedProjects.map((p) => (
           <article
             key={p.id || p.slug}
             className={`portafolio_card js_portafolio_card cat_${normalizeProjectCategory(p.category)}`}
             data-category={normalizeProjectCategory(p.category)}
+            data-destination={normalizeProjectDestination(p.destination)}
           >
             <div className="portafolio_card_inner">
               <div className="portafolio_card_front">

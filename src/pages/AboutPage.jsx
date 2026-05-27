@@ -1,10 +1,13 @@
 import { getAboutContent } from '../lib/siteContent'
+import AboutClients from '../components/AboutClients'
 
 export default function AboutPage() {
   const aboutContent = getAboutContent('es')
 
   return (
     <main className="content-page about-page about-page-stack" aria-label="Misión, visión y valores">
+      <AboutClients />
+
       <section id="mision" className="about-stack-section about-stack-section-mission" aria-labelledby="about-mision-title">
         <div className="about-stack-inner">
           <p className="eyebrow">Misión</p>
@@ -35,6 +38,7 @@ export default function AboutPage() {
           </ul>
         </div>
       </section>
+
     </main>
   )
 }

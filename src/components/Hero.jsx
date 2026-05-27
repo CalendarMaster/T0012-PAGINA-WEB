@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { useLanguage } from '../lib/i18n.jsx'
 
-const HERO_START_AT = 10
+const HERO_START_AT = 0
 const HERO_CUT_BEFORE_END = 6
 
 export default function Hero() {
@@ -45,7 +45,7 @@ export default function Hero() {
         <video
           ref={videoRef}
           className="hero-video"
-          src="/assets/hero-bim-walkthrough.mp4"
+          src="/assets/CD%20FALABELLA%20INSTALACIONES.mp4"
           autoPlay
           muted
           loop

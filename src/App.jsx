@@ -5,6 +5,7 @@ import Hero from './components/Hero'
 import Portfolio from './components/Portfolio'
 import Services from './components/Services'
 import Process from './components/Process'
+import Clients from './components/Clients'
 import Members from './components/Members'
 import FAQ from './components/FAQ'
 import Contact from './components/Contact'
@@ -65,8 +66,9 @@ function HomePage() {
     <PublicLayout>
       <main id="inicio">
         <Hero />
-        <Portfolio />
+        <Portfolio maxItems={18} />
         <Services />
+        <Clients />
         <Process />
         <FAQ />
         <Members />

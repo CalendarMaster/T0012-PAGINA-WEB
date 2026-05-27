@@ -3,23 +3,28 @@ import { getServicesBimDetails } from '../lib/siteContent'
 import { useLanguage } from '../lib/i18n.jsx'
 import LoadingLoop from '../components/LoadingLoop'
 
-const SERVICE_IMAGE_BY_ID = {
-  'gerenciamiento-proyecto': 'gerenciamiento de proyecto.jpg',
-  diseno: 'diseño.jpg',
-  modelado: 'modelado.jpg',
-  coordinacion: 'coordinacion.jpg',
-  simulacion: 'simulacion.png',
-  evaluacion: 'evaluacion.gif',
-  documentacion: 'documentacion.jpg',
-  programacion: 'imagenes.png',
-  visualizacion: 'imagenes.png',
-  'seguimiento-obra': 'seguimiento en obra.jpg',
-  'facility-management': 'facility management.jpg',
-  implementacion: 'implementacion.jpg',
-  'administracion-cde': 'Administracion de CDE (Common Data Environment).jpg',
+const SERVICE_MEDIA_BY_ID = {
+  'gerenciamiento-proyecto': { type: 'image', file: 'gerenciamiento de proyecto.jpg' },
+  diseno: { type: 'image', file: 'diseño.jpg' },
+  modelado: { type: 'image', file: 'modelado.jpg' },
+  coordinacion: { type: 'image', file: 'coordinacion.jpg' },
+  simulacion: { type: 'image', file: 'simulacion.png' },
+  evaluacion: { type: 'image', file: 'evaluacion.gif' },
+  documentacion: { type: 'image', file: 'documentacion.jpg' },
+  programacion: {
+    type: 'video',
+    file: 'boveda-2-web.mp4',
+    src: '/assets/imagenes%20servicios/boveda-2-web.mp4',
+    poster: 'imagenes.png',
+  },
+  visualizacion: { type: 'image', file: 'imagenes.png' },
+  'seguimiento-obra': { type: 'image', file: 'seguimiento en obra.jpg' },
+  'facility-management': { type: 'image', file: 'facility management.jpg' },
+  implementacion: { type: 'image', file: 'implementacion.jpg' },
+  'administracion-cde': { type: 'image', file: 'Administracion de CDE (Common Data Environment).jpg' },
 }
 
-const FALLBACK_IMAGE = 'imagenes.png'
+const FALLBACK_MEDIA = { type: 'image', file: 'imagenes.png' }
 
 function splitSentences(text = '') {
   return text
@@ -116,9 +121,13 @@ export default function ServicesPage() {
     }
   }, [services])
 
-  const getServiceImagePath = (serviceId) => {
-    const imageName = SERVICE_IMAGE_BY_ID[serviceId] || FALLBACK_IMAGE
-    return encodeURI(`/assets/imagenes servicios/${imageName}`)
+  const getServiceMedia = (serviceId) => {
+    const media = SERVICE_MEDIA_BY_ID[serviceId] || FALLBACK_MEDIA
+    return {
+      ...media,
+      src: media.src || encodeURI(`/assets/imagenes servicios/${media.file}`),
+      posterSrc: media.poster ? encodeURI(`/assets/imagenes servicios/${media.poster}`) : undefined,
+    }
   }
 
   useEffect(() => {
@@ -132,7 +141,21 @@ export default function ServicesPage() {
       img.src = src
     })
 
-    Promise.all(services.map((service) => preloadImage(getServiceImagePath(service.id)))).then(() => {
+    const preloadVideo = (src) => new Promise((resolve) => {
+      const video = document.createElement('video')
+      video.preload = 'metadata'
+      const done = () => resolve()
+      video.onloadedmetadata = done
+      video.onerror = done
+      video.src = src
+    })
+
+    Promise.all(
+      services.map((service) => {
+        const media = getServiceMedia(service.id)
+        return media.type === 'video' ? preloadVideo(media.src) : preloadImage(media.src)
+      }),
+    ).then(() => {
       if (isCancelled) return
       setIsLoadingServices(false)
     })
@@ -175,6 +198,7 @@ export default function ServicesPage() {
       <section className="services-stream" aria-label={t('pages.services.jumpLabel')} hidden={isLoadingServices}>
         {services.map((service, index) => {
           const narrative = getServiceNarrative(service.description)
+          const media = getServiceMedia(service.id)
 
           return (
             <article key={service.id} id={service.id} className="services-feature">
@@ -190,8 +214,27 @@ export default function ServicesPage() {
               </header>
 
               <div className="services-feature-body">
-                <figure className="services-feature-media" aria-hidden="true">
-                  <img src={getServiceImagePath(service.id)} alt="" loading="lazy" />
+                <figure className="services-feature-media">
+                  {media.type === 'video' ? (
+                    <>
+                      <video
+                        className="services-feature-video"
+                        poster={media.posterSrc}
+                        autoPlay
+                        muted
+                        loop
+                        controls
+                        playsInline
+                        preload="auto"
+                      >
+                        <source src={media.src} type="video/mp4" />
+                        Tu navegador no soporta reproducción de video.
+                      </video>
+                      <span className="services-feature-video-badge">Video</span>
+                    </>
+                  ) : (
+                    <img src={media.src} alt="" loading="lazy" />
+                  )}
                 </figure>
               </div>
             </article>

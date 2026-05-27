@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
-import { getProjectCategoryLabel, normalizeProjectCategory } from '../lib/projectCategories'
+import { getProjectCategoryLabel, getProjectDestinationLabel, normalizeProjectCategory } from '../lib/projectCategories'
 import LoadingLoop from '../components/LoadingLoop'
 import { useLanguage } from '../lib/i18n.jsx'
 
@@ -139,15 +139,28 @@ export default function ProjectPage() {
 
   const hasGallery = galleryImages.length > 0
   const heroImageUrl = project.leader_image_url || project.cover_url || galleryImages[0]?.image_url || ''
+  const normalizeFactValue = (value) => {
+    if (value === null || value === undefined) return ''
+    if (typeof value === 'string') return value.trim()
+    return String(value).trim()
+  }
   const specialistsList = Array.isArray(project.specialists)
     ? project.specialists.map((item) => item?.trim()).filter(Boolean)
     : []
   const factRows = [
+    {
+      key: 'destination',
+      label: t('pages.projectDetail.destination'),
+      value: project.destination ? getProjectDestinationLabel(project.destination, lang) : '',
+    },
+    { key: 'mandante', label: t('pages.projectDetail.mandante'), value: project.mandante },
     { key: 'architect', label: t('pages.projectDetail.architect'), value: project.architect },
     { key: 'structural', label: t('pages.projectDetail.structuralEngineer'), value: project.structural_engineer },
     { key: 'year', label: t('pages.projectDetail.year'), value: project.year },
     { key: 'area', label: t('pages.projectDetail.m2'), value: project.area_m2 ? `${project.area_m2} m²` : '' },
-  ].filter((item) => item.value)
+  ]
+    .map((item) => ({ ...item, value: normalizeFactValue(item.value) }))
+    .filter((item) => item.value)
   const activeLightboxImage = lightboxIndex !== null ? galleryImages[lightboxIndex] : null
   const relatedTitle = lang === 'en' ? 'Related projects' : 'Proyectos relacionados'
   const relatedCopy = lang === 'en'
@@ -199,21 +212,21 @@ export default function ProjectPage() {
               </div>
             ))}
 
-            <details className="project-fact-row project-fact-expand" open={specialistsList.length > 0}>
-              <summary className="project-fact-summary">
-                <span className="project-fact-label">{t('pages.projectDetail.specialists')}</span>
-                <span className="project-fact-value">
-                  {specialistsList.length > 0 ? `${specialistsList.length} ${t('pages.projectDetail.specialists').toLowerCase()}` : t('pages.projectDetail.undefined')}
-                </span>
-              </summary>
-              {specialistsList.length > 0 ? (
+            {specialistsList.length > 0 ? (
+              <details className="project-fact-row project-fact-expand" open>
+                <summary className="project-fact-summary">
+                  <span className="project-fact-label">{t('pages.projectDetail.specialists')}</span>
+                  <span className="project-fact-value">
+                    {`${specialistsList.length} ${t('pages.projectDetail.specialists').toLowerCase()}`}
+                  </span>
+                </summary>
                 <div className="project-fact-panel" role="list">
                   {specialistsList.map((specialist) => (
                     <p key={specialist} role="listitem">{specialist}</p>
                   ))}
                 </div>
-              ) : null}
-            </details>
+              </details>
+            ) : null}
           </aside>
         </div>
 

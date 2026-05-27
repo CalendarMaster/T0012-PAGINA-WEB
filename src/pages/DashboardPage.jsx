@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { supabase } from '../lib/supabaseClient'
 import { userHasDashboardAccess } from '../lib/accessControl'
-import { getProjectCategoryLabel, normalizeProjectCategory, PROJECT_CATEGORY_OPTIONS } from '../lib/projectCategories'
+import {
+  getProjectCategoryLabel,
+  normalizeProjectCategory,
+  normalizeProjectDestination,
+  PROJECT_CATEGORY_OPTIONS,
+  PROJECT_DESTINATION_OPTIONS,
+} from '../lib/projectCategories'
 import LoadingLoop from '../components/LoadingLoop'
 
 const EMPTY_FORM = {
@@ -10,6 +16,8 @@ const EMPTY_FORM = {
   title: '',
   slug: '',
   category: 'bim_proyecto',
+  destination: '',
+  mandante: '',
   architect: '',
   structural_engineer: '',
   specialists: [''],
@@ -361,6 +369,47 @@ export default function DashboardPage() {
     }
   }
 
+  const saveProjectWithFallback = async ({ projectId, payload, userId }) => {
+    const executeMutation = async (nextPayload) => {
+      if (projectId) {
+        return supabase
+          .from('projects')
+          .update(nextPayload)
+          .eq('id', projectId)
+          .select('id')
+          .single()
+      }
+
+      return supabase
+        .from('projects')
+        .insert({ ...nextPayload, created_by: userId })
+        .select('id')
+        .single()
+    }
+
+    let response = await executeMutation(payload)
+    if (!response.error) return response
+
+    const errorText = `${response.error.message || ''} ${response.error.details || ''} ${response.error.hint || ''}`.toLowerCase()
+    const fallbackPayload = { ...payload }
+    let shouldRetry = false
+
+    if (errorText.includes('destination')) {
+      delete fallbackPayload.destination
+      shouldRetry = true
+    }
+
+    if (errorText.includes('mandante')) {
+      delete fallbackPayload.mandante
+      shouldRetry = true
+    }
+
+    if (!shouldRetry) return response
+
+    response = await executeMutation(fallbackPayload)
+    return response
+  }
+
   const handleSave = async (event) => {
     event.preventDefault()
     setStatus({ type: 'idle', message: '' })
@@ -392,6 +441,8 @@ export default function DashboardPage() {
         title: form.title.trim(),
         slug: normalizedSlug,
         category: normalizeProjectCategory(form.category),
+        destination: normalizeProjectDestination(form.destination) || null,
+        mandante: form.mandante.trim() || null,
         architect: form.architect.trim() || null,
         structural_engineer: form.structural_engineer.trim() || null,
         specialists: sanitizedSpecialists,
@@ -404,25 +455,14 @@ export default function DashboardPage() {
         sort_order: Number.parseInt(form.sort_order, 10) || 0,
         is_published: form.is_published,
       }
+      const response = await saveProjectWithFallback({
+        projectId: form.id,
+        payload,
+        userId: state.userId,
+      })
 
-      if (form.id) {
-        const response = await supabase
-          .from('projects')
-          .update(payload)
-          .eq('id', form.id)
-          .select('id')
-          .single()
-        savedProjectId = response.data?.id || form.id
-        error = response.error
-      } else {
-        const response = await supabase
-          .from('projects')
-          .insert({ ...payload, created_by: state.userId })
-          .select('id')
-          .single()
-        savedProjectId = response.data?.id
-        error = response.error
-      }
+      savedProjectId = response.data?.id || form.id
+      error = response.error
 
       if (!error) {
         await uploadGalleryFiles(savedProjectId, normalizedSlug)
@@ -466,6 +506,8 @@ export default function DashboardPage() {
       title: project.title || '',
       slug: project.slug || '',
       category: normalizeProjectCategory(project.category) || 'bim_proyecto',
+      destination: normalizeProjectDestination(project.destination),
+      mandante: project.mandante || '',
       architect: project.architect || '',
       structural_engineer: project.structural_engineer || '',
       specialists: Array.isArray(project.specialists) && project.specialists.length > 0 ? project.specialists : [''],
@@ -673,6 +715,23 @@ export default function DashboardPage() {
                     <option key={option.value} value={option.value}>{option.label}</option>
                   ))}
                 </select>
+
+                <label htmlFor="destination">Destino de recinto</label>
+                <select id="destination" name="destination" value={form.destination} onChange={handleFieldChange}>
+                  <option value="">Sin destino</option>
+                  {PROJECT_DESTINATION_OPTIONS.map((option) => (
+                    <option key={option.value} value={option.value}>{option.label}</option>
+                  ))}
+                </select>
+
+                <label htmlFor="mandante">Mandante</label>
+                <input
+                  id="mandante"
+                  name="mandante"
+                  value={form.mandante}
+                  onChange={handleFieldChange}
+                  placeholder="Nombre del mandante"
+                />
 
                 <div className="dashboard-row">
                   <div>

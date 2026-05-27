@@ -1,6 +1,50 @@
 import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../lib/i18n.jsx'
 
+function SocialIcon({ kind }) {
+  const commonProps = {
+    className: 'footer-social-icon',
+    viewBox: '0 0 24 24',
+    fill: 'none',
+    'aria-hidden': 'true',
+  }
+
+  if (kind === 'youtube') {
+    return (
+      <svg {...commonProps}>
+        <rect x="3" y="6" width="18" height="12" rx="4" stroke="currentColor" strokeWidth="1.8" />
+        <path d="M10 9.5L15 12L10 14.5V9.5Z" fill="currentColor" />
+      </svg>
+    )
+  }
+
+  if (kind === 'facebook') {
+    return (
+      <svg {...commonProps}>
+        <path d="M13.2 21V13.2H15.8L16.2 10.2H13.2V8.3C13.2 7.43 13.46 6.84 14.71 6.84H16.3V4.15C16.02 4.11 15.04 4 13.9 4C11.53 4 9.9 5.39 9.9 8.09V10.2H7.3V13.2H9.9V21H13.2Z" fill="currentColor" />
+      </svg>
+    )
+  }
+
+  if (kind === 'linkedin') {
+    return (
+      <svg {...commonProps}>
+        <path d="M7 9.5V18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+        <path d="M12 18V13.1C12 11.75 12.87 10.8 14.15 10.8C15.43 10.8 16 11.66 16 13.1V18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M12 12C12.45 11.1 13.38 10.2 14.9 10.2C17.1 10.2 18.3 11.67 18.3 14.38V18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+        <circle cx="7" cy="6.7" r="1.25" fill="currentColor" />
+      </svg>
+    )
+  }
+
+  return (
+    <svg {...commonProps}>
+      <rect x="3.5" y="5.5" width="17" height="13" rx="2.5" stroke="currentColor" strokeWidth="1.8" />
+      <path d="M5.5 7L12 12L18.5 7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
 export default function Footer() {
   const currentYear = new Date().getFullYear()
   const { pathname } = useLocation()
@@ -35,8 +79,44 @@ export default function Footer() {
 
           <div className="footer-column" aria-label="Canales de contacto">
             <h3>{t('footer.columns.contact')}</h3>
-            <a href="mailto:contacto@mistudio.cl">contacto@mistudio.cl</a>
+            <a href="mailto:contacto@mistudio.cl">contacto@mi-studio.cl</a>
             <a href="tel:+56977666150">+56 9 7766 6150</a>
+            <div className="footer-socials" aria-label={t('footer.socialLabel')}>
+              <span className="footer-socials-title">{t('footer.socialLabel')}</span>
+              <div className="footer-socials-list">
+                <a
+                  className="footer-social-link"
+                  href="https://www.youtube.com/@modelointegradostudio2985"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <SocialIcon kind="youtube" />
+                  YouTube
+                </a>
+                <a
+                  className="footer-social-link"
+                  href="https://www.facebook.com/modelointegradostudio/?locale=es_LA"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <SocialIcon kind="facebook" />
+                  Facebook
+                </a>
+                <a
+                  className="footer-social-link"
+                  href="https://cl.linkedin.com/company/modelo-integrado-estudio"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <SocialIcon kind="linkedin" />
+                  LinkedIn
+                </a>
+                <a className="footer-social-link" href="mailto:contacto@mi-studio.cl">
+                  <SocialIcon kind="gmail" />
+                  Gmail
+                </a>
+              </div>
+            </div>
             <div className="footer-address" aria-label="Dirección corporativa">
               <span className="footer-address-label">{t('footer.address.label')}</span>
               <strong>Suecia 172</strong>

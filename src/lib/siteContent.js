@@ -3,11 +3,11 @@ const SERVICES_BIM_DETAILS_ES = [
     id: 'gerenciamiento-proyecto',
     title: 'Gerenciamiento de Proyecto',
     description:
-      'Lideramos proyectos desde una vision integral y estrategica, articulando equipos, plazos, costos y objetivos mediante metodologia BIM colaborativa. Nuestra gestion se basa en datos y permite anticipar desviaciones, maximizando la eficiencia y minimizando los riesgos.',
+      'Lideramos proyectos desde una visión integral y estratégica, articulando equipos, plazos, costos y objetivos mediante un sistema colaborativo de Information Management. Nuestra gestión se basa en datos y permite anticipar desviaciones, maximizando la eficiencia y minimizando riesgos.',
   },
   {
     id: 'diseno',
-    title: 'Diseno',
+    title: 'Diseño',
     description:
       'Integramos diseno arquitectonico y MEP con precision digital, asegurando coherencia entre la intencion proyectual y su ejecucion. Tomamos decisiones en base a datos e informacion, aplicando criterios de optimizacion espacial, constructiva y de operacion futura.',
   },
@@ -19,61 +19,61 @@ const SERVICES_BIM_DETAILS_ES = [
   },
   {
     id: 'coordinacion',
-    title: 'Coordinacion',
+    title: 'Coordinación',
     description:
-      'Estructuramos la colaboracion entre disciplinas mediante entornos de datos comunes (CDE) y flujos BIM. Detectamos interferencias anticipadamente proponiendo soluciones, asegurando consistencia tecnica y constructibilidad.',
+      'Estructuramos la colaboración entre disciplinas mediante entornos de datos comunes (CDE) y flujos de Information Management. Detectamos interferencias anticipadamente, proponiendo soluciones y asegurando consistencia técnica y constructibilidad.',
   },
   {
     id: 'simulacion',
-    title: 'Simulacion',
+    title: 'Simulación',
     description:
       'Aplicamos simulaciones predictivas para evaluar desempeno energetico, flujos operacionales, tiempos y secuencias constructivas. Esto permite validar escenarios y optimizar decisiones con impacto real en costos, tiempos y sostenibilidad.',
   },
   {
     id: 'evaluacion',
-    title: 'Evaluacion',
+    title: 'Evaluación',
     description:
       'Desarrollamos analisis que consideran aspectos tecnicos, economicos y normativos. Nuestra evaluacion orienta decisiones estrategicas, facilitando comparativas objetivas y vision global del proyecto, para decisiones financieras, constructivas y programaticas.',
   },
   {
     id: 'documentacion',
-    title: 'Documentacion',
+    title: 'Documentación',
     description:
-      'Producimos documentacion tecnica directamente desde los modelos BIM como fuente unica de informacion, asegurando precision, trazabilidad y actualizacion constante. Esto reduce errores y acelera procesos de revision y aprobacion.',
+      'Producimos documentación técnica desde modelos coordinados como fuente única de información, asegurando precisión, trazabilidad y actualización constante. Esto reduce errores y acelera procesos de revisión y aprobación.',
   },
   {
     id: 'programacion',
-    title: 'Programacion',
+    title: 'Programación',
     description:
       'Integramos la planificacion temporal (4D) y financiera (5D) con el modelo digital para visualizar la secuencia constructiva, anticipar conflictos y ajustar la logistica en funcion de escenarios reales.',
   },
   {
     id: 'visualizacion',
-    title: 'Visualizacion',
+    title: 'Visualización',
     description:
       'Desarrollamos imagenes, videos y recorridos virtuales que permiten comunicar eficazmente el proyecto a publicos tecnicos y no tecnicos. Esto potencia la comprension de lo proyectado, la toma de decisiones, validacion y venta de proyectos.',
   },
   {
     id: 'seguimiento-obra',
-    title: 'Seguimiento de Obra',
+    title: 'Seguimiento en Obra',
     description:
-      'Administramos y actualizamos los modelos BIM y CDE en obra para una correcta interpretacion de lo proyectado. Monitoreamos el avance fisico y comparativo mediante herramientas BIM y extraccion de datos, alineando lo ejecutado con lo proyectado.',
+      'Administramos y actualizamos modelos y CDE en obra para una correcta interpretación de lo proyectado. Monitoreamos el avance físico y comparativo mediante herramientas de información, alineando lo ejecutado con lo proyectado.',
   },
   {
     id: 'facility-management',
     title: 'Facility Management',
     description:
-      'Estructuramos y preparamos modelos y sistemas que permiten la operacion y mantenimiento eficiente de activos construidos. Convertimos el BIM en una plataforma de gestion post entrega, aportando continuidad de valor al cliente.',
+      'Estructuramos y preparamos modelos y sistemas que permiten la operación y mantenimiento eficiente de activos construidos. Convertimos la información del proyecto en una plataforma de gestión post-entrega, aportando continuidad de valor al cliente.',
   },
   {
     id: 'implementacion',
-    title: 'Implementacion',
+    title: 'Implementación',
     description:
-      'Acompanamos a empresas y equipos en su transicion hacia BIM, con foco en resultados, eficiencia y autonomia. Disenamos procesos, estandares y estructuras que se adaptan al contexto y objetivos del cliente.',
+      'Acompañamos a empresas y equipos en su transición hacia Information Management, con foco en resultados, eficiencia y autonomía. Diseñamos procesos, estándares y estructuras que se adaptan al contexto y objetivos del cliente.',
   },
   {
     id: 'administracion-cde',
-    title: 'Administracion de CDE (Common Data Environment)',
+    title: 'Administración de CDE (Common Data Environment)',
     description:
       'Estructuramos, configuramos y gestionamos entornos digitales centralizados para el manejo seguro, colaborativo y fluido de la informacion del proyecto. Esto garantiza trazabilidad, control documental y transparencia.',
   },
@@ -84,7 +84,7 @@ const SERVICES_BIM_DETAILS_EN = [
     id: 'gerenciamiento-proyecto',
     title: 'Project Management',
     description:
-      'We lead projects from a strategic and integral perspective, coordinating teams, timelines, costs, and goals through collaborative BIM methodology. Our management is data-driven, allowing us to anticipate deviations, maximize efficiency, and minimize risk.',
+      'We lead projects from a strategic and integral perspective, coordinating teams, timelines, costs, and goals through a collaborative Information Management system. Our management is data-driven, allowing us to anticipate deviations, maximize efficiency, and minimize risk.',
   },
   {
     id: 'diseno',
@@ -102,7 +102,7 @@ const SERVICES_BIM_DETAILS_EN = [
     id: 'coordinacion',
     title: 'Coordination',
     description:
-      'We structure collaboration across disciplines through common data environments (CDE) and BIM workflows. We detect clashes early and propose solutions, ensuring technical consistency and constructability.',
+      'We structure collaboration across disciplines through common data environments (CDE) and Information Management workflows. We detect clashes early and propose solutions, ensuring technical consistency and constructability.',
   },
   {
     id: 'simulacion',
@@ -120,7 +120,7 @@ const SERVICES_BIM_DETAILS_EN = [
     id: 'documentacion',
     title: 'Documentation',
     description:
-      'We produce technical documentation directly from BIM models as a single source of truth, ensuring precision, traceability, and constant updates. This reduces errors and accelerates review and approval workflows.',
+      'We produce technical documentation from coordinated models as a single source of truth, ensuring precision, traceability, and constant updates. This reduces errors and accelerates review and approval workflows.',
   },
   {
     id: 'programacion',
@@ -138,19 +138,19 @@ const SERVICES_BIM_DETAILS_EN = [
     id: 'seguimiento-obra',
     title: 'Construction Follow-up',
     description:
-      'We manage and update BIM and CDE models on site for accurate interpretation of what was designed. We monitor physical progress and comparisons through BIM tools and data extraction, aligning execution with design intent.',
+      'We manage and update CDE-based project models on site for accurate interpretation of what was designed. We monitor physical progress and comparisons through information tools and data extraction, aligning execution with design intent.',
   },
   {
     id: 'facility-management',
     title: 'Facility Management',
     description:
-      'We structure and prepare models and systems that enable efficient operation and maintenance of built assets. We turn BIM into a post-delivery management platform, extending value over time.',
+      'We structure and prepare models and systems that enable efficient operation and maintenance of built assets. We turn project information into a post-delivery management platform, extending value over time.',
   },
   {
     id: 'implementacion',
     title: 'Implementation',
     description:
-      'We support companies and teams in their BIM transition, focusing on outcomes, efficiency, and autonomy. We design processes, standards, and structures adapted to each client context and objectives.',
+      'We support companies and teams in their Information Management transition, focusing on outcomes, efficiency, and autonomy. We design processes, standards, and structures adapted to each client context and objectives.',
   },
   {
     id: 'administracion-cde',
@@ -162,7 +162,7 @@ const SERVICES_BIM_DETAILS_EN = [
 
 const ABOUT_CONTENT_ES = {
   history:
-    'Nacimos desde la practica de arquitectura, ingenieria y construccion para resolver una brecha concreta: proyectos con gran esfuerzo tecnico, pero con informacion fragmentada para decidir. Evolucionamos hacia un enfoque de data management BIM donde cada etapa deja trazabilidad, continuidad y valor operativo para el cliente.',
+    'Nacimos desde la práctica de arquitectura, ingeniería y construcción para resolver una brecha concreta: proyectos con gran esfuerzo técnico, pero con información fragmentada para decidir. Evolucionamos hacia un enfoque de Information Management donde cada etapa deja trazabilidad, continuidad y valor operativo para el cliente.',
   mission:
     '"Optimizar los procesos y mejorar la toma de decisiones, entregando soluciones integrales y personalizadas maximizando el valor para nuestros clientes."',
   vision:
@@ -195,12 +195,12 @@ const ABOUT_CONTENT_ES = {
     },
   ],
   team:
-    'Equipo colaborativo multidisciplinario enfocado en arquitectura, ingenieria, coordinacion BIM y gestion de informacion para proyectos de alta exigencia tecnica.',
+    'Equipo colaborativo multidisciplinario enfocado en arquitectura, ingeniería, coordinación de información y gestión documental para proyectos de alta exigencia técnica.',
 }
 
 const ABOUT_CONTENT_EN = {
   history:
-    'We were born from architecture, engineering, and construction practice to solve a concrete gap: technically demanding projects with fragmented information for decision-making. We evolved toward a BIM data management approach where every stage creates traceability, continuity, and long-term operational value for the client.',
+    'We were born from architecture, engineering, and construction practice to solve a concrete gap: technically demanding projects with fragmented information for decision-making. We evolved toward an Information Management approach where every stage creates traceability, continuity, and long-term operational value for the client.',
   mission:
     'Optimize processes and improve decision-making by delivering integrated and tailored solutions that maximize value for our clients.',
   vision:
@@ -233,7 +233,7 @@ const ABOUT_CONTENT_EN = {
     },
   ],
   team:
-    'A multidisciplinary collaborative team focused on architecture, engineering, BIM coordination, and information management for high-demand technical projects.',
+    'A multidisciplinary collaborative team focused on architecture, engineering, information coordination, and information management for high-demand technical projects.',
 }
 
 export const SERVICES_BIM_DETAILS = SERVICES_BIM_DETAILS_ES

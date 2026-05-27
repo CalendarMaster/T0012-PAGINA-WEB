@@ -13,6 +13,10 @@ const MEMBER_LOGOS = [
     name: 'Asociacion de Oficinas de Arquitectos',
     src: '/assets/miembros/logoaoa_web2024.png',
   },
+  {
+    name: 'buildingSMART International',
+    src: '/assets/miembros/buildingSMART International logo - color.png',
+  },
 ]
 
 export default function Members() {
@@ -24,7 +28,10 @@ export default function Members() {
         <p className="members-strip-label">{t('servicesHome.membersLabel')}</p>
         <ul className="members-strip-logos">
           {MEMBER_LOGOS.map((member) => (
-            <li key={member.name}>
+            <li
+              key={member.name}
+              className={member.name === 'buildingSMART International' ? 'is-buildingsmart' : ''}
+            >
               <img src={member.src} alt={member.name} loading="lazy" />
             </li>
           ))}
