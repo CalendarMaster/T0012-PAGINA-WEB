@@ -81,6 +81,9 @@ export default function Portfolio({ minimal = false, maxItems }) {
           destination: item.destination || '',
           cover_url: item.cover_url,
           summary: item.summary,
+          challenge: item.challenge || '',
+          intervention: item.intervention || '',
+          result: item.result || '',
           is_published: item.is_published,
           sort_order: Number.isFinite(item.sort_order) ? item.sort_order : null,
           created_at: item.created_at || null,
@@ -236,7 +239,30 @@ export default function Portfolio({ minimal = false, maxItems }) {
               <div className="portafolio_card_back">
                 <h3 className="portafolio_card_title">{p.title}</h3>
                 <p className="portafolio_card_cat">{getProjectCategoryLabel(p.category, lang)}</p>
-                <p className="portafolio_card_summary">{p.summary || t('portfolio.fallbackSummary')}</p>
+                {p.challenge || p.intervention || p.result ? (
+                  <div className="portafolio_card_story">
+                    {p.challenge && (
+                      <div className="portafolio_story_item">
+                        <span className="portafolio_story_label">{t('portfolio.storyChallenge')}</span>
+                        <p>{p.challenge}</p>
+                      </div>
+                    )}
+                    {p.intervention && (
+                      <div className="portafolio_story_item">
+                        <span className="portafolio_story_label">{t('portfolio.storyIntervention')}</span>
+                        <p>{p.intervention}</p>
+                      </div>
+                    )}
+                    {p.result && (
+                      <div className="portafolio_story_item">
+                        <span className="portafolio_story_label">{t('portfolio.storyResult')}</span>
+                        <p>{p.result}</p>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <p className="portafolio_card_summary">{p.summary || t('portfolio.fallbackSummary')}</p>
+                )}
                 <Link className="portafolio_card_btn" to={`/proyectos/${p.slug}`}>
                   {t('portfolio.seeMore')}
                 </Link>

@@ -516,6 +516,16 @@ body {
   font-size: clamp(17px, 1.45vw, 19px);
 }
 
+.hero-audience {
+  max-width: 560px;
+  margin: 8px 0 0;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -975,6 +985,43 @@ body {
   overflow: hidden;
 }
 
+.portafolio_card_story {
+  width: 100%;
+  margin: 0 0 14px;
+  text-align: left;
+}
+
+.portafolio_story_item {
+  padding: 5px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.portafolio_story_item:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
+.portafolio_story_label {
+  display: block;
+  margin-bottom: 2px;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+.portafolio_story_item p {
+  margin: 0;
+  font-size: clamp(7px, 0.65vw, 8.5px);
+  line-height: 1.32;
+  opacity: 0.92;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .portafolio_notice {
   grid-column: 1 / -1;
   margin: 0;
@@ -1014,6 +1061,54 @@ body {
 .services-section .section-head h2,
 .trust-section .section-head h2 {
   color: var(--black);
+}
+
+.services-subtitle {
+  margin: 14px 0 0;
+  color: var(--muted);
+  font-size: clamp(16px, 1.4vw, 19px);
+  line-height: 1.4;
+  max-width: 560px;
+}
+
+.services-quad {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.services-quad article {
+  padding: clamp(24px, 3vw, 40px);
+  background: var(--white);
+  transition: opacity 0.25s ease;
+}
+
+.services-quad:has(article:hover) article:not(:hover) {
+  opacity: 0.45;
+}
+
+.services-quad .svc-index {
+  display: block;
+  margin-bottom: 18px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--teal);
+  letter-spacing: 0.04em;
+}
+
+.services-quad h3 {
+  margin: 0 0 12px;
+  font-size: clamp(18px, 1.8vw, 24px);
+  line-height: 1.1;
+  color: var(--black);
+}
+
+.services-quad p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--muted);
 }
 
 .service-grid,
@@ -1170,12 +1265,34 @@ body {
 
 .service-grid article,
 .faq-grid article {
-  min-height: 240px;
   padding: 22px;
   background: var(--white);
   color: var(--black);
   border: 1px solid var(--line);
   border-radius: 6px;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.faq-grid article:hover,
+.faq-grid article.is-open {
+  border-color: var(--teal);
+}
+
+.faq-answer {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.faq-answer.is-open {
+  grid-template-rows: 1fr;
+}
+
+.faq-answer p {
+  min-height: 0;
+  overflow: hidden;
+  margin: 10px 0 0 !important;
 }
 
 .service-grid span {
@@ -1186,16 +1303,22 @@ body {
 
 .service-grid h3,
 .faq-grid h3 {
-  margin: 20px 0 10px;
+  margin: 0;
   color: var(--black);
-  font-size: 22px;
-  line-height: 1.08;
+  font-size: clamp(15px, 1.3vw, 18px);
+  line-height: 1.3;
+  font-weight: 700;
 }
 
 .service-grid p,
 .faq-grid p {
   margin: 0;
   color: var(--muted);
+}
+
+.service-copy {
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 .process-list {
@@ -1273,49 +1396,125 @@ body {
 
 .contact-section {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 440px);
-  gap: 42px;
+  grid-template-columns: minmax(0, 1fr) minmax(380px, 560px);
+  gap: 52px;
   align-items: start;
+}
+
+.contact-copy {
+  margin: 16px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 18px;
+}
+
+.contact-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 20px 0 0;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
 }
 
 .contact-form {
   display: grid;
-  gap: 14px;
-  padding: 20px;
+  gap: 12px;
+  padding: 24px;
   border: 1px solid var(--line);
   border-radius: 6px;
 }
 
-.contact-form label {
+.contact-row {
   display: grid;
-  gap: 6px;
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 13px;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.contact-label {
+  display: grid;
+  gap: 5px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 11px;
   font-weight: 800;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .contact-form input,
+.contact-form select,
 .contact-form textarea {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 4px;
-  padding: 11px 12px;
+  padding: 10px 12px;
   color: var(--black);
   background: var(--white);
+  font-size: 14px;
+  font-family: inherit;
+}
+
+.contact-form select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+  cursor: pointer;
 }
 
 .contact-form input:focus,
+.contact-form select:focus,
 .contact-form textarea:focus {
   outline: 2px solid var(--teal);
   outline-offset: 2px;
 }
 
-.contact-form button {
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+.contact-submit {
+  flex: 1 1 auto;
   border: 0;
   color: var(--white);
   background: var(--orange);
   cursor: pointer;
+  font-size: 14px;
+}
+
+.contact-wa {
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.contact-download {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  flex-wrap: wrap;
+}
+
+.contact-download-label {
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 12px;
+  line-height: 1.4;
+  flex: 1 1 200px;
+}
+
+.contact-download-link {
+  color: var(--teal);
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.contact-download-link:hover {
+  text-decoration: underline;
 }
 
 .site-footer {
@@ -1512,6 +1711,16 @@ body {
   font-size: 10px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.footer-team-access {
+  opacity: 0.3;
+  font-size: 9px;
+  transition: opacity 0.2s ease;
+}
+
+.footer-team-access:hover {
+  opacity: 0.7;
 }
 
 .site-footer a {
@@ -2395,7 +2604,7 @@ body {
   grid-template-columns: repeat(12, minmax(0, 1fr));
   grid-auto-rows: clamp(36px, 4.6vw, 60px);
   grid-auto-flow: dense;
-  gap: 8px;
+  gap: clamp(12px, 1.3vw, 18px);
 }
 
 .project-mosaic-item {
@@ -2599,14 +2808,19 @@ body {
     var(--color-paper, #fdfaf3);
 }
 
-.projects-catalog-head {
+.projects-catalog-head,
+.services-page-head {
   width: min(var(--max), calc(100% - 36px));
   margin: 0 auto;
+  display: grid;
+  gap: 10px;
   padding: clamp(22px, 2.8vw, 34px) 0 clamp(4px, 0.8vw, 10px);
 }
 
-.projects-catalog-head h1 {
+.projects-catalog-head h1,
+.services-page-head h1 {
   margin: 0;
+  max-width: none;
   color: var(--color-arm, #1e3934);
   font-size: clamp(36px, 6vw, 88px);
   line-height: 0.9;
@@ -2681,21 +2895,6 @@ body {
 .services-jump-link:hover::after,
 .services-jump-link:focus-visible::after {
   opacity: 1;
-}
-
-.services-page-head {
-  width: min(var(--max), calc(100% - 36px));
-  margin: 0 auto;
-  padding: clamp(22px, 2.8vw, 34px) 0 clamp(4px, 0.8vw, 10px);
-}
-
-.services-page-head h1 {
-  margin: 0;
-  max-width: none;
-  color: var(--color-arm, #1e3934);
-  font-size: clamp(36px, 6vw, 88px);
-  line-height: 0.9;
-  text-transform: uppercase;
 }
 
 .services-stream {
@@ -3489,7 +3688,8 @@ body {
     grid-auto-rows: 220px;
   }
 
-  .projects-catalog-head h1 {
+  .projects-catalog-head h1,
+  .services-page-head h1 {
     font-size: clamp(30px, 8vw, 56px);
     line-height: 0.95;
   }
@@ -3497,6 +3697,19 @@ body {
   .contact-section,
   .trust-layout {
     grid-template-columns: 1fr;
+  }
+
+  .contact-row {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-actions {
+    flex-direction: column;
+  }
+
+  .contact-submit,
+  .contact-wa {
+    text-align: center;
   }
 
   .dashboard-home-top,
@@ -3558,6 +3771,10 @@ body {
 }
 
 @media (max-width: 620px) {
+  .services-quad {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .site-header {
     min-height: 64px;
     gap: 12px;
@@ -3817,7 +4034,8 @@ body {
     grid-auto-rows: 220px;
   }
 
-  .projects-catalog-head {
+  .projects-catalog-head,
+  .services-page-head {
     width: calc(100% - 24px);
     padding-top: 16px;
   }

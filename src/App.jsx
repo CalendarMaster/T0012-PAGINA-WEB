@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import Header from './components/Header'
 import Hero from './components/Hero'
@@ -10,12 +10,14 @@ import Members from './components/Members'
 import FAQ from './components/FAQ'
 import Contact from './components/Contact'
 import Footer from './components/Footer'
-import AuthPage from './pages/AuthPage'
-import DashboardPage from './pages/DashboardPage'
-import ProjectPage from './pages/ProjectPage'
-import ProjectsPage from './pages/ProjectsPage'
-import ServicesPage from './pages/ServicesPage'
-import AboutPage from './pages/AboutPage'
+
+const AuthPage = lazy(() => import('./pages/AuthPage'))
+const DashboardPage = lazy(() => import('./pages/DashboardPage'))
+const ProjectPage = lazy(() => import('./pages/ProjectPage'))
+const ProjectsPage = lazy(() => import('./pages/ProjectsPage'))
+const ServicesPage = lazy(() => import('./pages/ServicesPage'))
+const AboutPage = lazy(() => import('./pages/AboutPage'))
+const NewsPage = lazy(() => import('./pages/NewsPage'))
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation()
@@ -82,44 +84,54 @@ function App() {
   return (
     <>
       <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route
-          path="/proyectos"
-          element={(
-            <PublicLayout>
-              <ProjectsPage />
-            </PublicLayout>
-          )}
-        />
-        <Route
-          path="/proyectos/:slug"
-          element={(
-            <PublicLayout>
-              <ProjectPage />
-            </PublicLayout>
-          )}
-        />
-        <Route
-          path="/servicios"
-          element={(
-            <PublicLayout>
-              <ServicesPage />
-            </PublicLayout>
-          )}
-        />
-        <Route
-          path="/nosotros"
-          element={(
-            <PublicLayout>
-              <AboutPage />
-            </PublicLayout>
-          )}
-        />
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/dashboard" element={<DashboardPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      <Suspense fallback={<main className="content-page" />}>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/proyectos"
+            element={(
+              <PublicLayout>
+                <ProjectsPage />
+              </PublicLayout>
+            )}
+          />
+          <Route
+            path="/proyectos/:slug"
+            element={(
+              <PublicLayout>
+                <ProjectPage />
+              </PublicLayout>
+            )}
+          />
+          <Route
+            path="/servicios"
+            element={(
+              <PublicLayout>
+                <ServicesPage />
+              </PublicLayout>
+            )}
+          />
+          <Route
+            path="/nosotros"
+            element={(
+              <PublicLayout>
+                <AboutPage />
+              </PublicLayout>
+            )}
+          />
+          <Route
+            path="/noticias"
+            element={(
+              <PublicLayout>
+                <NewsPage />
+              </PublicLayout>
+            )}
+          />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </Suspense>
     </>
   )
 }

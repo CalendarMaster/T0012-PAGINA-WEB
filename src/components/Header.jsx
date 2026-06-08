@@ -58,6 +58,7 @@ export default function Header() {
         <Link to="/nosotros">{t('header.nav.about')}</Link>
         <a href={sectionHref('proceso')}>{t('header.nav.process')}</a>
         <a href={footerHref}>{t('header.nav.contact')}</a>
+        <Link to="/noticias">{t('header.nav.news')}</Link>
       </nav>
 
       <div className="header-tools" aria-label="Selector de idioma y contacto">

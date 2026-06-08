@@ -66,33 +66,25 @@ export default function Hero() {
             <span>{t('hero.titleLine2')}</span>
           </h1>
           <p className="hero-copy">{t('hero.copy')}</p>
+          <p className="hero-audience">{t('hero.audience')}</p>
           <div className="hero-actions" aria-label="Canales de contacto">
             <a
               className="button primary"
               href={`mailto:${CONTACT_EMAIL}`}
               onClick={handleContactEmailClick}
             >
-              {t('hero.ctaMeeting')}
+              {t('hero.ctaPrimary')}
             </a>
             <a className="button secondary" href="https://wa.me/56977666150">{t('hero.ctaWhatsapp')}</a>
           </div>
-        </div>
-        <div className="hero-distinctive" aria-label="Qué distingue la gestión integral de MI Studio">
-          <p className="distinctive-label">{t('hero.distinctiveLabel')}</p>
-          <div className="distinctive-grid">
-            <article>
-              <span>01</span>
-              <p>{t('hero.points.0')}</p>
-            </article>
-            <article>
-              <span>02</span>
-              <p>{t('hero.points.1')}</p>
-            </article>
-            <article>
-              <span>03</span>
-              <p>{t('hero.points.2')}</p>
-            </article>
-          </div>
+          <dl className="hero-proof">
+            {t('hero.kpis').map((kpi, i) => (
+              <div key={i}>
+                <dt>{kpi.value}</dt>
+                <dd>{kpi.label}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
     </section>

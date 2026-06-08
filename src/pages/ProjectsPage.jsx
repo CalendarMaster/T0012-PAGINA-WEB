@@ -6,7 +6,7 @@ export default function ProjectsPage() {
 
   return (
     <main className="projects-catalog-page" aria-labelledby="projects-page-title">
-      <section className="projects-catalog-head">
+      <section className="content-page-head projects-catalog-head">
         <p className="eyebrow">{t('pages.projects.eyebrow')}</p>
         <h1 id="projects-page-title">{t('pages.projects.title')}</h1>
       </section>

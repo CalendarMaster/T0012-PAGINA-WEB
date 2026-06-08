@@ -20,7 +20,7 @@ export default function LoadingLoop({ label = 'Cargando', compact = false }) {
                 x="400"
                 y="640"
                 fontFamily="var(--font-primary)"
-                fontStyle="italic"
+                fontStyle="regular"
                 fontSize="44"
                 textAnchor="middle"
                 letterSpacing="5"

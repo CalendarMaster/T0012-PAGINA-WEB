@@ -68,7 +68,7 @@ export default function Footer() {
       <div className="footer-shell">
         <section className="footer-topline" aria-label="Presentación institucional">
           <p className="footer-kicker">MI STUDIO · MODELO INTEGRADO</p>
-          <a className="footer-cta" href={`mailto:${CONTACT_EMAIL}`} onClick={handleContactEmailClick}>{t('footer.cta')}</a>
+          <a className="footer-cta" href={sectionHref('contacto')}>{t('footer.cta')}</a>
         </section>
 
         <div className="footer-columns" aria-label="Navegación secundaria">
@@ -97,24 +97,6 @@ export default function Footer() {
               <div className="footer-socials-list">
                 <a
                   className="footer-social-link"
-                  href="https://www.youtube.com/@modelointegradostudio2985"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <SocialIcon kind="youtube" />
-                  YouTube
-                </a>
-                <a
-                  className="footer-social-link"
-                  href="https://www.facebook.com/modelointegradostudio/?locale=es_LA"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <SocialIcon kind="facebook" />
-                  Facebook
-                </a>
-                <a
-                  className="footer-social-link"
                   href="https://cl.linkedin.com/company/modelo-integrado-estudio"
                   target="_blank"
                   rel="noreferrer"
@@ -131,9 +113,14 @@ export default function Footer() {
                   <SocialIcon kind="instagram" />
                   Instagram
                 </a>
-                <a className="footer-social-link" href={`mailto:${CONTACT_EMAIL}`} onClick={handleContactEmailClick}>
-                  <SocialIcon kind="gmail" />
-                  Gmail
+                <a
+                  className="footer-social-link"
+                  href="https://www.youtube.com/@modelointegradostudio2985"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <SocialIcon kind="youtube" />
+                  YouTube
                 </a>
               </div>
             </div>
@@ -149,7 +136,6 @@ export default function Footer() {
                 {t('footer.address.map')}
               </a>
             </div>
-            <Link to="/auth">{t('footer.teamAccess')}</Link>
           </div>
         </div>
 
@@ -161,6 +147,7 @@ export default function Footer() {
       <div className="footer-bottom">
         <span>© {currentYear} MI Studio. {t('footer.rights')}</span>
         <span>{t('footer.policy')}</span>
+        <Link to="/auth" className="footer-team-access">{t('footer.teamAccess')}</Link>
       </div>
     </footer>
   )
