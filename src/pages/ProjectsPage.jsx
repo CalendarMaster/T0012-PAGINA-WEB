@@ -9,6 +9,7 @@ export default function ProjectsPage() {
       <section className="content-page-head projects-catalog-head">
         <p className="eyebrow">{t('pages.projects.eyebrow')}</p>
         <h1 id="projects-page-title">{t('pages.projects.title')}</h1>
+        <p className="services-catalog-lead">{t('pages.projects.lead')}</p>
       </section>
       <Portfolio minimal />
     </main>

@@ -1,162 +1,342 @@
 const SERVICES_BIM_DETAILS_ES = [
   {
     id: 'gerenciamiento-proyecto',
+    category: 'bim',
     title: 'Gerenciamiento de Proyecto',
+    tagline: 'Control estratégico',
     description:
-      'Lideramos proyectos desde una visión integral y estratégica, articulando equipos, plazos, costos y objetivos mediante un sistema colaborativo de Information Management. Nuestra gestión se basa en datos y permite anticipar desviaciones, maximizando la eficiencia y minimizando riesgos.',
+      'Lideramos proyectos desde una visión integral, articulando equipos, información, plazos, costos y objetivos mediante una estructura colaborativa de trabajo. Nuestro foco es anticipar desviaciones, ordenar decisiones críticas y mantener trazabilidad entre diseño, coordinación, licitación, construcción y operación.',
+    when:
+      'Cuando el proyecto requiere control estratégico, coordinación entre múltiples actores o una contraparte técnica que ordene la información para decidir.',
+    deliverables:
+      'Ruta de trabajo, matriz de responsabilidades, reportes de avance, control de acuerdos, seguimiento de riesgos, coordinación de equipos y recomendaciones ejecutivas.',
   },
   {
     id: 'diseno',
+    category: 'arquitectura',
     title: 'Diseño',
+    tagline: 'Arquitectura y desarrollo técnico',
     description:
-      'Integramos diseno arquitectonico y MEP con precision digital, asegurando coherencia entre la intencion proyectual y su ejecucion. Tomamos decisiones en base a datos e informacion, aplicando criterios de optimizacion espacial, constructiva y de operacion futura.',
+      'Desarrollamos diseño arquitectónico y técnico con foco en funcionalidad, constructibilidad, normativa, presupuesto e información útil para la toma de decisiones. Integramos criterios espaciales, operacionales y técnicos desde etapas tempranas para reducir indefiniciones y mejorar la continuidad hacia documentación, coordinación y obra.',
+    when:
+      'Cuando el proyecto requiere transformar una idea, requerimiento o programa en una solución arquitectónica viable, coordinable y documentable.',
+    deliverables:
+      'Anteproyecto, desarrollo arquitectónico, criterios técnicos, modelos de diseño, documentación base, imágenes de validación y coordinación con especialidades.',
   },
   {
     id: 'modelado',
-    title: 'Modelado',
+    category: ['bim', 'arquitectura'],
+    title: 'Modelado de Información',
+    tagline: 'Base de información',
     description:
-      'Generamos modelos inteligentes y multidimensionales que centralizan la informacion del proyecto, facilitando la coordinacion entre especialidades, reduciendo retrabajo y habilitando decisiones informadas desde etapas tempranas.',
+      'Desarrollamos modelos BIM por disciplina o integramos modelos existentes para centralizar información crítica del proyecto. No entendemos el modelo como un fin en sí mismo, sino como una base de datos útil para coordinar, cuantificar, documentar, revisar y tomar decisiones. El modelo entrega datos estructurados, no solo geometría.',
+    when:
+      'Cuando el proyecto necesita información estructurada, modelos confiables, integración de especialidades o una base técnica para coordinación, licitación u obra.',
+    deliverables:
+      'Modelos BIM, parámetros estructurados, modelos federados, reportes de revisión, extracción de datos, cuantificaciones y documentación asociada.',
   },
   {
     id: 'coordinacion',
-    title: 'Coordinación',
+    category: ['coordinacion', 'bim'],
+    title: 'Coordinación de Información',
+    tagline: 'Reducción de interferencias',
     description:
-      'Estructuramos la colaboración entre disciplinas mediante entornos de datos comunes (CDE) y flujos de Information Management. Detectamos interferencias anticipadamente, proponiendo soluciones y asegurando consistencia técnica y constructibilidad.',
+      'Coordinamos arquitectura, estructura, instalaciones y especialidades para detectar interferencias, priorizar conflictos y proponer soluciones antes de que lleguen a obra. La coordinación se basa en información trazable, modelos federados o integrados, reportes accionables y reuniones orientadas a resolver decisiones técnicas.',
+    when:
+      'Cuando existen múltiples especialidades, riesgo de interferencias, modelos desarrollados por terceros o necesidad de asegurar constructibilidad antes de licitar o construir.',
+    deliverables:
+      'Matriz de interferencias, reportes de coordinación, modelos federados, actas de acuerdos, propuestas de solución, control de pendientes y trazabilidad de decisiones.',
   },
   {
     id: 'simulacion',
+    category: 'coordinacion',
     title: 'Simulación',
+    tagline: 'Validación de escenarios',
     description:
-      'Aplicamos simulaciones predictivas para evaluar desempeno energetico, flujos operacionales, tiempos y secuencias constructivas. Esto permite validar escenarios y optimizar decisiones con impacto real en costos, tiempos y sostenibilidad.',
+      'Aplicamos simulaciones para evaluar escenarios de diseño, operación, secuencia constructiva, desempeño y uso del proyecto. Esto permite comparar alternativas antes de ejecutar, reduciendo incertidumbre y mejorando decisiones de costo, plazo, operación y sostenibilidad.',
+    when:
+      'Cuando el proyecto necesita validar alternativas, anticipar impactos o justificar decisiones técnicas frente a mandantes, usuarios o equipos de obra.',
+    deliverables:
+      'Modelos de simulación, análisis comparativos, reportes gráficos, escenarios evaluados y recomendaciones técnicas.',
   },
   {
     id: 'evaluacion',
+    category: 'arquitectura',
     title: 'Evaluación',
+    tagline: 'Diagnóstico técnico',
     description:
-      'Desarrollamos analisis que consideran aspectos tecnicos, economicos y normativos. Nuestra evaluacion orienta decisiones estrategicas, facilitando comparativas objetivas y vision global del proyecto, para decisiones financieras, constructivas y programaticas.',
+      'Evaluamos proyectos desde dimensiones técnicas, económicas, normativas y operacionales para entregar una visión objetiva antes de tomar decisiones críticas. Nuestra evaluación permite detectar brechas, riesgos, oportunidades de mejora y criterios de priorización para avanzar con mayor certeza.',
+    when:
+      'Cuando se necesita revisar la factibilidad, calidad técnica, consistencia documental, constructibilidad o estado de información de un proyecto.',
+    deliverables:
+      'Informe de diagnóstico, matriz de riesgos, revisión normativa, evaluación técnica, recomendaciones priorizadas y ruta de acción.',
   },
   {
     id: 'documentacion',
-    title: 'Documentación',
+    category: 'arquitectura',
+    title: 'Documentación Técnica',
+    tagline: 'Documentación para obra',
     description:
-      'Producimos documentación técnica desde modelos coordinados como fuente única de información, asegurando precisión, trazabilidad y actualización constante. Esto reduce errores y acelera procesos de revisión y aprobación.',
+      'Generamos documentación técnica consistente a partir de modelos coordinados e información validada. Nuestro objetivo es reducir errores, mantener trazabilidad entre modelo y planos, y acelerar procesos de revisión, aprobación, licitación y construcción.',
+    when:
+      'Cuando el proyecto requiere planos, entregables técnicos, expedientes de aprobación, documentación para licitación o información clara para obra.',
+    deliverables:
+      'Planos, láminas, detalles, especificaciones de apoyo, reportes, documentación para aprobación, licitación o construcción.',
   },
   {
     id: 'programacion',
-    title: 'Programación',
+    category: 'coordinacion',
+    title: 'Programación 4D/5D',
+    tagline: 'Plazo y costo integrados',
     description:
-      'Integramos la planificacion temporal (4D) y financiera (5D) con el modelo digital para visualizar la secuencia constructiva, anticipar conflictos y ajustar la logistica en funcion de escenarios reales.',
+      'Integramos planificación temporal y financiera con modelos digitales para visualizar secuencias constructivas, anticipar conflictos y analizar impactos en plazo y costo. La programación 4D/5D permite conectar diseño, obra, logística, avance físico y presupuesto en una base común de información.',
+    when:
+      'Cuando el proyecto requiere planificar etapas, visualizar avances, comparar escenarios o vincular información de modelo con plazo y costo.',
+    deliverables:
+      'Modelo 4D, secuencia constructiva, reportes de avance, vinculación modelo-programa, cuantificaciones base y análisis 5D.',
   },
   {
     id: 'visualizacion',
+    category: 'arquitectura',
     title: 'Visualización',
+    tagline: 'Comunicación del proyecto',
     description:
-      'Desarrollamos imagenes, videos y recorridos virtuales que permiten comunicar eficazmente el proyecto a publicos tecnicos y no tecnicos. Esto potencia la comprension de lo proyectado, la toma de decisiones, validacion y venta de proyectos.',
+      'Desarrollamos imágenes, videos y recorridos digitales para comunicar el proyecto a públicos técnicos y no técnicos. La visualización ayuda a validar decisiones, explicar soluciones, apoyar procesos comerciales y facilitar la comprensión del diseño antes de construir.',
+    when:
+      'Cuando el proyecto requiere comunicar valor, validar diseño, apoyar ventas, presentar ante mandantes o explicar decisiones complejas.',
+    deliverables:
+      'Imágenes, videos, recorridos virtuales, piezas para presentación, material de venta y visualizaciones de coordinación.',
   },
   {
     id: 'seguimiento-obra',
+    category: 'coordinacion',
     title: 'Seguimiento en Obra',
+    tagline: 'Control de ejecución',
     description:
-      'Administramos y actualizamos modelos y CDE en obra para una correcta interpretación de lo proyectado. Monitoreamos el avance físico y comparativo mediante herramientas de información, alineando lo ejecutado con lo proyectado.',
+      'Acompañamos la ejecución mediante modelos, CDE, reportes y control de información para contrastar lo proyectado con lo ejecutado. Monitoreamos avances, desviaciones, cambios y requerimientos de obra para mantener continuidad entre diseño, coordinación y construcción.',
+    when:
+      'Cuando la obra necesita información confiable, control de cambios, seguimiento técnico o soporte BIM permanente durante la ejecución (modelo As Built).',
+    deliverables:
+      'Reportes de avance, actualización de modelos As Built, control de observaciones, seguimiento de cambios, administración de información y soporte técnico a obra.',
   },
   {
     id: 'facility-management',
+    category: 'bim',
     title: 'Facility Management',
+    tagline: 'Continuidad post-entrega',
     description:
-      'Estructuramos y preparamos modelos y sistemas que permiten la operación y mantenimiento eficiente de activos construidos. Convertimos la información del proyecto en una plataforma de gestión post-entrega, aportando continuidad de valor al cliente.',
+      'Preparamos modelos, datos y estructuras de información para que el activo pueda ser operado, mantenido y actualizado después de la entrega. Convertimos la información generada durante diseño y construcción en una base útil para operación, mantenimiento y gestión futura.',
+    when:
+      'Cuando el mandante necesita continuidad de información post-entrega, operación eficiente o integración del modelo con procesos de mantenimiento.',
+    deliverables:
+      'Modelo para operación, estructura de datos, fichas de activos, parámetros FM, documentación organizada y criterios de actualización.',
   },
   {
     id: 'implementacion',
-    title: 'Implementación',
+    category: ['bim', 'arquitectura'],
+    title: 'Implementación BIM / IM',
+    tagline: 'Adopción BIM',
     description:
-      'Acompañamos a empresas y equipos en su transición hacia Information Management, con foco en resultados, eficiencia y autonomía. Diseñamos procesos, estándares y estructuras que se adaptan al contexto y objetivos del cliente.',
+      'Acompañamos a empresas y equipos en la adopción de BIM e Information Management con foco en resultados, eficiencia y autonomía. Diseñamos procesos, estándares, roles, flujos y estructuras de información adaptadas al contexto real de cada organización o proyecto.',
+    when:
+      'Cuando una empresa necesita ordenar su forma de trabajar, implementar estándares, mejorar coordinación o profesionalizar su gestión de información.',
+    deliverables:
+      'Diagnóstico, plan de implementación, estándares BIM, protocolos de información, plantillas, capacitaciones y acompañamiento.',
   },
   {
     id: 'administracion-cde',
-    title: 'Administración de CDE (Common Data Environment)',
+    category: ['bim', 'coordinacion'],
+    title: 'Administración de CDE',
+    tagline: 'Trazabilidad documental',
     description:
-      'Estructuramos, configuramos y gestionamos entornos digitales centralizados para el manejo seguro, colaborativo y fluido de la informacion del proyecto. Esto garantiza trazabilidad, control documental y transparencia.',
+      'Configuramos y administramos entornos comunes de datos para ordenar la información del proyecto, controlar versiones, permisos, flujos y trazabilidad documental. El CDE permite que equipos, mandantes y especialistas trabajen sobre información organizada, segura y actualizada.',
+    when:
+      'Cuando el proyecto tiene múltiples actores, documentos dispersos, versiones conflictivas o necesidad de trazabilidad formal.',
+    deliverables:
+      'Estructura CDE, permisos, flujos de revisión, nomenclaturas, carpetas, reportes, control documental y soporte a usuarios.',
+  },
+  {
+    id: 'automatizacion',
+    category: ['automatizacion', 'arquitectura', 'bim', 'coordinacion'],
+    title: 'Automatización de Procesos',
+    tagline: 'Capacidad operativa',
+    description:
+      'Diseñamos rutinas, scripts, flujos y herramientas digitales para reducir tareas repetitivas, mejorar consistencia de datos y acelerar procesos de revisión, modelado, coordinación y reportabilidad. La automatización permite aumentar la capacidad operativa del equipo, reducir errores manuales y transformar datos del proyecto en información accionable.',
+    when:
+      'Cuando existen procesos repetitivos, revisión manual de información, extracción recurrente de datos o necesidad de reportes más rápidos y confiables.',
+    deliverables:
+      'Scripts, rutinas Dynamo/Python, automatización de reportes, extracción de datos, validadores, dashboards y flujos personalizados.',
   },
 ]
 
 const SERVICES_BIM_DETAILS_EN = [
   {
     id: 'gerenciamiento-proyecto',
+    category: 'bim',
     title: 'Project Management',
+    tagline: 'Strategic control',
     description:
-      'We lead projects from a strategic and integral perspective, coordinating teams, timelines, costs, and goals through a collaborative Information Management system. Our management is data-driven, allowing us to anticipate deviations, maximize efficiency, and minimize risk.',
+      'We lead projects from a strategic perspective, coordinating teams, information, timelines, costs, and goals through a collaborative work structure. Our focus is anticipating deviations, ordering critical decisions, and maintaining traceability across design, coordination, tender, construction, and operations.',
+    when:
+      'When the project requires strategic control, coordination between multiple stakeholders, or a technical counterpart to organize information for decision-making.',
+    deliverables:
+      'Work roadmap, responsibility matrix, progress reports, agreement tracking, risk monitoring, team coordination, and executive recommendations.',
   },
   {
     id: 'diseno',
+    category: 'arquitectura',
     title: 'Design',
+    tagline: 'Architecture & technical development',
     description:
-      'We integrate architectural and MEP design with digital precision, ensuring consistency between project intent and execution. Decisions are made based on data and information, applying spatial, constructability, and future operations optimization criteria.',
+      'We develop architectural and technical design focused on functionality, constructability, regulations, budget, and information useful for decision-making. We integrate spatial, operational, and technical criteria from early stages to reduce ambiguities and improve continuity toward documentation, coordination, and construction.',
+    when:
+      'When the project needs to transform an idea, brief, or program into a viable, coordinable, and documentable architectural solution.',
+    deliverables:
+      'Concept design, architectural development, technical criteria, design models, base documentation, validation visuals, and specialist coordination.',
   },
   {
     id: 'modelado',
-    title: 'Modeling',
+    category: ['bim', 'arquitectura'],
+    title: 'Information Modeling',
+    tagline: 'Information base',
     description:
-      'We build intelligent multidimensional models that centralize project information, facilitate interdisciplinary coordination, reduce rework, and enable informed decisions from early stages.',
+      'We develop BIM models by discipline or integrate existing models to centralize critical project information. We do not treat the model as an end in itself, but as a useful database for coordinating, quantifying, documenting, reviewing, and making decisions. The model delivers structured data, not just geometry.',
+    when:
+      'When the project needs structured information, reliable models, specialist integration, or a technical base for coordination, tendering, or construction.',
+    deliverables:
+      'BIM models, structured parameters, federated models, review reports, data extraction, quantity take-offs, and associated documentation.',
   },
   {
     id: 'coordinacion',
-    title: 'Coordination',
+    category: ['coordinacion', 'bim'],
+    title: 'Information Coordination',
+    tagline: 'Clash reduction',
     description:
-      'We structure collaboration across disciplines through common data environments (CDE) and Information Management workflows. We detect clashes early and propose solutions, ensuring technical consistency and constructability.',
+      'We coordinate architecture, structure, MEP, and specialties to detect clashes, prioritize conflicts, and propose solutions before they reach the construction site. Coordination is based on traceable information, federated or integrated models, actionable reports, and meetings focused on resolving technical decisions.',
+    when:
+      'When multiple specialties exist, there is clash risk, third-party models are involved, or constructability needs to be confirmed before tendering or building.',
+    deliverables:
+      'Clash matrix, coordination reports, federated models, agreement minutes, resolution proposals, pending item tracking, and decision traceability.',
   },
   {
     id: 'simulacion',
+    category: 'coordinacion',
     title: 'Simulation',
+    tagline: 'Scenario validation',
     description:
-      'We apply predictive simulations to evaluate energy performance, operational flows, schedules, and construction sequences. This validates scenarios and optimizes decisions with real impact on cost, time, and sustainability.',
+      'We apply simulations to evaluate design scenarios, operational flows, construction sequences, performance, and project use. This allows comparing alternatives before execution, reducing uncertainty and improving decisions on cost, schedule, operations, and sustainability.',
+    when:
+      'When the project needs to validate alternatives, anticipate impacts, or justify technical decisions before owners, users, or construction teams.',
+    deliverables:
+      'Simulation models, comparative analyses, graphic reports, evaluated scenarios, and technical recommendations.',
   },
   {
     id: 'evaluacion',
+    category: 'arquitectura',
     title: 'Evaluation',
+    tagline: 'Technical assessment',
     description:
-      'We develop analyses considering technical, economic, and regulatory factors. Our evaluation supports strategic decision-making through objective comparisons and a global project view for financial, construction, and schedule decisions.',
+      'We evaluate projects across technical, economic, regulatory, and operational dimensions to provide an objective view before critical decisions are made. Our evaluation identifies gaps, risks, improvement opportunities, and prioritization criteria to move forward with greater certainty.',
+    when:
+      'When there is a need to review feasibility, technical quality, document consistency, constructability, or the information state of a project.',
+    deliverables:
+      'Diagnostic report, risk matrix, regulatory review, technical evaluation, prioritized recommendations, and action roadmap.',
   },
   {
     id: 'documentacion',
-    title: 'Documentation',
+    category: 'arquitectura',
+    title: 'Technical Documentation',
+    tagline: 'Construction-ready documents',
     description:
-      'We produce technical documentation from coordinated models as a single source of truth, ensuring precision, traceability, and constant updates. This reduces errors and accelerates review and approval workflows.',
+      'We generate consistent technical documentation from coordinated models and validated information. Our goal is to reduce errors, maintain traceability between model and drawings, and accelerate review, approval, tendering, and construction processes.',
+    when:
+      'When the project requires drawings, technical deliverables, approval packages, tender documentation, or clear information for construction.',
+    deliverables:
+      'Drawings, sheets, details, supporting specifications, reports, documentation for approval, tender, or construction.',
   },
   {
     id: 'programacion',
-    title: 'Planning',
+    category: 'coordinacion',
+    title: '4D/5D Planning',
+    tagline: 'Schedule & cost integrated',
     description:
-      'We integrate schedule (4D) and cost (5D) planning with the digital model to visualize construction sequence, anticipate conflicts, and adjust logistics based on real scenarios.',
+      'We integrate schedule and cost planning with digital models to visualize construction sequences, anticipate conflicts, and analyze schedule and cost impacts. 4D/5D planning connects design, construction, logistics, physical progress, and budget on a common information base.',
+    when:
+      'When the project needs to plan phases, visualize progress, compare scenarios, or link model information with schedule and cost.',
+    deliverables:
+      '4D model, construction sequence, progress reports, model-schedule linkage, base quantities, and 5D analysis.',
   },
   {
     id: 'visualizacion',
+    category: 'arquitectura',
     title: 'Visualization',
+    tagline: 'Project communication',
     description:
-      'We produce images, videos, and virtual walkthroughs that communicate the project effectively to technical and non-technical audiences. This strengthens understanding, decision-making, validation, and project sales.',
+      'We develop images, videos, and digital walkthroughs to communicate the project to technical and non-technical audiences. Visualization helps validate decisions, explain solutions, support commercial processes, and aid understanding of design before construction.',
+    when:
+      'When the project needs to communicate value, validate design, support sales, present to owners, or explain complex decisions.',
+    deliverables:
+      'Images, videos, virtual walkthroughs, presentation materials, sales assets, and coordination visuals.',
   },
   {
     id: 'seguimiento-obra',
+    category: 'coordinacion',
     title: 'Construction Follow-up',
+    tagline: 'Execution control',
     description:
-      'We manage and update CDE-based project models on site for accurate interpretation of what was designed. We monitor physical progress and comparisons through information tools and data extraction, aligning execution with design intent.',
+      'We support execution through models, CDE, reports, and information control to compare what was designed with what is being built. We monitor progress, deviations, changes, and construction requirements to maintain continuity between design, coordination, and construction.',
+    when:
+      'When the project needs reliable information, change control, technical follow-up, or permanent BIM support during execution (As Built model).',
+    deliverables:
+      'Progress reports, As Built model updates, observation tracking, change control, information management, and technical support on site.',
   },
   {
     id: 'facility-management',
+    category: 'bim',
     title: 'Facility Management',
+    tagline: 'Post-delivery continuity',
     description:
-      'We structure and prepare models and systems that enable efficient operation and maintenance of built assets. We turn project information into a post-delivery management platform, extending value over time.',
+      'We prepare models, data, and information structures so the asset can be operated, maintained, and updated after handover. We convert information generated during design and construction into a useful base for operations, maintenance, and future management.',
+    when:
+      'When the owner needs information continuity post-delivery, efficient operation, or model integration with maintenance processes.',
+    deliverables:
+      'Operations model, data structure, asset sheets, FM parameters, organized documentation, and update criteria.',
   },
   {
     id: 'implementacion',
-    title: 'Implementation',
+    category: ['bim', 'arquitectura'],
+    title: 'BIM / IM Implementation',
+    tagline: 'BIM adoption',
     description:
-      'We support companies and teams in their Information Management transition, focusing on outcomes, efficiency, and autonomy. We design processes, standards, and structures adapted to each client context and objectives.',
+      'We support companies and teams in adopting BIM and Information Management with a focus on outcomes, efficiency, and autonomy. We design processes, standards, roles, workflows, and information structures adapted to each organization or project context.',
+    when:
+      'When a company needs to organize its workflows, implement standards, improve coordination, or professionalize its information management.',
+    deliverables:
+      'Diagnostic, implementation plan, BIM standards, information protocols, templates, training, and ongoing support.',
   },
   {
     id: 'administracion-cde',
-    title: 'CDE Management (Common Data Environment)',
+    category: ['bim', 'coordinacion'],
+    title: 'CDE Administration',
+    tagline: 'Document traceability',
     description:
-      'We structure, configure, and manage centralized digital environments for secure, collaborative, and fluid project information flow. This ensures traceability, document control, and transparency.',
+      'We configure and manage common data environments to organize project information, control versions, permissions, workflows, and document traceability. The CDE allows teams, owners, and specialists to work from organized, secure, and up-to-date information.',
+    when:
+      'When the project has multiple stakeholders, scattered documents, conflicting versions, or a need for formal traceability.',
+    deliverables:
+      'CDE structure, permissions, review workflows, naming conventions, folders, reports, document control, and user support.',
+  },
+  {
+    id: 'automatizacion',
+    category: ['automatizacion', 'arquitectura', 'bim', 'coordinacion'],
+    title: 'Process Automation',
+    tagline: 'Operational capacity',
+    description:
+      'We design routines, scripts, workflows, and digital tools to reduce repetitive tasks, improve data consistency, and accelerate review, modeling, coordination, and reporting processes. Automation increases team operational capacity, reduces manual errors, and transforms project data into actionable information.',
+    when:
+      'When repetitive processes exist, manual information review is required, data extraction is recurring, or faster and more reliable reports are needed.',
+    deliverables:
+      'Scripts, Dynamo/Python routines, report automation, data extraction, validators, dashboards, and custom workflows.',
   },
 ]
 

@@ -204,6 +204,7 @@ const TRANSLATIONS = {
       projects: {
         eyebrow: 'Proyectos',
         title: 'Catálogo de proyectos',
+        lead: 'Arquitectura, BIM, coordinación y seguimiento de obra aplicados a proyectos de alta exigencia técnica.',
       },
       services: {
         eyebrow: 'Information Management',
@@ -480,6 +481,7 @@ const TRANSLATIONS = {
       projects: {
         eyebrow: 'Projects',
         title: 'Project catalog',
+        lead: 'Architecture, BIM, coordination and construction follow-up applied to technically demanding projects.',
       },
       services: {
         eyebrow: 'Information Management',
