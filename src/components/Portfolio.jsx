@@ -61,7 +61,6 @@ export default function Portfolio({ minimal = false, maxItems }) {
       const { data, error } = await supabase
         .from('projects')
         .select('*')
-        .eq('is_published', true)
         .order('created_at', { ascending: false })
 
       if (!isMounted) return

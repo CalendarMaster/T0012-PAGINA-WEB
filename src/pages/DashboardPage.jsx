@@ -650,7 +650,7 @@ export default function DashboardPage() {
         {view === 'home' ? (
           <div className="dashboard-home">
             <div className="dashboard-home-top">
-              <h2>Proyectos publicados</h2>
+              <h2>Gestor de proyectos</h2>
               <div className="dashboard-home-actions">
                 <button className="button primary" type="button" onClick={handleCreateNew}>+ Agregar proyecto</button>
               </div>
@@ -662,61 +662,65 @@ export default function DashboardPage() {
               </p>
             ) : null}
 
-            {publishedProjects.length === 0 ? (
-              <p className="dashboard-empty-copy">No hay proyectos publicados todavia.</p>
+            {projects.length === 0 ? (
+              <p className="dashboard-empty-copy">No hay proyectos todavia.</p>
             ) : (
-              <div className="portafolio_grid dashboard-portafolio-grid">
-                {publishedProjects.map((project) => (
-                  <article key={project.id} className={`portafolio_card dashboard-portafolio-card cat_${normalizeProjectCategory(project.category)}`}>
-                    <div className="portafolio_card_inner">
-                      <div className="portafolio_card_front">
-                        <img
-                          className="portafolio_img"
-                          src={project.cover_url || 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_1.png'}
-                          alt={project.title}
-                        />
-                      </div>
-                      <div className="portafolio_card_back dashboard-card-back">
-                        <h3 className="portafolio_card_title">{project.title}</h3>
-                        <p className="portafolio_card_cat">{getProjectCategoryLabel(project.category)}</p>
-                        <div className="dashboard-card-actions">
-                          <button className="portafolio_card_btn" type="button" onClick={() => handleEdit(project)}>
-                            Editar
-                          </button>
-                          <button className="portafolio_card_btn is-danger" type="button" onClick={() => handleDelete(project)}>
-                            Eliminar
-                          </button>
-                        </div>
-                      </div>
+              <>
+                {publishedProjects.length > 0 && (
+                  <div className="dashboard-project-group">
+                    <p className="dashboard-group-label">Publicados ({publishedProjects.length})</p>
+                    <div className="dashboard-project-list">
+                      {publishedProjects.map((project) => (
+                        <article key={project.id} className="dashboard-project-row">
+                          <div className={`dashboard-project-thumb cat_${normalizeProjectCategory(project.category)}`}>
+                            <img
+                              src={project.cover_url || 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_1.png'}
+                              alt={project.title}
+                              loading="lazy"
+                            />
+                          </div>
+                          <div className="dashboard-project-info">
+                            <strong>{project.title}</strong>
+                            <span>{getProjectCategoryLabel(project.category)}</span>
+                          </div>
+                          <div className="dashboard-project-actions">
+                            <button className="portafolio_card_btn" type="button" onClick={() => handleEdit(project)}>Editar</button>
+                            <button className="portafolio_card_btn is-danger" type="button" onClick={() => handleDelete(project)}>Eliminar</button>
+                          </div>
+                        </article>
+                      ))}
                     </div>
-                  </article>
-                ))}
-              </div>
-            )}
+                  </div>
+                )}
 
-            {draftProjects.length > 0 ? (
-              <div className="dashboard-drafts">
-                <h3>Borradores</h3>
-                <div className="dashboard-draft-list">
-                  {draftProjects.map((project) => (
-                    <article key={project.id} className="dashboard-draft-item">
-                      <div>
-                        <strong>{project.title}</strong>
-                        <p>{getProjectCategoryLabel(project.category)}</p>
-                      </div>
-                      <div className="dashboard-card-actions">
-                        <button className="portafolio_card_btn" type="button" onClick={() => handleEdit(project)}>
-                          Editar
-                        </button>
-                        <button className="portafolio_card_btn is-danger" type="button" onClick={() => handleDelete(project)}>
-                          Eliminar
-                        </button>
-                      </div>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            ) : null}
+                {draftProjects.length > 0 && (
+                  <div className="dashboard-project-group">
+                    <p className="dashboard-group-label is-draft">Borradores ({draftProjects.length})</p>
+                    <div className="dashboard-project-list">
+                      {draftProjects.map((project) => (
+                        <article key={project.id} className="dashboard-project-row is-draft">
+                          <div className={`dashboard-project-thumb cat_${normalizeProjectCategory(project.category)}`}>
+                            <img
+                              src={project.cover_url || 'https://propuestas.dmvdigital.cl/mistudio/imgs/sketches/sketch_1.png'}
+                              alt={project.title}
+                              loading="lazy"
+                            />
+                          </div>
+                          <div className="dashboard-project-info">
+                            <strong>{project.title}</strong>
+                            <span>{getProjectCategoryLabel(project.category)}</span>
+                          </div>
+                          <div className="dashboard-project-actions">
+                            <button className="portafolio_card_btn" type="button" onClick={() => handleEdit(project)}>Editar</button>
+                            <button className="portafolio_card_btn is-danger" type="button" onClick={() => handleDelete(project)}>Eliminar</button>
+                          </div>
+                        </article>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
           </div>
         ) : (
           <form className="dashboard-form dashboard-form-single" onSubmit={handleSave}>
@@ -787,7 +791,10 @@ export default function DashboardPage() {
 
               <aside className="dashboard-cover-panel">
                 <label htmlFor="cover_file">Portada del proyecto</label>
-                <input id="cover_file" type="file" accept="image/*" onChange={handleCoverFileChange} />
+                <input id="cover_file" type="file" accept="image/png" onChange={handleCoverFileChange} />
+                <p className="dashboard-file-hint">
+                  Usa <strong>PNG con fondo transparente</strong>. El color de la tarjeta se aplica automáticamente según la categoría del proyecto.
+                </p>
 
                 {coverPreviewUrl ? (
                   <img className="dashboard-cover-preview" src={coverPreviewUrl} alt="Portada seleccionada" />

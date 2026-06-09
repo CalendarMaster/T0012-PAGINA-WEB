@@ -404,11 +404,15 @@ body {
 }
 
  .hero-media {
-  left: 46%; /* 10% más a la derecha */
+  left: 46%;
   z-index: -1;
   background:
     radial-gradient(circle at 55% 48%, rgba(55, 94, 93, 0.42), transparent 38%),
     linear-gradient(115deg, rgba(55, 94, 93, 0.22), rgba(184, 78, 24, 0.08) 48%, rgba(255, 255, 255, 0.04));
+  mask-image: linear-gradient(to right, transparent 0%, black 12%), linear-gradient(to bottom, black 80%, transparent 100%);
+  mask-composite: intersect;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 12%), linear-gradient(to bottom, black 80%, transparent 100%);
+  -webkit-mask-composite: source-in;
 }
 
 .hero-video {
@@ -922,7 +926,7 @@ body {
 }
 
 .portafolio_card_front {
-  padding: clamp(18px, 2vw, 32px);
+  padding: clamp(6px, 0.8vw, 12px);
 }
 
 .cat_bim_proyecto .portafolio_card_front { background-color: var(--color-opt); }
@@ -941,11 +945,10 @@ body {
 }
 
 .portafolio_img {
-  width: min(80%, 250px);
-  height: min(80%, 240px);
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   opacity: 0.8;
-  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.16));
 }
 
 .portafolio_card_front_title {
@@ -2056,41 +2059,116 @@ body {
   background: #ff9f75;
 }
 
-.dashboard-drafts {
-  margin-top: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  padding: 14px;
+.dashboard-project-group {
   display: grid;
-  gap: 10px;
+  gap: 6px;
+  margin-top: 16px;
 }
 
-.dashboard-drafts h3 {
-  margin: 0;
-  font-size: clamp(18px, 2vw, 24px);
+.dashboard-group-label {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
 }
 
-.dashboard-draft-list {
+.dashboard-group-label.is-draft {
+  color: rgba(255, 200, 80, 0.7);
+}
+
+.dashboard-project-list {
   display: grid;
-  gap: 8px;
+  gap: 5px;
 }
 
-.dashboard-draft-item {
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  padding: 10px;
+.dashboard-project-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 10px;
+  gap: 14px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+  transition: background 0.15s;
 }
 
-.dashboard-draft-item strong {
+.dashboard-project-row:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.dashboard-project-row.is-draft {
+  border-style: dashed;
+  border-color: rgba(255, 200, 80, 0.2);
+}
+
+.dashboard-project-thumb {
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dashboard-project-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.dashboard-project-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dashboard-project-info strong {
   font-size: var(--text-ui);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.dashboard-draft-item p {
-  margin: 4px 0 0;
-  font-size: var(--text-body);
-  opacity: 0.8;
+.dashboard-project-info span {
+  font-size: 11px;
+  opacity: 0.55;
+}
+
+.dashboard-project-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.dashboard-project-actions .portafolio_card_btn {
+  min-height: 28px;
+  padding: 0 12px;
+  font-size: 12px;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.dashboard-project-actions .portafolio_card_btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  color: #fff;
+}
+
+.dashboard-project-actions .portafolio_card_btn.is-danger {
+  background: rgba(220, 60, 40, 0.18);
+  border-color: rgba(220, 80, 60, 0.5);
+  color: #ff8a7a;
+}
+
+.dashboard-project-actions .portafolio_card_btn.is-danger:hover {
+  background: rgba(220, 60, 40, 0.35);
+  color: #ffb3a8;
 }
 
 .dashboard-form,
@@ -2183,6 +2261,20 @@ body {
   margin: 0;
   font-size: var(--text-body);
   opacity: 0.84;
+}
+
+.dashboard-file-hint {
+  margin: 4px 0 0;
+  font-size: 11px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.55);
+  border-left: 2px solid rgba(255, 255, 255, 0.2);
+  padding-left: 8px;
+}
+
+.dashboard-file-hint strong {
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 600;
 }
 
 .dashboard-specialists {
