@@ -10,7 +10,13 @@ export default function Services() {
     <section className="services-section" id="servicios" aria-labelledby="services-title">
       <div className="section-head">
         <p className="eyebrow">{t('servicesHome.eyebrow')}</p>
-        <h2 id="services-title">{t('servicesHome.title')}</h2>
+        <h2 id="services-title">
+          {t('servicesHome.title').split(', ').map((part, i, arr) => (
+            <span key={i} style={{ display: 'block' }}>
+              {part}{i < arr.length - 1 ? ',' : ''}
+            </span>
+          ))}
+        </h2>
         <p className="services-subtitle">{t('servicesHome.subtitle')}</p>
       </div>
 

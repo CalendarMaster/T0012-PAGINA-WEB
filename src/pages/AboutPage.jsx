@@ -134,13 +134,13 @@ export default function AboutPage() {
           </div>
           <div className="about-jobs-action">
             <a
-              href={`mailto:contacto@mi-studio.cl`}
+              href={`mailto:modelointegrado@mi-studio.cl`}
               className="button primary"
               onClick={handleJobsEmailClick}
             >
               Enviar postulación
             </a>
-            <p className="about-jobs-email">contacto@mi-studio.cl</p>
+            <p className="about-jobs-email">modelointegrado@mi-studio.cl</p>
           </div>
         </div>
       </section>

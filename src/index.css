@@ -537,6 +537,11 @@ body {
   margin-top: 20px;
 }
 
+.hero-actions .button {
+  min-width: 210px;
+  justify-content: center;
+}
+
 .button {
   padding: 0 18px;
   border: 1px solid rgba(255, 255, 255, 0.68);
@@ -1103,6 +1108,7 @@ body {
 
 .services-quad h3 {
   margin: 0 0 12px;
+  min-height: 3.3em;
   font-size: clamp(18px, 1.8vw, 24px);
   line-height: 1.1;
   color: var(--black);
@@ -1269,7 +1275,7 @@ body {
 
 .service-grid article,
 .faq-grid article {
-  padding: 22px;
+  padding: 14px 18px;
   background: var(--white);
   color: var(--black);
   border: 1px solid var(--line);
@@ -1348,18 +1354,22 @@ body {
   counter-increment: process;
   content: "0" counter(process);
   display: block;
-  margin-bottom: 48px;
+  margin-bottom: 18px;
   color: var(--orange);
   font-weight: 900;
 }
 
 .process-list strong {
   display: block;
-  font-size: 22px;
+  min-height: 3.3em;
+  font-size: clamp(18px, 1.8vw, 24px);
+  line-height: 1.1;
 }
 
 .process-list p {
   margin: 10px 0 0;
+  font-size: 15px;
+  line-height: 1.55;
   color: rgba(255, 255, 255, 0.78);
 }
 
@@ -1597,12 +1607,11 @@ body {
 }
 
 .footer-column h3 {
-  margin: 0 0 2px;
+  margin: 0 0 4px;
   color: var(--white);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-size: 15px;
+  font-weight: var(--weight-semibold);
+  line-height: 1.3;
 }
 
 .footer-column a,
@@ -1681,11 +1690,12 @@ body {
   color: rgba(255, 255, 255, 0.74);
 }
 
-.footer-address strong {
+.footer-address strong,
+.footer-address span {
   color: var(--white);
-  font-size: 14px;
-  font-weight: var(--weight-semibold);
-  line-height: 1.2;
+  font-size: 13px;
+  font-weight: var(--weight-medium);
+  line-height: 1.35;
 }
 
 .footer-address a {
@@ -3019,6 +3029,18 @@ body {
   color: #fff;
 }
 
+.svc-catalog-card .portafolio_card_btn {
+  border-color: #f7f7f7;
+  color: #f7f7f7;
+  background: transparent;
+}
+
+.svc-catalog-card .portafolio_card_btn:hover {
+  background: #f7f7f7;
+  border-color: #f7f7f7;
+  color: #0d1f1d;
+}
+
 .svc-catalog-card .portafolio_card_title {
   font-size: clamp(13px, 1.1vw, 17px);
   margin-bottom: 10px;
@@ -3039,6 +3061,8 @@ body {
 .services-catalog-filters {
   width: min(var(--max), calc(100% - 36px));
   margin: 0 auto clamp(20px, 2.5vw, 36px);
+  --color-arm: #1e3934;
+  --hatching-pattern: repeating-linear-gradient(135deg, rgba(255,255,255,0.16) 0 2px, transparent 2px 6px);
 }
 
 .services-catalog-grid {
@@ -3631,7 +3655,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(11, 13, 14, 0.44);
+  color: var(--orange);
 }
 
 .about-mv-quote {

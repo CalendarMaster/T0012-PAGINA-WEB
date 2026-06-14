@@ -1,4 +1,5 @@
 export const CONTACT_EMAIL = 'contacto@mi-studio.cl'
+export const JOBS_EMAIL = 'modelointegrado@mi-studio.cl'
 export const CONTACT_MEETING_SUBJECT = 'Solicitud de reunión - MI Studio'
 export const CONTACT_JOBS_SUBJECT = 'Postulación - MI Studio'
 export const CONTACT_JOBS_BODY = 'Hola, me gustaría postular para trabajar en MI Studio. Adjunto mi currículum y portafolio.'
@@ -16,8 +17,8 @@ export function handleJobsEmailClick(event) {
   if (event) event.preventDefault()
   if (typeof window === 'undefined') return
 
-  const mailtoUrl = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(CONTACT_JOBS_SUBJECT)}&body=${encodeURIComponent(CONTACT_JOBS_BODY)}`
-  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(CONTACT_EMAIL)}&su=${encodeURIComponent(CONTACT_JOBS_SUBJECT)}&body=${encodeURIComponent(CONTACT_JOBS_BODY)}`
+  const mailtoUrl = `mailto:${JOBS_EMAIL}?subject=${encodeURIComponent(CONTACT_JOBS_SUBJECT)}&body=${encodeURIComponent(CONTACT_JOBS_BODY)}`
+  const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(JOBS_EMAIL)}&su=${encodeURIComponent(CONTACT_JOBS_SUBJECT)}&body=${encodeURIComponent(CONTACT_JOBS_BODY)}`
 
   window.location.href = mailtoUrl
   window.setTimeout(() => {

@@ -6,7 +6,6 @@ export default function NewsPage() {
   return (
     <main className="content-page" aria-label={lang === 'en' ? 'News' : 'Noticias'}>
       <section className="project-shell">
-        <p className="eyebrow">{lang === 'en' ? 'News' : 'Noticias'}</p>
         <h1>{lang === 'en' ? 'News' : 'Noticias'}</h1>
         <p className="project-copy">
           {lang === 'en'

@@ -67,7 +67,7 @@ export default function Footer() {
     <footer className="site-footer" id="contacto-footer">
       <div className="footer-shell">
         <section className="footer-topline" aria-label="Presentación institucional">
-          <p className="footer-kicker">MI STUDIO · MODELO INTEGRADO</p>
+          <p className="footer-kicker">M. I. STUDIO - MODELO INTEGRADO STUDIO</p>
           <a className="footer-cta" href={sectionHref('contacto')}>{t('footer.cta')}</a>
         </section>
 
@@ -126,7 +126,7 @@ export default function Footer() {
             </div>
             <div className="footer-address" aria-label="Dirección corporativa">
               <span className="footer-address-label">{t('footer.address.label')}</span>
-              <strong>Suecia 172</strong>
+              <span>Suecia 172</span>
               <span>{t('footer.address.city')}</span>
               <a
                 href="https://maps.google.com/?q=Suecia+172+Providencia+Santiago+Chile"

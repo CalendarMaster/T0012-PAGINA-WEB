@@ -1,8 +1,8 @@
 export const PROJECT_CATEGORY_OPTIONS = [
-  { value: 'bim_proyecto', label: 'Diseno - En Proyecto' },
-  { value: 'bim_ejecutado', label: 'Diseno - Ejecutado' },
-  { value: 'gestion_proyecto', label: 'Gestion - En Proyecto' },
-  { value: 'gestion_ejecutado', label: 'Gestion - Ejecutado' },
+  { value: 'bim_proyecto', label: 'Diseño - En Proyecto' },
+  { value: 'bim_ejecutado', label: 'Diseño - Ejecutado' },
+  { value: 'gestion_proyecto', label: 'Gestión - En Proyecto' },
+  { value: 'gestion_ejecutado', label: 'Gestión - Ejecutado' },
 ]
 
 const PROJECT_CATEGORY_OPTIONS_EN = [
@@ -22,7 +22,7 @@ export const PROJECT_DESTINATION_OPTIONS = [
   { value: 'almacenamiento', label: 'Almacenamiento' },
   { value: 'comercio', label: 'Comercio' },
   { value: 'educacional', label: 'Educacional' },
-  { value: 'espacio_publico', label: 'Espacio Publico' },
+  { value: 'espacio_publico', label: 'Espacio Público' },
   { value: 'habitacional', label: 'Habitacional' },
   { value: 'industrial', label: 'Industrial' },
   { value: 'infraestructura', label: 'Infraestructura' },

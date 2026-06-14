@@ -231,7 +231,7 @@ export default function DashboardPage() {
       .order('created_at', { ascending: true })
 
     if (error) {
-      setStatus({ type: 'error', message: 'No se pudieron cargar las imagenes del proyecto.' })
+      setStatus({ type: 'error', message: 'No se pudieron cargar las imágenes del proyecto.' })
       setGalleryImages([])
       setIsLoadingGallery(false)
       return
@@ -251,7 +251,7 @@ export default function DashboardPage() {
       .eq('project_id', form.id)
 
     if (error) {
-      setStatus({ type: 'error', message: 'No se pudo eliminar la imagen de la galeria.' })
+      setStatus({ type: 'error', message: 'No se pudo eliminar la imagen de la galería.' })
       return
     }
 
@@ -284,7 +284,7 @@ export default function DashboardPage() {
     const failedUpdate = results.find((result) => result.error)
 
     if (failedUpdate?.error) {
-      setStatus({ type: 'error', message: 'No se pudo actualizar el orden de la galeria.' })
+      setStatus({ type: 'error', message: 'No se pudo actualizar el orden de la galería.' })
       await loadProjectGallery(form.id)
       return
     }
@@ -295,7 +295,7 @@ export default function DashboardPage() {
         sort_order: index + 1,
       })),
     )
-    setStatus({ type: 'success', message: 'Orden de galeria actualizado.' })
+    setStatus({ type: 'success', message: 'Orden de galería actualizado.' })
   }
 
   const uploadSingleImageFile = async (file, slug, folderPrefix) => {
@@ -630,7 +630,7 @@ export default function DashboardPage() {
               Ver sitio principal
             </Link>
             <button className="dashboard-profile-item" type="button" onClick={handleLogout}>
-              Cerrar sesion
+              Cerrar sesión
             </button>
           </div>
         </details>
@@ -642,7 +642,7 @@ export default function DashboardPage() {
             <p className="eyebrow">Panel interno</p>
             <h1 id="dashboard-title">Gestor de proyectos</h1>
             <p className="dashboard-copy">
-              Sesion iniciada como {state.email}. Desde aqui puedes crear y editar proyectos del portafolio.
+              Sesión iniciada como {state.email}. Desde aquí puedes crear y editar proyectos del portafolio.
             </p>
           </div>
         </div>
@@ -733,13 +733,13 @@ export default function DashboardPage() {
 
             <div className="dashboard-form-main-top">
               <div className="dashboard-form-main-fields">
-                <label htmlFor="title">Titulo</label>
+                <label htmlFor="title">Título</label>
                 <input id="title" name="title" value={form.title} onChange={handleFieldChange} required />
 
                 <label htmlFor="slug">Slug</label>
                 <input id="slug" name="slug" value={form.slug} onChange={handleFieldChange} required />
 
-                <label htmlFor="category">Categoria</label>
+                <label htmlFor="category">Categoría</label>
                 <select id="category" name="category" value={form.category} onChange={handleFieldChange}>
                   {PROJECT_CATEGORY_OPTIONS.map((option) => (
                     <option key={option.value} value={option.value}>{option.label}</option>
@@ -778,7 +778,7 @@ export default function DashboardPage() {
                     />
                   </div>
                   <div>
-                    <label htmlFor="year">Ano</label>
+                    <label htmlFor="year">Año</label>
                     <input id="year" name="year" value={form.year} onChange={handleFieldChange} />
                   </div>
                 </div>
@@ -806,7 +806,7 @@ export default function DashboardPage() {
 
                 {coverFile ? <p className="dashboard-file-note">Archivo seleccionado: {coverFile.name}</p> : null}
 
-                <label htmlFor="leader_file">Imagen lider</label>
+                <label htmlFor="leader_file">Imagen líder</label>
                 <input
                   id="leader_file"
                   type="file"
@@ -815,11 +815,11 @@ export default function DashboardPage() {
                 />
 
                 {leaderPreviewUrl ? (
-                  <img className="dashboard-cover-preview" src={leaderPreviewUrl} alt="Imagen lider seleccionada" />
+                  <img className="dashboard-cover-preview" src={leaderPreviewUrl} alt="Imagen líder seleccionada" />
                 ) : form.leader_image_url ? (
-                  <img className="dashboard-cover-preview" src={form.leader_image_url} alt="Imagen lider actual" />
+                  <img className="dashboard-cover-preview" src={form.leader_image_url} alt="Imagen líder actual" />
                 ) : (
-                  <div className="dashboard-cover-placeholder">Sin imagen lider cargada</div>
+                  <div className="dashboard-cover-placeholder">Sin imagen líder cargada</div>
                 )}
 
                 {leaderFile ? <p className="dashboard-file-note">Archivo seleccionado: {leaderFile.name}</p> : null}
@@ -829,7 +829,7 @@ export default function DashboardPage() {
             <label htmlFor="summary">Resumen corto</label>
             <textarea id="summary" name="summary" rows={2} value={form.summary} onChange={handleFieldChange} />
 
-            <label htmlFor="description">Descripcion</label>
+            <label htmlFor="description">Descripción</label>
             <textarea id="description" name="description" rows={4} value={form.description} onChange={handleFieldChange} />
 
             <div className="dashboard-specialists">
@@ -873,7 +873,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="dashboard-gallery-section">
-              <label htmlFor="gallery_files">Imagenes del proyecto (slider)</label>
+              <label htmlFor="gallery_files">Imágenes del proyecto (slider)</label>
               <input
                 id="gallery_files"
                 type="file"
@@ -898,7 +898,7 @@ export default function DashboardPage() {
 
               {isLoadingGallery ? (
                 <div className="dashboard-gallery-loader">
-                  <LoadingLoop compact label="Cargando galeria" />
+                  <LoadingLoop compact label="Cargando galería" />
                 </div>
               ) : null}
 
@@ -906,7 +906,7 @@ export default function DashboardPage() {
                 <div className="dashboard-gallery-grid">
                   {galleryImages.map((image, index) => (
                     <article key={image.id} className="dashboard-gallery-card">
-                      <img src={image.image_url} alt="Imagen de galeria" />
+                      <img src={image.image_url} alt="Imagen de galería" />
                       <p className="dashboard-gallery-order">Orden: {index + 1}</p>
                       <div className="dashboard-gallery-actions">
                         <button

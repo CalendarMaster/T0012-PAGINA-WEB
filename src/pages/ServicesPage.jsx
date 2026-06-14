@@ -164,6 +164,7 @@ export default function ServicesPage() {
             key={f.value}
             type="button"
             className={`portafolio_filtro svc-filter-btn${active === f.value ? ' is_active' : ''}`}
+            data-filter={f.value}
             onClick={() => setActive(f.value)}
           >
             {f.label[lang] ?? f.label.es}
