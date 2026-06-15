@@ -51,7 +51,7 @@ const TRANSLATIONS = {
     hero: {
       eyebrow: 'ARQUITECTURA · BIM · COORDINACIÓN · SEGUIMIENTO DE OBRA',
       titleLine1: 'Los datos son el entregable,',
-      titleLine2: 'no solo el modelo.',
+      titleLine2: 'no solo el modelo',
       copy:
         'Integramos arquitectura, BIM, coordinación y seguimiento de obra para transformar información dispersa en decisiones confiables de diseño, costo, plazo y construcción.',
       audience: 'Para mandantes, inmobiliarias, constructoras, concesionarias y equipos técnicos.',
@@ -83,7 +83,7 @@ const TRANSLATIONS = {
     },
     servicesHome: {
       eyebrow: 'Servicios de Information Management',
-      title: 'Menos interferencias, más control.',
+      title: 'Menos interferencias, más control',
       subtitle: 'Información que reduce costo, protege el plazo y mejora las decisiones.',
       membersLabel: 'Somos miembros de',
       clientsLabel: 'Nuestros clientes',

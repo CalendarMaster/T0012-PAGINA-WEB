@@ -11,6 +11,18 @@ import {
 } from '../lib/projectCategories'
 import LoadingLoop from '../components/LoadingLoop'
 
+const EMPTY_NEWS_FORM = {
+  id: null,
+  title: '',
+  slug: '',
+  subtitle: '',
+  body: '',
+  image_url: '',
+  external_link: '',
+  sort_order: 0,
+  is_published: true,
+}
+
 const EMPTY_FORM = {
   id: null,
   title: '',
@@ -58,6 +70,7 @@ function withTimeout(promise, ms = ACCESS_TIMEOUT_MS) {
 export default function DashboardPage() {
   const navigate = useNavigate()
   const [state, setState] = useState({ loading: true, allowed: false, email: '', userId: null })
+  const [activeSection, setActiveSection] = useState('projects')
   const [projects, setProjects] = useState([])
   const [view, setView] = useState('home')
   const [isSaving, setIsSaving] = useState(false)
@@ -70,6 +83,14 @@ export default function DashboardPage() {
   const [galleryFiles, setGalleryFiles] = useState([])
   const [galleryImages, setGalleryImages] = useState([])
   const [status, setStatus] = useState({ type: 'idle', message: '' })
+
+  const [news, setNews] = useState([])
+  const [newsView, setNewsView] = useState('home')
+  const [newsForm, setNewsForm] = useState(EMPTY_NEWS_FORM)
+  const [newsImageFile, setNewsImageFile] = useState(null)
+  const [newsImagePreviewUrl, setNewsImagePreviewUrl] = useState('')
+  const [newsIsSaving, setNewsIsSaving] = useState(false)
+  const [newsStatus, setNewsStatus] = useState({ type: 'idle', message: '' })
 
   const loadProjects = async () => {
     const { data, error } = await supabase
@@ -86,6 +107,32 @@ export default function DashboardPage() {
 
     setProjects(data || [])
   }
+
+  const loadNews = async () => {
+    const { data, error } = await supabase
+      .from('news')
+      .select('*')
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: false })
+
+    if (error) {
+      setNewsStatus({ type: 'error', message: 'No se pudo cargar la lista de noticias.' })
+      setNews([])
+      return
+    }
+
+    setNews(data || [])
+  }
+
+  useEffect(() => {
+    if (!newsImageFile) {
+      setNewsImagePreviewUrl('')
+      return
+    }
+    const url = URL.createObjectURL(newsImageFile)
+    setNewsImagePreviewUrl(url)
+    return () => URL.revokeObjectURL(url)
+  }, [newsImageFile])
 
   useEffect(() => {
     if (!coverFile) {
@@ -143,6 +190,7 @@ export default function DashboardPage() {
         }
 
         await withTimeout(loadProjects())
+        await withTimeout(loadNews())
 
         if (isMounted) {
           setState({ loading: false, allowed: true, email: user.email, userId: user.id })
@@ -585,6 +633,135 @@ export default function DashboardPage() {
     setView('form')
   }
 
+  const handleNewsFieldChange = (event) => {
+    const { name, value, type, checked } = event.target
+    const nextValue = type === 'checkbox' ? checked : value
+    setNewsForm((prev) => {
+      const next = { ...prev, [name]: nextValue }
+      if (name === 'title' && !prev.id) next.slug = slugify(value)
+      return next
+    })
+  }
+
+  const handleNewsImageChange = (event) => {
+    setNewsImageFile(event.target.files?.[0] || null)
+  }
+
+  const handleNewsReset = () => {
+    setNewsForm(EMPTY_NEWS_FORM)
+    setNewsImageFile(null)
+    setNewsStatus({ type: 'idle', message: '' })
+  }
+
+  const handleNewsCreateNew = () => {
+    handleNewsReset()
+    setNewsView('form')
+  }
+
+  const handleNewsEdit = (item) => {
+    setNewsForm({
+      id: item.id,
+      title: item.title || '',
+      slug: item.slug || '',
+      subtitle: item.subtitle || '',
+      body: item.body || '',
+      image_url: item.image_url || '',
+      external_link: item.external_link || '',
+      sort_order: item.sort_order || 0,
+      is_published: Boolean(item.is_published),
+    })
+    setNewsImageFile(null)
+    setNewsView('form')
+  }
+
+  const handleNewsDelete = async (item) => {
+    if (!window.confirm(`Eliminar la noticia "${item.title}"?`)) return
+    const { error } = await supabase.from('news').delete().eq('id', item.id)
+    if (error) {
+      setNewsStatus({ type: 'error', message: 'No se pudo eliminar la noticia.' })
+      return
+    }
+    if (newsForm.id === item.id) handleNewsReset()
+    await loadNews()
+    setNewsStatus({ type: 'success', message: 'Noticia eliminada.' })
+  }
+
+  const handleNewsSave = async (event) => {
+    event.preventDefault()
+    setNewsStatus({ type: 'idle', message: '' })
+
+    if (!newsForm.title.trim()) {
+      setNewsStatus({ type: 'error', message: 'El título es obligatorio.' })
+      return
+    }
+
+    const normalizedSlug = slugify(newsForm.slug || newsForm.title)
+    if (!normalizedSlug) {
+      setNewsStatus({ type: 'error', message: 'El slug no puede quedar vacío.' })
+      return
+    }
+
+    setNewsIsSaving(true)
+
+    try {
+      let imageUrl = newsForm.image_url || null
+
+      if (newsImageFile) {
+        const ext = newsImageFile.name.includes('.') ? newsImageFile.name.split('.').pop().toLowerCase() : 'jpg'
+        const safeSlug = slugify(newsImageFile.name.replace(/\.[^/.]+$/, '')) || 'imagen'
+        const storagePath = `${state.userId}/${normalizedSlug}/${Date.now()}-${safeSlug}.${ext}`
+
+        const { error: uploadError } = await supabase.storage
+          .from('bucket_news')
+          .upload(storagePath, newsImageFile, { upsert: true })
+
+        if (uploadError) throw new Error(`No se pudo subir la imagen: ${uploadError.message}`)
+
+        const { data: { publicUrl } } = supabase.storage.from('bucket_news').getPublicUrl(storagePath)
+        imageUrl = publicUrl
+      }
+
+      const payload = {
+        title: newsForm.title.trim(),
+        slug: normalizedSlug,
+        subtitle: newsForm.subtitle.trim() || null,
+        body: newsForm.body.trim() || null,
+        image_url: imageUrl,
+        external_link: newsForm.external_link.trim() || null,
+        sort_order: Number.parseInt(newsForm.sort_order, 10) || 0,
+        is_published: newsForm.is_published,
+        author_email: state.email,
+        author_name: state.email.split('@')[0],
+      }
+
+      let response
+      if (newsForm.id) {
+        response = await supabase.from('news').update(payload).eq('id', newsForm.id).select('id').single()
+      } else {
+        response = await supabase.from('news').insert({ ...payload, author_id: state.userId }).select('id').single()
+      }
+
+      if (response.error) {
+        const isDuplicate = response.error.message?.toLowerCase().includes('slug')
+        setNewsStatus({
+          type: 'error',
+          message: isDuplicate ? 'Ese slug ya existe. Ajusta el título o el slug.' : response.error.message || 'No se pudo guardar la noticia.',
+        })
+        setNewsIsSaving(false)
+        return
+      }
+
+      await loadNews()
+      handleNewsReset()
+      setNewsView('home')
+      setNewsStatus({ type: 'success', message: 'Noticia guardada correctamente.' })
+    } catch (err) {
+      setNewsStatus({ type: 'error', message: err?.message || 'Error al guardar la noticia.' })
+    }
+
+    setNewsIsSaving(false)
+  }
+
   const publishedProjects = projects.filter((project) => project.is_published)
   const draftProjects = projects.filter((project) => !project.is_published)
 
@@ -640,14 +817,174 @@ export default function DashboardPage() {
         <div className="dashboard-top">
           <div>
             <p className="eyebrow">Panel interno</p>
-            <h1 id="dashboard-title">Gestor de proyectos</h1>
+            <h1 id="dashboard-title">Gestor de contenidos</h1>
             <p className="dashboard-copy">
-              Sesión iniciada como {state.email}. Desde aquí puedes crear y editar proyectos del portafolio.
+              Sesión iniciada como {state.email}.
             </p>
           </div>
         </div>
 
-        {view === 'home' ? (
+        <div className="dashboard-section-tabs" role="tablist">
+          <button
+            role="tab"
+            aria-selected={activeSection === 'projects'}
+            className={`dashboard-section-tab${activeSection === 'projects' ? ' is-active' : ''}`}
+            type="button"
+            onClick={() => setActiveSection('projects')}
+          >
+            Proyectos
+          </button>
+          <button
+            role="tab"
+            aria-selected={activeSection === 'news'}
+            className={`dashboard-section-tab${activeSection === 'news' ? ' is-active' : ''}`}
+            type="button"
+            onClick={() => setActiveSection('news')}
+          >
+            Noticias
+          </button>
+        </div>
+
+        {activeSection === 'news' ? (
+          newsView === 'home' ? (
+            <div className="dashboard-home">
+              <div className="dashboard-home-top">
+                <h2>Gestor de noticias</h2>
+                <div className="dashboard-home-actions">
+                  <button className="button primary" type="button" onClick={handleNewsCreateNew}>+ Agregar noticia</button>
+                </div>
+              </div>
+
+              {newsStatus.message ? (
+                <p className={`auth-status ${newsStatus.type === 'error' ? 'is-error' : 'is-success'}`}>
+                  {newsStatus.message}
+                </p>
+              ) : null}
+
+              {news.length === 0 ? (
+                <p className="dashboard-empty-copy">No hay noticias todavía.</p>
+              ) : (
+                <>
+                  {news.filter((n) => n.is_published).length > 0 && (
+                    <div className="dashboard-project-group">
+                      <p className="dashboard-group-label">Publicadas ({news.filter((n) => n.is_published).length})</p>
+                      <div className="dashboard-project-list">
+                        {news.filter((n) => n.is_published).map((item) => (
+                          <article key={item.id} className="dashboard-project-row">
+                            <div className="dashboard-project-thumb dashboard-news-thumb">
+                              {item.image_url
+                                ? <img src={item.image_url} alt={item.title} loading="lazy" />
+                                : <span className="dashboard-news-thumb-placeholder">Sin imagen</span>}
+                            </div>
+                            <div className="dashboard-project-info">
+                              <strong>{item.title}</strong>
+                              {item.subtitle && <span>{item.subtitle}</span>}
+                            </div>
+                            <div className="dashboard-project-actions">
+                              <button className="portafolio_card_btn" type="button" onClick={() => handleNewsEdit(item)}>Editar</button>
+                              <button className="portafolio_card_btn is-danger" type="button" onClick={() => handleNewsDelete(item)}>Eliminar</button>
+                            </div>
+                          </article>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                  {news.filter((n) => !n.is_published).length > 0 && (
+                    <div className="dashboard-project-group">
+                      <p className="dashboard-group-label is-draft">Borradores ({news.filter((n) => !n.is_published).length})</p>
+                      <div className="dashboard-project-list">
+                        {news.filter((n) => !n.is_published).map((item) => (
+                          <article key={item.id} className="dashboard-project-row is-draft">
+                            <div className="dashboard-project-thumb dashboard-news-thumb">
+                              {item.image_url
+                                ? <img src={item.image_url} alt={item.title} loading="lazy" />
+                                : <span className="dashboard-news-thumb-placeholder">Sin imagen</span>}
+                            </div>
+                            <div className="dashboard-project-info">
+                              <strong>{item.title}</strong>
+                              {item.subtitle && <span>{item.subtitle}</span>}
+                            </div>
+                            <div className="dashboard-project-actions">
+                              <button className="portafolio_card_btn" type="button" onClick={() => handleNewsEdit(item)}>Editar</button>
+                              <button className="portafolio_card_btn is-danger" type="button" onClick={() => handleNewsDelete(item)}>Eliminar</button>
+                            </div>
+                          </article>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          ) : (
+            <form className="dashboard-form dashboard-form-single" onSubmit={handleNewsSave}>
+              <div className="dashboard-form-top">
+                <h2>{newsForm.id ? 'Editar noticia' : 'Nueva noticia'}</h2>
+                <button className="button secondary" type="button" onClick={() => setNewsView('home')}>
+                  Volver
+                </button>
+              </div>
+
+              <label htmlFor="news-title">Título</label>
+              <input id="news-title" name="title" value={newsForm.title} onChange={handleNewsFieldChange} required />
+
+              <label htmlFor="news-slug">Slug</label>
+              <input id="news-slug" name="slug" value={newsForm.slug} onChange={handleNewsFieldChange} required />
+
+              <label htmlFor="news-subtitle">Subtítulo</label>
+              <input id="news-subtitle" name="subtitle" value={newsForm.subtitle} onChange={handleNewsFieldChange} placeholder="Resumen breve de la noticia" />
+
+              <label htmlFor="news-body">Cuerpo de la noticia</label>
+              <textarea id="news-body" name="body" rows={10} value={newsForm.body} onChange={handleNewsFieldChange} placeholder="Separa párrafos con una línea en blanco" />
+
+              <label htmlFor="news-external-link">Link externo (opcional)</label>
+              <input id="news-external-link" name="external_link" type="url" value={newsForm.external_link} onChange={handleNewsFieldChange} placeholder="https://..." />
+
+              <label htmlFor="news-image">Imagen de portada</label>
+              <input id="news-image" type="file" accept="image/*" onChange={handleNewsImageChange} />
+
+              {newsImagePreviewUrl ? (
+                <img className="dashboard-cover-preview" src={newsImagePreviewUrl} alt="Vista previa" />
+              ) : newsForm.image_url ? (
+                <img className="dashboard-cover-preview" src={newsForm.image_url} alt="Imagen actual" />
+              ) : null}
+
+              <div className="dashboard-row">
+                <div>
+                  <label htmlFor="news-sort-order">Orden</label>
+                  <input id="news-sort-order" name="sort_order" type="number" value={newsForm.sort_order} onChange={handleNewsFieldChange} />
+                </div>
+                <label className="dashboard-checkbox" htmlFor="news-is-published">
+                  <input
+                    id="news-is-published"
+                    name="is_published"
+                    type="checkbox"
+                    checked={newsForm.is_published}
+                    onChange={handleNewsFieldChange}
+                  />
+                  Publicada
+                </label>
+              </div>
+
+              <div className="dashboard-actions">
+                <button className="button primary" type="submit" disabled={newsIsSaving}>
+                  {newsIsSaving ? 'Guardando...' : 'Guardar noticia'}
+                </button>
+                <button className="button secondary" type="button" onClick={handleNewsReset}>
+                  Limpiar formulario
+                </button>
+              </div>
+
+              {newsStatus.message ? (
+                <p className={`auth-status ${newsStatus.type === 'error' ? 'is-error' : 'is-success'}`}>
+                  {newsStatus.message}
+                </p>
+              ) : null}
+            </form>
+          )
+        ) : null}
+
+        {activeSection === 'projects' && view === 'home' && (
           <div className="dashboard-home">
             <div className="dashboard-home-top">
               <h2>Gestor de proyectos</h2>
@@ -722,7 +1059,9 @@ export default function DashboardPage() {
               </>
             )}
           </div>
-        ) : (
+        )}
+
+        {activeSection === 'projects' && view === 'form' && (
           <form className="dashboard-form dashboard-form-single" onSubmit={handleSave}>
             <div className="dashboard-form-top">
               <h2>{form.id ? 'Editar proyecto' : 'Nuevo proyecto'}</h2>

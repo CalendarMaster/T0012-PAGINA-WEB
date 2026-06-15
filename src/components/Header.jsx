@@ -1,53 +1,23 @@
-import { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { useLanguage } from '../lib/i18n.jsx'
 import { CONTACT_EMAIL, handleContactEmailClick } from '../lib/contactEmail'
 
 export default function Header() {
-  const [logoAnimKey, setLogoAnimKey] = useState(0)
   const { pathname } = useLocation()
   const { lang, setLang, t } = useLanguage()
 
   const sectionHref = (id) => (pathname === '/' ? `#${id}` : `/#${id}`)
   const footerHref = pathname === '/' ? '#contacto-footer' : '/#contacto-footer'
 
-  const replayLogoAnimation = () => {
-    setLogoAnimKey((previous) => previous + 1)
-  }
-
   return (
     <header className="site-header">
-      <Link
-        className="brand"
-        to="/"
-        aria-label="MI Studio inicio"
-        onMouseEnter={replayLogoAnimation}
-        onFocus={replayLogoAnimation}
-      >
+      <Link className="brand" to="/" aria-label="MI Studio inicio">
         <span className="brand-symbol" aria-hidden="true">
-          <svg
-            key={logoAnimKey}
+          <img
             className="brand-logo"
-            viewBox="160 140 580 420"
-            xmlns="http://www.w3.org/2000/svg"
-            focusable="false"
-          >
-            <path
-              className="animate-draw-path"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="32"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M 190 530 L 190 230 A 65 65 0 0 1 320 230 L 320 460 A 65 65 0 0 0 450 460 L 450 230 A 65 65 0 0 1 580 230 L 580 460 A 65 65 0 0 0 710 460 L 710 320"
-            />
-            <circle className="animate-dot" cx="710" cy="175" r="20" fill="var(--orange)" />
-          </svg>
-        </span>
-
-        <span className="brand-wordmark" aria-hidden="true">
-          <span className="brand-modelo">modelo integrado</span>
-          <strong className="brand-studio">STUDIO</strong>
+            src="/assets/LOGO%20MISTUDIO/3f072bab-57f3-4aac-b01d-d07e90113370.png"
+            alt="MI Studio"
+          />
         </span>
       </Link>
 
