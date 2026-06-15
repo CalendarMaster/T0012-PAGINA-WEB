@@ -25,6 +25,7 @@ export default function Portfolio({ minimal = false, maxItems }) {
   const [hasInteractedWithFilters, setHasInteractedWithFilters] = useState(false)
   const [projects, setProjects] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [useFallback, setUseFallback] = useState(false)
   const gridRef = useRef(null)
   const flipStateRef = useRef(null)
   const categoryFilters = getProjectFilters(lang)
@@ -66,7 +67,7 @@ export default function Portfolio({ minimal = false, maxItems }) {
       if (!isMounted) return
 
       if (error) {
-        setProjects([])
+        setUseFallback(true)
         setIsLoading(false)
         return
       }
@@ -108,21 +109,13 @@ export default function Portfolio({ minimal = false, maxItems }) {
     }
   }, [])
 
-  const mergedProjects = [...FALLBACK_PROJECTS]
-  for (const dbProject of projects) {
-    const existingIndex = mergedProjects.findIndex((fallbackProject) => fallbackProject.slug === dbProject.slug)
-    if (existingIndex >= 0) {
-      mergedProjects[existingIndex] = { ...mergedProjects[existingIndex], ...dbProject }
-      continue
-    }
-    mergedProjects.push(dbProject)
-  }
+  const sourceProjects = useFallback ? FALLBACK_PROJECTS : projects
 
-  const filteredProjects = mergedProjects.filter((project) => {
+  const filteredProjects = sourceProjects.filter((project) => {
     const normalizedCategory = normalizeProjectCategory(project.category)
     const normalizedDestination = normalizeProjectDestination(project.destination)
 
-    if (project.is_published === false) return false
+    if (!project.is_published) return false
     if (activeCategory !== 'all' && normalizedCategory !== activeCategory) return false
     if (activeDestination !== 'all' && normalizedDestination !== activeDestination) return false
 
