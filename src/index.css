@@ -268,7 +268,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 18px;
+  gap: 32px;
   font-size: 13px;
   font-weight: 700;
 }
@@ -278,6 +278,8 @@ body {
   cursor: pointer;
   color: rgba(255, 255, 255, 0.94);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  text-decoration: none;
+  text-transform: uppercase;
 }
 
 .main-nav a:hover,
@@ -337,6 +339,7 @@ body {
   border-radius: 6px;
   font-weight: 800;
   letter-spacing: 0;
+  text-decoration: none;
 }
 
 .header-tools {
@@ -1191,6 +1194,8 @@ body {
   max-width: min(100%, 210px);
   max-height: clamp(50px, 4.6vw, 78px);
   object-fit: contain;
+  transform: scale(var(--client-logo-scale, 1));
+  transform-origin: center;
   filter: grayscale(1);
 }
 
@@ -1268,9 +1273,13 @@ body {
   object-fit: contain;
 }
 
+.members-strip-logos li.is-buildingsmart {
+  min-height: clamp(150px, 13vw, 188px);
+}
+
 .members-strip-logos li.is-buildingsmart img {
-  max-width: min(100%, 320px);
-  height: clamp(82px, 5.4vw, 108px);
+  max-width: min(100%, 480px);
+  height: clamp(128px, 8.6vw, 168px);
 }
 
 .service-grid article,
@@ -3273,7 +3282,7 @@ body {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.38);
+  color: rgba(255, 255, 255, 0.65);
 }
 
 /* ── end service modal ── */
@@ -3345,7 +3354,7 @@ body {
   font-size: clamp(11px, 0.85vw, 13px);
   font-weight: 500;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.42);
+  color: rgba(255, 255, 255, 0.65);
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -4126,6 +4135,11 @@ body {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .about-clients-card {
+    will-change: auto;
+    height: clamp(50px, 6vw, 72px);
+  }
+
   .about-stack-inner h1,
   .about-stack-inner h2 {
     font-size: clamp(34px, 10vw, 56px);
@@ -4563,7 +4577,11 @@ body {
   }
 
   .about-clients-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .about-clients-section {
+    display: none;
   }
 
   .services-feature {

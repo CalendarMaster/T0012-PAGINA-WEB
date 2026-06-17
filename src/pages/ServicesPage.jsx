@@ -34,7 +34,7 @@ const SERVICE_ICONS = {
 
 const SERVICE_MEDIA = {
   'gerenciamiento-proyecto': 'gerenciamiento de proyecto.jpg',
-  'diseno':                  'diseño.jpg',
+  'diseno':                  'diseno.jpg',
   'modelado':                'modelado.jpg',
   'coordinacion':            'coordinacion.jpg',
   'simulacion':              'simulacion.png',
@@ -45,7 +45,7 @@ const SERVICE_MEDIA = {
   'seguimiento-obra':        'seguimiento en obra.jpg',
   'facility-management':     'facility management.jpg',
   'implementacion':          'implementacion.jpg',
-  'administracion-cde':      'Administracion de CDE (Common Data Environment).jpg',
+  'administracion-cde':      'servicios.png',
   'automatizacion':          'automatizacion.jpeg',
 }
 
@@ -64,7 +64,7 @@ const MODAL_LABELS = {
 
 const PAGE_CTA = {
   eyebrow:  { es: '¿Tienes un proyecto?',                               en: 'Have a project in mind?' },
-  headline: { es: 'Cuéntanos en qué etapa estás.\nPodemos ayudarte.',   en: 'Tell us where you are.\nWe can help.' },
+  headline: { es: 'Cuéntanos en qué etapa estás,\npodemos ayudarte',   en: 'Tell us where you are.\nWe can help.' },
   button:   { es: 'Ir a contacto',                                      en: 'Get in touch' },
 }
 

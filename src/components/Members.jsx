@@ -15,7 +15,7 @@ const MEMBER_LOGOS = [
   },
   {
     name: 'buildingSMART International',
-    src: '/assets/miembros/buildingSMART International logo - color.png',
+    src: '/assets/miembros/ChatGPT Image 16 jun 2026, 14_50_43.png',
   },
 ]
 

@@ -25,9 +25,9 @@ const TRANSLATIONS = {
     footer: {
       cta: 'Iniciar proyecto',
       columns: {
-        company: 'Empresa',
-        capabilities: 'Capacidades',
-        contact: 'Contacto',
+        company: 'EMPRESA',
+        capabilities: 'CAPACIDADES',
+        contact: 'CONTACTO',
       },
       links: {
         process: 'Proceso',
@@ -55,8 +55,8 @@ const TRANSLATIONS = {
       copy:
         'Integramos arquitectura, BIM, coordinación y seguimiento de obra para transformar información dispersa en decisiones confiables de diseño, costo, plazo y construcción.',
       audience: 'Para mandantes, inmobiliarias, constructoras, concesionarias y equipos técnicos.',
-      ctaPrimary: 'Solicitar diagnóstico de información',
-      ctaWhatsapp: 'Habla por WhatsApp',
+      ctaPrimary: 'Solicitar información',
+      ctaWhatsapp: 'Hablemos por WhatsApp',
       kpis: [
         { value: '+2 MM m²', label: 'coordinados y documentados' },
         { value: '+10 años', label: 'experiencia en proyectos de obra' },
@@ -194,8 +194,8 @@ const TRANSLATIONS = {
       servicePlaceholder: 'Servicio de interés',
       services: ['Diagnóstico de información', 'Coordinación BIM', 'Modelado BIM', 'Seguimiento de obra', 'Planificación 4D/5D', 'Automatización', 'Implementación BIM', 'Otro / No sé'],
       message: 'Comentarios adicionales (opcional)',
-      submit: 'Solicitar diagnóstico de información',
-      whatsapp: 'Respuesta inmediata por WhatsApp',
+      submit: 'Solicitar información',
+      whatsapp: 'Hablemos por Whatsapp',
       downloadLabel: 'Guía: cómo diagnosticar riesgos de información en tu proyecto',
       downloadNote: 'Solicitar por correo',
       selectDefault: 'Seleccionar…',
@@ -301,9 +301,9 @@ const TRANSLATIONS = {
     footer: {
       cta: 'Start a project',
       columns: {
-        company: 'Company',
-        capabilities: 'Capabilities',
-        contact: 'Contact',
+        company: 'COMPANY',
+        capabilities: 'CAPABILITIES',
+        contact: 'CONTACT',
       },
       links: {
         process: 'Process',
@@ -331,7 +331,7 @@ const TRANSLATIONS = {
       copy:
         'We integrate architecture, BIM, coordination, and construction follow-up to transform scattered information into reliable decisions on design, cost, schedule, and construction.',
       audience: 'For owners, developers, contractors, concessionaires, and technical teams.',
-      ctaPrimary: 'Request an information diagnosis',
+      ctaPrimary: 'Request information',
       ctaWhatsapp: 'Chat on WhatsApp',
       kpis: [
         { value: '+2M m²', label: 'coordinated and documented' },
@@ -471,7 +471,7 @@ const TRANSLATIONS = {
       servicePlaceholder: 'Service of interest',
       services: ['Information diagnosis', 'BIM Coordination', 'BIM Modeling', 'Construction follow-up', '4D/5D Planning', 'Automation', 'BIM Implementation', 'Other / Not sure'],
       message: 'Additional comments (optional)',
-      submit: 'Request information diagnosis',
+      submit: 'Request information',
       whatsapp: 'Quick reply via WhatsApp',
       downloadLabel: 'Guide: how to diagnose information risks in your project',
       downloadNote: 'Request by email',

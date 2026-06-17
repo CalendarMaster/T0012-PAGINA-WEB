@@ -19,7 +19,7 @@ const CLIENT_LOGOS = [
   { name: 'MedifFarma', src: '/assets/Logos en grises clientes/MedifFarma SIN FONDO.png' },
   { name: 'RG Ingenieros', src: '/assets/Logos en grises clientes/RG-INGENIEROS SIN FONDO.png' },
   { name: 'Sanderson', src: '/assets/Logos en grises clientes/sanderson.logo.png' },
-  { name: 'Universidad Católica de Chile', src: '/assets/Logos en grises clientes/UNIV. CATÓLICA DE CHILE V2.png' },
+  { name: 'Universidad Católica de Chile', src: '/assets/Logos en grises clientes/universidad-catolica-chile-v2.png' },
   { name: 'Urales', src: '/assets/Logos en grises clientes/urales (1).png' },
   { name: 'Vive Tu Barrio', src: '/assets/Logos en grises clientes/VIVE TU BARRIO SIN FONDO.png' },
 ]
@@ -37,7 +37,8 @@ export default function AboutClients() {
     const maxScale = 1.18
     const duration = 0.24
 
-    const onMouseMove = (event) => {
+    const onPointerMove = (event) => {
+      if (event.pointerType !== 'mouse') return
       const mx = event.clientX
       const my = event.clientY
 
@@ -58,7 +59,8 @@ export default function AboutClients() {
       })
     }
 
-    const onMouseLeave = () => {
+    const onPointerLeave = (event) => {
+      if (event.pointerType !== 'mouse') return
       cards.forEach((card) => {
         gsap.to(card, {
           scale: 1,
@@ -69,12 +71,12 @@ export default function AboutClients() {
       })
     }
 
-    stage.addEventListener('mousemove', onMouseMove)
-    stage.addEventListener('mouseleave', onMouseLeave)
+    stage.addEventListener('pointermove', onPointerMove)
+    stage.addEventListener('pointerleave', onPointerLeave)
 
     return () => {
-      stage.removeEventListener('mousemove', onMouseMove)
-      stage.removeEventListener('mouseleave', onMouseLeave)
+      stage.removeEventListener('pointermove', onPointerMove)
+      stage.removeEventListener('pointerleave', onPointerLeave)
       gsap.killTweensOf(cards)
     }
   }, [])
